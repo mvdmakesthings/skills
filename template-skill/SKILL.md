@@ -1,11 +1,32 @@
 ---
 name: your-skill-name
 description: A clear, concise description of what your skill does and when Claude should use it. Include the main functionality and use cases.
+version: 1.0.0
 ---
 
 # Your Skill Name
 
 A brief introduction to what this skill does and the problem it solves.
+
+## YAML Frontmatter Requirements
+
+Every skill must include YAML frontmatter at the top of SKILL.md with the following required fields:
+
+- **name:** Unique identifier for your skill in kebab-case (e.g., `markdown-optimizer`)
+- **description:** Clear, concise description of what your skill does and when Claude should use it
+- **version:** Semantic version number (e.g., `1.0.0`) following [SemVer](https://semver.org/) format
+  - MAJOR version for incompatible changes
+  - MINOR version for backwards-compatible functionality additions
+  - PATCH version for backwards-compatible bug fixes
+
+Example:
+```yaml
+---
+name: my-awesome-skill
+description: Helps users accomplish X by doing Y. Use when working with Z scenarios.
+version: 1.0.0
+---
+```
 
 ## When to Use This Skill
 

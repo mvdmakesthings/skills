@@ -1,6 +1,7 @@
 ---
 name: markdown-optimizer
 description: Optimize markdown files for LLM consumption by adding YAML front-matter with metadata and TOC, normalizing heading hierarchy, removing noise and redundancy, converting verbose prose to structured formats, and identifying opportunities for Mermaid diagrams. Use when preparing technical documentation, notes, research, or knowledge base content for use as LLM reference material or in prompts.
+version: 1.0.0
 ---
 
 # Markdown Optimizer
