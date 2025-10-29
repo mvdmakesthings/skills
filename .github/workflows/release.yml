@@ -31,186 +31,63 @@ jobs:
 
       - name: Validate skills
         run: |
-          echo "::group::Validating skills"
           python .github/scripts/validate-skills.py
-          echo "::endgroup::"
 
-      - name: Discover and build skills
+      - name: Build skills
         id: build
         run: |
-          echo "::group::Building skill archives"
+          # Make scripts executable
+          chmod +x .github/scripts/*.sh
 
-          # Create build directory
-          mkdir -p dist
+          # Build skills and capture JSON output
+          SKILLS_JSON=$(.github/scripts/build-skills.sh)
 
-          # Array to store skill info
-          SKILLS_JSON="[]"
-
-          # Find all skill directories (exclude template-skill and hidden directories)
-          for skill_dir in */; do
-            skill_name="${skill_dir%/}"
-
-            # Skip template-skill, .github, .claude-plugin, and hidden directories
-            if [[ "$skill_name" == "template-skill" ]] || \
-               [[ "$skill_name" == ".github" ]] || \
-               [[ "$skill_name" == ".claude-plugin" ]] || \
-               [[ "$skill_name" == .* ]]; then
-              echo "Skipping $skill_name"
-              continue
-            fi
-
-            # Check if SKILL.md exists
-            if [[ ! -f "$skill_name/SKILL.md" ]]; then
-              echo "Skipping $skill_name (no SKILL.md)"
-              continue
-            fi
-
-            echo "Processing skill: $skill_name"
-
-            # Extract version from SKILL.md frontmatter
-            version=$(python3 << 'EOF'
-import re
-import sys
-import yaml
-
-try:
-    with open(sys.argv[1], 'r') as f:
-        content = f.read()
-
-    # Extract YAML frontmatter
-    match = re.match(r'^---\s*\n(.*?)\n---\s*\n', content, re.DOTALL)
-    if match:
-        frontmatter = yaml.safe_load(match.group(1))
-        print(frontmatter.get('version', '0.0.0'))
-    else:
-        print('0.0.0')
-except Exception as e:
-    print('0.0.0', file=sys.stderr)
-    sys.exit(1)
-EOF
-            "$skill_name/SKILL.md")
-
-            if [[ -z "$version" ]]; then
-              echo "::warning::Failed to extract version from $skill_name/SKILL.md, using 0.0.0"
-              version="0.0.0"
-            fi
-
-            echo "  Version: $version"
-
-            # Create versioned filename
-            archive_name="${skill_name}-v${version}.skill"
-
-            # Create zip archive with all files in the skill directory
-            # The archive should contain the skill directory structure
-            echo "  Creating archive: $archive_name"
-            cd "$skill_name"
-            zip -r "../dist/$archive_name" . -x "*.skill"
-            cd ..
-
-            # Verify archive was created
-            if [[ -f "dist/$archive_name" ]]; then
-              size=$(ls -lh "dist/$archive_name" | awk '{print $5}')
-              echo "  ✓ Created $archive_name ($size)"
-
-              # Add to skills JSON array
-              SKILLS_JSON=$(echo "$SKILLS_JSON" | jq --arg name "$skill_name" \
-                                                      --arg version "$version" \
-                                                      --arg file "$archive_name" \
-                                                      '. += [{name: $name, version: $version, file: $file}]')
-            else
-              echo "  ✗ Failed to create $archive_name"
-              exit 1
-            fi
-          done
-
-          # Save skills info for later steps
-          echo "skills=$SKILLS_JSON" >> $GITHUB_OUTPUT
-
-          # Count and display summary
-          skill_count=$(echo "$SKILLS_JSON" | jq length)
-          echo "::notice::Built $skill_count skill archive(s)"
-
-          echo "::endgroup::"
+          # Save for later steps (multiline-safe)
+          {
+            echo 'skills<<EOF'
+            echo "$SKILLS_JSON"
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
 
       - name: Generate changelog
         id: changelog
         run: |
-          echo "::group::Generating changelog"
+          SKILLS_JSON='${{ steps.build.outputs.skills }}'
+          CHANGELOG=$(.github/scripts/generate-changelog.sh "${{ github.event.release.tag_name }}" "$SKILLS_JSON")
 
-          # Get previous release tag
-          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || git rev-list --max-parents=0 HEAD)
-          echo "Previous tag: $PREV_TAG"
-          echo "Current tag: ${{ github.event.release.tag_name }}"
-
-          # Generate changelog with categorization
-          CHANGELOG=$(cat << 'EOF'
-          ## What's Changed
-
-          EOF
-          )
-
-          # Get commits since last release
-          COMMITS=$(git log $PREV_TAG..HEAD --pretty=format:"- %s (%h)" --reverse)
-
-          if [[ -n "$COMMITS" ]]; then
-            CHANGELOG+=$'\n'"$COMMITS"$'\n'
-          else
-            CHANGELOG+=$'\n'"- Initial release"$'\n'
-          fi
-
-          CHANGELOG+=$'\n'"## Skills in this Release"$'\n\n'
-
-          # Add skill information from build step
-          SKILLS='${{ steps.build.outputs.skills }}'
-          echo "$SKILLS" | jq -r '.[] | "- **\(.name)** v\(.version) (`\(.file)`)"' | while read line; do
-            CHANGELOG+="$line"$'\n'
-          done
-
-          # Save changelog (properly escaped for GitHub Actions)
+          # Save changelog (multiline-safe)
           {
-            echo 'changelog<<EOF'
+            echo 'content<<EOF'
             echo "$CHANGELOG"
             echo 'EOF'
           } >> $GITHUB_OUTPUT
-
-          echo "::endgroup::"
-
-          # Display changelog
-          echo "::group::Generated Changelog"
-          echo "$CHANGELOG"
-          echo "::endgroup::"
 
       - name: Upload skill archives to release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "::group::Uploading skill archives"
-
           SKILLS='${{ steps.build.outputs.skills }}'
 
           # Upload each skill archive
-          echo "$SKILLS" | jq -r '.[] | .file' | while read archive; do
+          echo "$SKILLS" | jq -r '.[] | .file' | while read -r archive; do
             echo "Uploading $archive..."
             gh release upload "${{ github.event.release.tag_name }}" \
               "dist/$archive" \
               --clobber
-            echo "✓ Uploaded $archive"
           done
 
-          echo "::endgroup::"
-
-      - name: Update release description with changelog
+      - name: Update release description
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "::group::Updating release description"
-
           # Get existing release notes
           EXISTING_NOTES=$(gh release view "${{ github.event.release.tag_name }}" --json body -q .body)
 
-          # Combine existing notes with generated changelog
-          UPDATED_NOTES=$(cat << 'EOF'
-${{ steps.changelog.outputs.changelog }}
+          # Combine generated changelog with existing notes
+          CHANGELOG='${{ steps.changelog.outputs.content }}'
+
+          UPDATED_NOTES=$(cat <<EOF
+$CHANGELOG
 
 ---
 
@@ -219,13 +96,9 @@ EOF
 )
 
           # Update release
-          gh release edit "${{ github.event.release.tag_name }}" \
-            --notes "$UPDATED_NOTES"
+          gh release edit "${{ github.event.release.tag_name }}" --notes "$UPDATED_NOTES"
 
-          echo "✓ Release description updated"
-          echo "::endgroup::"
-
-      - name: Summary
+      - name: Create job summary
         run: |
           echo "## 🎉 Release Build Complete" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
