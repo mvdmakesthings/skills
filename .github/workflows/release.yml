@@ -79,24 +79,28 @@ jobs:
       - name: Update release description
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHANGELOG_CONTENT: ${{ steps.changelog.outputs.content }}
         run: |
           # Get existing release notes
-          EXISTING_NOTES=$(gh release view "${{ github.event.release.tag_name }}" --json body -q .body)
+          gh release view "${{ github.event.release.tag_name }}" --json body -q .body > existing_notes.txt
 
-          # Combine generated changelog with existing notes
-          CHANGELOG='${{ steps.changelog.outputs.content }}'
+          # Save changelog to file
+          printf '%s\n' "$CHANGELOG_CONTENT" > changelog.txt
 
-          UPDATED_NOTES=$(cat <<EOF
-$CHANGELOG
+          # Combine the files
+          {
+            cat changelog.txt
+            echo ""
+            echo "---"
+            echo ""
+            cat existing_notes.txt
+          } > combined_notes.txt
 
----
+          # Update release with combined notes
+          gh release edit "${{ github.event.release.tag_name }}" --notes-file combined_notes.txt
 
-$EXISTING_NOTES
-EOF
-)
-
-          # Update release
-          gh release edit "${{ github.event.release.tag_name }}" --notes "$UPDATED_NOTES"
+          # Cleanup
+          rm -f changelog.txt existing_notes.txt combined_notes.txt
 
       - name: Create job summary
         run: |
