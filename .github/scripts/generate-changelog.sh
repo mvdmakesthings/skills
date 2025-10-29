@@ -31,7 +31,12 @@ SKILLS_JSON="$2"
 echo "::group::Generating changelog" >&2
 
 # Get previous release tag
-PREV_TAG=$(git describe --tags --abbrev=0 "$CURRENT_TAG^" 2>/dev/null || git rev-list --max-parents=0 HEAD)
+if git rev-parse "$CURRENT_TAG" >/dev/null 2>&1; then
+  PREV_TAG=$(git describe --tags --abbrev=0 "$CURRENT_TAG^" 2>/dev/null)
+else
+  # If CURRENT_TAG doesn't exist yet, fallback to previous tag from HEAD
+  PREV_TAG=$(git describe --tags --abbrev=0 HEAD 2>/dev/null || git rev-list --max-parents=0 HEAD)
+fi
 
 echo "Previous tag: $PREV_TAG" >&2
 echo "Current tag: $CURRENT_TAG" >&2
