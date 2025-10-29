@@ -1,0 +1,22 @@
+{
+  "name": "mvd-agent-skills",
+  "owner": {
+    "name": "Michael VanDyke",
+    "email": "10758192+mvdmakesthings@users.noreply.github.com"
+  },
+  "metadata": {
+    "description": "MVD's Claude Skills Marketplace",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "markdown-optimizer",
+      "description": "Optimize markdown documents for LLM reference material.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./markdown-optimizer"
+      ]
+    }
+  ]
+}
