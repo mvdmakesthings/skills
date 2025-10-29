@@ -46,7 +46,7 @@ CHANGELOG="## What's Changed"
 CHANGELOG+=$'\n\n'
 
 # Get commits since last release
-COMMITS=$(git log "$PREV_TAG..HEAD" --pretty=format:"- %s (%h)" --reverse 2>/dev/null || echo "")
+COMMITS=$(git log "$PREV_TAG..$CURRENT_TAG" --pretty=format:"- %s (%h)" --reverse 2>/dev/null || echo "")
 
 if [[ -n "$COMMITS" ]]; then
   CHANGELOG+="$COMMITS"
