@@ -1,0 +1,12 @@
+{
+  "name": "mvdmakesthings",
+  "owner": {
+    "name": "Michael VanDyke"
+  },
+  "metadata": {
+    "description": "A curated collection of Claude Code plugins, skills, and agents.",
+    "version": "0.1.0",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": []
+}
