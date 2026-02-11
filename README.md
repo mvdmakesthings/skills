@@ -28,9 +28,9 @@ You can also install plugins directly:
 
 ## Available Plugins
 
-| Plugin | Command | Description |
-|--------|---------|-------------|
-| `writer` | `/writer:human [prompt]` | Write prose that sounds authentically human. |
+| Plugin | Command | Description | Example |
+|--------|---------|-------------|---------|
+| `writer` | `/writer:human [prompt]` | Write prose that sounds authentically human. | [Before & After](plugins/human-voice-writer/examples/before-after.md) |
 
 ## Adding a Plugin
 
