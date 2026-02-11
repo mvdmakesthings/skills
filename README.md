@@ -28,9 +28,9 @@ You can also install plugins directly:
 
 ## Available Plugins
 
-<!-- Plugins will be listed here as they are added. -->
-
-*Coming soon — contributions welcome.*
+| Plugin | Command | Description |
+|--------|---------|-------------|
+| `writer` | `/writer:human [prompt]` | Write prose that sounds authentically human. |
 
 ## Adding a Plugin
 
@@ -82,14 +82,12 @@ Add an entry to `.claude-plugin/marketplace.json`:
   "plugins": [
     {
       "name": "your-plugin",
-      "source": "your-plugin",
+      "source": "./plugins/your-plugin",
       "description": "What your plugin does"
     }
   ]
 }
 ```
-
-> Because `pluginRoot` is set to `./plugins`, the source path is relative to that directory.
 
 ### 5. Test locally
 

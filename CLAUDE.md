@@ -19,7 +19,7 @@ plugins/                           ← All plugins live here
     hooks/                         ← Hook configurations
 ```
 
-The `pluginRoot` in `marketplace.json` is set to `./plugins`, so plugin source paths in the `plugins` array are relative to that directory (e.g., `"source": "my-plugin"` resolves to `./plugins/my-plugin`).
+Plugin source paths in the `plugins` array use relative paths from the repository root (e.g., `"source": "./plugins/my-plugin"`).
 
 ## Key Files
 
