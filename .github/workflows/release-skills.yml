@@ -32,17 +32,11 @@ jobs:
           PREV_TAG=$(git tag --list 'v*' --sort=-v:refname | sed -n '2p')
 
           {
-            echo "# ${TAG}"
-            echo ""
-
-            # What's Included
-            echo "## What's Included"
-            echo ""
-            echo "### Plugins"
+            echo "## Plugins"
             echo ""
             jq -r '.plugins[] | "- **\(.name)** — \(.description)"' .claude-plugin/marketplace.json
             echo ""
-            echo "### Skills (download below)"
+            echo "## Skills (download below)"
             echo ""
             for f in dist/*.skill; do
               [ -f "$f" ] && echo "- \`$(basename "$f")\`"
