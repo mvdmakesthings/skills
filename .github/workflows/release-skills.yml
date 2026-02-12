@@ -1,0 +1,31 @@
+name: Release Skills
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  package-skills:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Package skills
+        run: |
+          mkdir -p dist
+          for skillmd in plugins/*/skills/*/SKILL.md; do
+            skill_dir="$(dirname "$skillmd")"
+            skill_name="$(basename "$skill_dir")"
+            parent_dir="$(dirname "$skill_dir")"
+            (cd "$parent_dir" && zip -r "$GITHUB_WORKSPACE/dist/${skill_name}.skill" "$skill_name/")
+          done
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: dist/*.skill

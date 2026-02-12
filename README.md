@@ -32,6 +32,17 @@ You can also install plugins directly:
 |--------|---------|-------------|---------|
 | `writer` | `/writer:human [prompt]` | Write prose that sounds authentically human. | [Before & After](plugins/human-voice-writer/examples/before-after.md) |
 
+## Using Skills in Claude.ai / Claude Desktop
+
+Skills from this marketplace can also be used in Claude.ai and Claude Desktop (no CLI required).
+
+1. Go to the [Releases](../../releases) page
+2. Download the `.skill` file for the skill you want (e.g., `human-voice-writer.skill`)
+3. In Claude.ai or Claude Desktop, go to **Settings > Capabilities**
+4. Upload the `.skill` file
+
+Each release automatically packages every skill in the marketplace as a standalone `.skill` file.
+
 ## Adding a Plugin
 
 Each plugin lives in its own directory under `plugins/`. Here's the structure:
