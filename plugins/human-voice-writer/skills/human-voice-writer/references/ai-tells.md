@@ -16,6 +16,8 @@ Never use em dashes (—), en dashes used as em dashes (–), or double hyphens 
 
 **Over-signposting:** "Let's break this down," "Here's the thing," "Let me explain," "Let's dive in," "Let's unpack this." Real writers don't announce that they're about to write. They just write.
 
+**Negation-assertion patterns:** AI constantly uses negation to manufacture dramatic tension. This includes: short dramatic negations as punchlines ("That's not speculation." "That's not a coincidence."), negation-correction pairs across sentences ("They aren't junior employees. They're senior engineers." "This wasn't luck. It was strategy."), and saying what something *isn't* before what it *is* ("Remote work stopped being a perk. It's infrastructure now."). Humans do this occasionally; AI does it in nearly every paragraph because it's an easy way to sound authoritative. State the positive claim directly instead.
+
 **Tidy trinities:** "Three things matter: clarity, consistency, and communication." AI loves grouping ideas into neat sets of three abstract nouns separated by a colon. Humans don't naturally organize their thoughts this way.
 
 **"Imagine" openings:** "Imagine a world where...", "Picture this:", "Imagine if you could..." AI blog post staples. Just start with the actual point.

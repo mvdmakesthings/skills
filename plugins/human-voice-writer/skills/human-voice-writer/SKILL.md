@@ -19,6 +19,8 @@ Never use these words/phrases unless quoting someone or the user specifically re
 
 **Banned rhetorical patterns:** Never use "It's not just X, it's Y" or any variation: "This isn't just..., it's...", "That's not... it's...", "It's not about X, it's about Y", "It's more than just X, it's Y." These false-revelation constructions are a strong AI tell. Just state the point directly. Also ban "Not only X, but also Y" parallel constructions.
 
+**Banned negation-assertion patterns:** AI loves to negate something the reader supposedly believes, then correct them. This includes short dramatic negations used as punchlines ("That's not speculation." "That's not a coincidence."), negation-correction pairs across sentences ("They aren't junior employees. They're senior engineers." "This wasn't an accident. It was a deliberate choice."), and any pattern where you say what something *isn't* before saying what it *is*. These rules apply everywhere in the output: body text, headings, titles, subheadings, and any other text. A negation-assertion in a heading is just as much of an AI tell as one in a paragraph. Human writers occasionally do this, but AI does it constantly because it creates easy dramatic tension. Instead of negating a strawman, just state the positive claim directly. If the contrast matters, fold it into one sentence rather than setting up a two-beat negate-then-assert rhythm.
+
 **Banned false-choice framings:** "Whether you're a beginner or a seasoned pro...", "Whether you're looking to X or Y..." These are filler. Cut them entirely or address the reader directly.
 
 **Banned signposting:** "Let's break this down," "Here's the thing," "Let me explain," "Let's dive in," "Let's unpack this." Just make the point. Real writers don't announce that they're about to explain something.
@@ -106,6 +108,7 @@ AI over-writes by default. Fight this aggressively.
    - Any banned vocabulary that slipped through (including "ensures," "key," "respective/respectively")
    - Any em dashes, en dashes, or double hyphens
    - Any "it's not just X, it's Y" or "not only X, but also Y" patterns
+   - Negation-assertion patterns in all text including headings, titles, and subheadings: short dramatic negations ("That's not speculation."), negation-correction pairs ("They aren't X. They're Y."), saying what something isn't before what it is
    - Hollow intensifiers (truly, really, incredibly, absolutely, extremely)
    - "From X to Y" sweep constructions
    - Paired synonym adjectives (clear and concise, quick and easy)
@@ -135,7 +138,7 @@ When asked to "humanize" or "de-AI" existing text:
 
 1. **Read `references/ai-tells.md`** to identify all Tier 1 and Tier 2 patterns present.
 2. **Read `references/humanization-techniques.md`** for the full technique library.
-3. **Identify specific problems** in the text: banned words (including "ensures," "key," "respective/respectively"), em dashes/en dashes, false-revelation constructions, "not only...but also," hollow intensifiers, paired synonyms, "from X to Y" sweeps, "the power of" constructions, "imagine" openings, "by [gerund]" chains, "allows/enables/empowers you to," weasel quantifiers without numbers, transition word overuse, recap openers, uniform sentence lengths, anaphora chains, vague "This" openers, structural monotony, repetitive paragraph openings, assistant register, trailing participial phrases, nominalizations, semicolon overuse, over-signposting, overused question-then-answer, excessive length for format.
+3. **Identify specific problems** in the text: banned words (including "ensures," "key," "respective/respectively"), em dashes/en dashes, false-revelation constructions, negation-assertion patterns, "not only...but also," hollow intensifiers, paired synonyms, "from X to Y" sweeps, "the power of" constructions, "imagine" openings, "by [gerund]" chains, "allows/enables/empowers you to," weasel quantifiers without numbers, transition word overuse, recap openers, uniform sentence lengths, anaphora chains, vague "This" openers, structural monotony, repetitive paragraph openings, assistant register, trailing participial phrases, nominalizations, semicolon overuse, over-signposting, overused question-then-answer, excessive length for format.
 4. **Rewrite** applying fixes at all four layers (word, sentence, structure, tone).
 5. **Preserve the original meaning and information.** Humanizing means changing how something is said, not what is said.
 
@@ -218,6 +221,18 @@ These show common AI patterns and how to fix them. Learn the transformations, no
 **Transition word fix:**
 - Bad: "The migration completed on schedule. Additionally, the team resolved three outstanding bugs. Furthermore, performance testing showed no regressions."
 - Good: "The migration completed on schedule. The team also resolved three outstanding bugs, and performance testing showed no regressions."
+
+**Negation-assertion fix (dramatic negation):**
+- Bad: "That's not speculation." or "That's not a coincidence."
+- Good: Just cut it. The preceding claim should stand on its own evidence. If you need emphasis, use a specific detail instead of a dramatic negation.
+
+**Negation-assertion fix (negation-correction pair):**
+- Bad: "They aren't junior employees who don't know better. They're senior engineers and experienced managers."
+- Good: "The applicants are senior engineers and experienced managers." (State who they are. No need to first say who they aren't.)
+
+**Negation-assertion fix (what-it-isn't-then-what-it-is):**
+- Bad: "Remote work stopped being a perk around 2021. It's infrastructure now."
+- Good: "Remote work became infrastructure around 2021." (Fold the contrast into one sentence instead of the two-beat negate-then-assert rhythm.)
 
 **Recap opener fix (multi-turn):**
 - Bad: "As we discussed earlier, the deployment strategy involves three phases."
