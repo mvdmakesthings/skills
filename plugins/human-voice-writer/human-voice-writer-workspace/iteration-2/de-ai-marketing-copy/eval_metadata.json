@@ -1,0 +1,14 @@
+{
+  "eval_id": 2,
+  "eval_name": "de-ai-marketing-copy",
+  "prompt": "Humanize this text: 'In today's rapidly evolving digital landscape, organizations must leverage cutting-edge technologies to foster robust collaboration. It's not just about tools — it's about creating a holistic ecosystem that empowers teams to navigate challenges and unlock their full potential. Whether you're a startup founder or a seasoned enterprise leader, the transformative power of AI-driven workflows ensures that your team can streamline processes, driving significant improvements in productivity and innovation.'",
+  "assertions": [
+    "Output contains none of the Tier 1 banned AI vocabulary (extended)",
+    "Output contains no em dashes, en dashes, or double hyphens",
+    "Output preserves the original meaning",
+    "The false-revelation pattern has been removed",
+    "The false-choice framing has been removed",
+    "No trailing participial phrases",
+    "The word 'ensures' has been replaced or removed"
+  ]
+}

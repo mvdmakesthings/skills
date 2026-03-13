@@ -1,0 +1,1 @@
+Hey team, the db migration wrapped up. We're good to deploy tomorrow whenever works for everyone.

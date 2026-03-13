@@ -1,0 +1,1 @@
+Hey team, the database migration wrapped up clean. No issues. We're good to deploy tomorrow.

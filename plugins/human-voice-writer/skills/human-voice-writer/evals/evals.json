@@ -1,0 +1,49 @@
+{
+  "skill_name": "human-voice-writer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write a 3-paragraph blog post about why remote work is here to stay. Target audience is HR professionals.",
+      "expected_output": "A 3-paragraph blog post that sounds authentically human, avoids AI vocabulary and patterns, has varied sentence lengths, and reads naturally for an HR audience.",
+      "files": [],
+      "expectations": [
+        "Output contains none of the Tier 1 banned AI vocabulary: delve, leverage, foster, robust, utilize, nuanced, multifaceted, pivotal, holistic, synergy, paradigm, transformative, groundbreaking, cutting-edge, harness, streamline, cornerstone, encompasses, facilitates, moreover, furthermore, nevertheless, myriad, plethora, ensures, respective, respectively",
+        "Output contains no em dashes, en dashes used as em dashes, or double hyphens (no occurrences of the characters —, –, or the string --)",
+        "Sentence length standard deviation is 8 or more words (burstiness check)",
+        "Output contains no false-revelation pattern ('it's not just X, it's Y' or 'not only X, but also Y')",
+        "Output has exactly 3 paragraphs as requested",
+        "Output does not open with a sycophantic phrase or banned opening like 'In today's rapidly evolving' or 'In the realm of'",
+        "Output contains no negation-assertion patterns: no dramatic negations ('That's not speculation.'), no negation-correction pairs ('They aren't X. They're Y.'), no what-it-isn't-then-what-it-is patterns"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Humanize this text: 'In today's rapidly evolving digital landscape, organizations must leverage cutting-edge technologies to foster robust collaboration. It's not just about tools — it's about creating a holistic ecosystem that empowers teams to navigate challenges and unlock their full potential. Whether you're a startup founder or a seasoned enterprise leader, the transformative power of AI-driven workflows ensures that your team can streamline processes, driving significant improvements in productivity and innovation.'",
+      "expected_output": "A rewritten version that preserves the original meaning but removes all AI tells.",
+      "files": [],
+      "expectations": [
+        "Output contains none of the Tier 1 banned AI vocabulary: delve, leverage, foster, robust, utilize, nuanced, multifaceted, pivotal, holistic, synergy, paradigm, transformative, groundbreaking, cutting-edge, harness, streamline, cornerstone, encompasses, facilitates, moreover, furthermore, nevertheless, myriad, plethora, ensures, respective, respectively, navigate, empowers, unlock",
+        "Output contains no em dashes, en dashes used as em dashes, or double hyphens",
+        "Output preserves the original meaning: still covers technology for collaboration, team challenges, AI workflows, and productivity",
+        "The original 'it's not just about tools, it's about' false-revelation pattern has been removed",
+        "The original 'whether you're a startup founder or a seasoned enterprise leader' false-choice framing has been removed",
+        "No trailing participial phrases (sentences ending with comma + gerund like ', driving significant improvements')",
+        "The word 'ensures' from the original has been replaced or removed"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Write a Slack message to my team letting them know the database migration finished and we can deploy tomorrow.",
+      "expected_output": "A brief, casual Slack message of 1-3 sentences.",
+      "files": [],
+      "expectations": [
+        "Output is under 50 words total (appropriate Slack message length)",
+        "Output contains no markdown headers (no lines starting with #) and no bullet points (no lines starting with - or *)",
+        "Output uses at least one contraction (e.g., we're, can't, it's, don't, won't)",
+        "Output contains none of the Tier 1 banned AI vocabulary",
+        "Output does not contain sycophantic openers, signposting phrases like 'Let's break this down' or 'Here's the thing', or banned openings",
+        "Output contains no em dashes, en dashes, or double hyphens"
+      ]
+    }
+  ]
+}

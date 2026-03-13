@@ -1,0 +1,12 @@
+{
+  "eval_id": 3,
+  "eval_name": "slack-deploy-update",
+  "prompt": "Write a Slack message to my team letting them know the database migration finished and we can deploy tomorrow.",
+  "assertions": [
+    "Output is under 50 words total (appropriate Slack message length)",
+    "Output contains no markdown headers (no lines starting with #) and no bullet points (no lines starting with - or *)",
+    "Output uses at least one contraction (e.g., we're, can't, it's, don't, won't)",
+    "Output contains none of the Tier 1 banned AI vocabulary",
+    "Output does not contain sycophantic openers, signposting phrases like 'Let's break this down' or 'Here's the thing', or banned openings"
+  ]
+}

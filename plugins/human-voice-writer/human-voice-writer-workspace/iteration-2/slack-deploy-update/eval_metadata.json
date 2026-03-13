@@ -1,0 +1,13 @@
+{
+  "eval_id": 3,
+  "eval_name": "slack-deploy-update",
+  "prompt": "Write a Slack message to my team letting them know the database migration finished and we can deploy tomorrow.",
+  "assertions": [
+    "Output is under 50 words total",
+    "Output contains no headers or bullet points",
+    "Output uses at least one contraction",
+    "Output contains none of the Tier 1 banned AI vocabulary",
+    "No sycophantic openers or signposting phrases",
+    "Output contains no em dashes, en dashes, or double hyphens"
+  ]
+}

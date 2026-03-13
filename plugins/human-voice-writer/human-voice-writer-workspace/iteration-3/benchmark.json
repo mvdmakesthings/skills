@@ -1,0 +1,179 @@
+{
+  "skill_name": "human-voice-writer",
+  "iteration": 3,
+  "configurations": [
+    {
+      "name": "with_skill",
+      "description": "Using the human-voice-writer skill (iteration 3, stability re-benchmark)"
+    },
+    {
+      "name": "without_skill",
+      "description": "Baseline without any skill"
+    }
+  ],
+  "evals": [
+    {
+      "eval_name": "blog-post-remote-work",
+      "eval_id": 1,
+      "prompt": "Write a 3-paragraph blog post about why remote work is here to stay. Target audience is HR professionals.",
+      "runs": [
+        {
+          "configuration": "with_skill",
+          "pass_rate": 0.86,
+          "passed": 6,
+          "total": 7,
+          "total_tokens": 12297,
+          "duration_seconds": 32.9,
+          "expectations": [
+            {"text": "Output contains none of the Tier 1 banned AI vocabulary", "passed": true},
+            {"text": "Output contains no em dashes, en dashes, or double hyphens", "passed": true},
+            {"text": "Sentence length standard deviation is 7 or more words", "passed": true, "evidence": "SD = 11.8"},
+            {"text": "Output contains no false-revelation pattern", "passed": true},
+            {"text": "Output has exactly 3 paragraphs as requested", "passed": true},
+            {"text": "Output does not open with a banned opening", "passed": true},
+            {"text": "Output contains no negation-assertion patterns", "passed": false, "evidence": "Title uses negation-correction pair: 'Remote Work Isn't a Perk Anymore. It's the Baseline.'"}
+          ]
+        },
+        {
+          "configuration": "without_skill",
+          "pass_rate": 0.43,
+          "passed": 3,
+          "total": 7,
+          "total_tokens": 11191,
+          "duration_seconds": 21.2,
+          "expectations": [
+            {"text": "Output contains none of the Tier 1 banned AI vocabulary", "passed": false, "evidence": "Found: landscape, robust"},
+            {"text": "Output contains no em dashes, en dashes, or double hyphens", "passed": false, "evidence": "Found: —"},
+            {"text": "Sentence length standard deviation is 7 or more words", "passed": false, "evidence": "SD = 4.7"},
+            {"text": "Output contains no false-revelation pattern", "passed": true},
+            {"text": "Output has exactly 3 paragraphs as requested", "passed": false, "evidence": "Found 4 paragraphs (title counted as separate)"},
+            {"text": "Output does not open with a banned opening", "passed": true},
+            {"text": "Output contains no negation-assertion patterns", "passed": true}
+          ]
+        }
+      ]
+    },
+    {
+      "eval_name": "de-ai-marketing-copy",
+      "eval_id": 2,
+      "prompt": "Humanize AI-generated marketing copy",
+      "runs": [
+        {
+          "configuration": "with_skill",
+          "pass_rate": 1.0,
+          "passed": 7,
+          "total": 7,
+          "total_tokens": 11503,
+          "duration_seconds": 23.7,
+          "expectations": [
+            {"text": "No banned AI vocabulary (extended)", "passed": true},
+            {"text": "No em dashes, en dashes, or double hyphens", "passed": true},
+            {"text": "Preserves original meaning", "passed": true, "evidence": "Found 5/5 key concepts"},
+            {"text": "False-revelation pattern removed", "passed": true},
+            {"text": "False-choice framing removed", "passed": true},
+            {"text": "No trailing participial phrases", "passed": true},
+            {"text": "'ensures' replaced or removed", "passed": true}
+          ]
+        },
+        {
+          "configuration": "without_skill",
+          "pass_rate": 0.71,
+          "passed": 5,
+          "total": 7,
+          "total_tokens": 10632,
+          "duration_seconds": 12.5,
+          "expectations": [
+            {"text": "No banned AI vocabulary (extended)", "passed": true},
+            {"text": "No em dashes, en dashes, or double hyphens", "passed": false, "evidence": "Found: —"},
+            {"text": "Preserves original meaning", "passed": true, "evidence": "Found 3/5 key concepts"},
+            {"text": "False-revelation pattern removed", "passed": true},
+            {"text": "False-choice framing removed", "passed": false, "evidence": "Found false-choice pattern"},
+            {"text": "No trailing participial phrases", "passed": true},
+            {"text": "'ensures' replaced or removed", "passed": true}
+          ]
+        }
+      ]
+    },
+    {
+      "eval_name": "slack-deploy-update",
+      "eval_id": 3,
+      "prompt": "Write a Slack message about database migration completion",
+      "runs": [
+        {
+          "configuration": "with_skill",
+          "pass_rate": 1.0,
+          "passed": 6,
+          "total": 6,
+          "total_tokens": 10868,
+          "duration_seconds": 11.5,
+          "expectations": [
+            {"text": "Under 50 words", "passed": true, "evidence": "16 words"},
+            {"text": "No headers or bullet points", "passed": true},
+            {"text": "Uses contractions", "passed": true},
+            {"text": "No banned AI vocabulary", "passed": true},
+            {"text": "No sycophantic/signposting phrases", "passed": true},
+            {"text": "No em dashes, en dashes, or double hyphens", "passed": true}
+          ]
+        },
+        {
+          "configuration": "without_skill",
+          "pass_rate": 0.67,
+          "passed": 4,
+          "total": 6,
+          "total_tokens": 10501,
+          "duration_seconds": 9.3,
+          "expectations": [
+            {"text": "Under 50 words", "passed": false, "evidence": "58 words"},
+            {"text": "No headers or bullet points", "passed": true},
+            {"text": "Uses contractions", "passed": true},
+            {"text": "No banned AI vocabulary", "passed": true},
+            {"text": "No sycophantic/signposting phrases", "passed": true},
+            {"text": "No em dashes, en dashes, or double hyphens", "passed": false, "evidence": "Found: —"}
+          ]
+        }
+      ]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "mean_pass_rate": 0.95,
+      "stddev_pass_rate": 0.08,
+      "mean_tokens": 11556,
+      "mean_duration_seconds": 22.7
+    },
+    "without_skill": {
+      "mean_pass_rate": 0.60,
+      "stddev_pass_rate": 0.15,
+      "mean_tokens": 10775,
+      "mean_duration_seconds": 14.3
+    },
+    "delta": {
+      "pass_rate": "+35%",
+      "tokens": "+7%",
+      "duration": "+59%"
+    }
+  },
+  "comparison_with_iteration_2": {
+    "iteration_2": {
+      "with_skill_mean_pass_rate": 1.0,
+      "without_skill_mean_pass_rate": 0.70
+    },
+    "iteration_3": {
+      "with_skill_mean_pass_rate": 0.95,
+      "without_skill_mean_pass_rate": 0.60
+    },
+    "change": "with_skill dropped from 100% to 95% (1 assertion failure: negation-assertion pattern in blog title). without_skill dropped from 70% to 60% due to additional failures in burstiness and word count."
+  },
+  "analyst_notes": [
+    "with_skill passed 19/20 assertions (95%), down from 20/20 (100%) in iteration 2",
+    "The single with_skill failure was a negation-assertion pattern in the blog post title: 'Remote Work Isn't a Perk Anymore. It's the Baseline.' — the grader correctly flagged this as a negation-correction pair, though it appeared in a heading rather than body text",
+    "This suggests the skill's self-review pass doesn't reliably catch negation-assertion patterns in titles/headings",
+    "without_skill baseline dropped to 60% from 70% in iteration 2 — the blog post performed worse this run (43% vs 71%) with new failures in burstiness (SD=4.7) and paragraph count (4 instead of 3)",
+    "Em dashes remain the most consistent baseline failure: without_skill used em dashes in all 3 evals (blog, de-ai, slack)",
+    "Slack with_skill output was excellent: 16 words, natural tone, single contraction — a strong demonstration of length calibration",
+    "Slack without_skill was 58 words with emoji and multiple paragraphs — classic AI over-writing for format",
+    "Token overhead is much lower this iteration (+7% vs +32% in iteration 2) because the skill was provided inline to agents rather than read from disk",
+    "Duration overhead similarly lower (+59% vs +188% in iteration 2) for the same reason",
+    "De-AI marketing with_skill achieved perfect 7/7, successfully removing all AI patterns including the false-choice framing that without_skill retained"
+  ]
+}

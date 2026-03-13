@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "Output is under 50 words total",
+      "passed": false,
+      "evidence": "Word count: 57"
+    },
+    {
+      "text": "Output contains no headers or bullet points",
+      "passed": true,
+      "evidence": "No headers or bullets found"
+    },
+    {
+      "text": "Output uses at least one contraction",
+      "passed": true,
+      "evidence": "Contractions found"
+    },
+    {
+      "text": "Output contains none of the Tier 1 banned AI vocabulary",
+      "passed": true,
+      "evidence": "No banned words found"
+    },
+    {
+      "text": "No sycophantic openers or signposting phrases",
+      "passed": true,
+      "evidence": "No sycophantic/signposting patterns found"
+    },
+    {
+      "text": "Output contains no em dashes, en dashes, or double hyphens",
+      "passed": false,
+      "evidence": "Found dash types: \u2014"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 2,
+    "total": 6,
+    "pass_rate": 0.67
+  }
+}

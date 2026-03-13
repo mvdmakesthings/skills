@@ -1,0 +1,8 @@
+{
+  "eval_id": 3,
+  "eval_name": "slack-deploy-update",
+  "prompt": "Write a Slack message to my team letting them know the database migration finished and we can deploy tomorrow.",
+  "expected_output": "A brief, casual Slack message of 1-3 sentences.",
+  "num_expectations": 6,
+  "iteration": 3
+}

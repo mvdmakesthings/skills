@@ -1,0 +1,3 @@
+Technology at work changes fast, and keeping your team connected takes more than picking the right apps. What really matters is building a setup where people can actually work well together -- where the tools fit the way your team already thinks and communicates.
+
+This applies whether you're running a five-person startup or managing teams across a large company. AI-powered workflows can take repetitive tasks off your plate so your team spends less time on busywork and more time on the stuff that actually moves things forward. The result? People get more done, and they have room to come up with better ideas along the way.

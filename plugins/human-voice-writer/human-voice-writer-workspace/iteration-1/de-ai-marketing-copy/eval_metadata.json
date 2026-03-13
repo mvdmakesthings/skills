@@ -1,0 +1,14 @@
+{
+  "eval_id": 2,
+  "eval_name": "de-ai-marketing-copy",
+  "prompt": "Humanize this text: 'In today's rapidly evolving digital landscape, organizations must leverage cutting-edge technologies to foster robust collaboration. It's not just about tools — it's about creating a holistic ecosystem that empowers teams to navigate challenges and unlock their full potential. Whether you're a startup founder or a seasoned enterprise leader, the transformative power of AI-driven workflows ensures that your team can streamline processes, driving significant improvements in productivity and innovation.'",
+  "assertions": [
+    "Output contains none of the Tier 1 banned AI vocabulary: delve, leverage, foster, robust, utilize, nuanced, multifaceted, pivotal, holistic, synergy, paradigm, transformative, groundbreaking, cutting-edge, harness, streamline, cornerstone, encompasses, facilitates, moreover, furthermore, nevertheless, myriad, plethora, ensures, respective, respectively, navigate, empowers, unlock",
+    "Output contains no em dashes, en dashes used as em dashes, or double hyphens",
+    "Output preserves the original meaning: still covers technology for collaboration, team challenges, AI workflows, and productivity",
+    "The original 'it's not just about tools, it's about' false-revelation pattern has been removed",
+    "The original 'whether you're a startup founder or a seasoned enterprise leader' false-choice framing has been removed",
+    "No trailing participial phrases (sentences ending with comma + gerund like ', driving significant improvements')",
+    "The word 'ensures' from the original has been replaced or removed"
+  ]
+}

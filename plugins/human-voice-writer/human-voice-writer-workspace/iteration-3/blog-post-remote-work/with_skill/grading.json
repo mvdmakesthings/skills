@@ -1,0 +1,49 @@
+{
+  "expectations": [
+    {
+      "text": "Output contains none of the Tier 1 banned AI vocabulary",
+      "passed": true,
+      "evidence": "No banned words found"
+    },
+    {
+      "text": "Output contains no em dashes, en dashes, or double hyphens",
+      "passed": true,
+      "evidence": "No dashes found"
+    },
+    {
+      "text": "Sentence length standard deviation is 7 or more words",
+      "passed": true,
+      "evidence": "Sentence lengths: [7, 3, 18, 22, 16, 10, 4, 5, 21, 6, 4, 31, 14, 23, 17, 51, 13, 12], SD = 11.8"
+    },
+    {
+      "text": "Output contains no false-revelation pattern",
+      "passed": true,
+      "evidence": "No false-revelation patterns found"
+    },
+    {
+      "text": "Output has exactly 3 paragraphs as requested",
+      "passed": true,
+      "evidence": "Found 3 paragraphs"
+    },
+    {
+      "text": "Output does not open with a banned opening",
+      "passed": true,
+      "evidence": "Opening is clean"
+    },
+    {
+      "text": "Output contains no negation-assertion patterns",
+      "passed": false,
+      "evidence": "Found: Negation-correction pair: \"## Remote Work Isn't a Perk Anymore.\" \u2192 \"It's the Baseline....\""
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "failed": 1,
+    "total": 7,
+    "pass_rate": 0.86
+  },
+  "timing": {
+    "total_tokens": 12297,
+    "duration_ms": 32889
+  }
+}

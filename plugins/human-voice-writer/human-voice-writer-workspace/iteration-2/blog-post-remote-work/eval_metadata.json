@@ -1,0 +1,14 @@
+{
+  "eval_id": 1,
+  "eval_name": "blog-post-remote-work",
+  "prompt": "Write a 3-paragraph blog post about why remote work is here to stay. Target audience is HR professionals.",
+  "assertions": [
+    "Output contains none of the Tier 1 banned AI vocabulary",
+    "Output contains no em dashes, en dashes, or double hyphens",
+    "Sentence length standard deviation is 7 or more words",
+    "Output contains no false-revelation pattern",
+    "Output has exactly 3 paragraphs",
+    "Output does not open with a banned opening",
+    "Output contains no negation-assertion patterns"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "expectations": [
+    {
+      "text": "Output contains none of the Tier 1 banned AI vocabulary",
+      "passed": true,
+      "evidence": "No banned words found"
+    },
+    {
+      "text": "Output contains no em dashes, en dashes, or double hyphens",
+      "passed": true,
+      "evidence": "No dashes found"
+    },
+    {
+      "text": "Sentence length standard deviation is 7 or more words",
+      "passed": true,
+      "evidence": "Sentence lengths: [5, 5, 27, 9, 27, 14, 22, 10, 13, 22, 9, 23, 9, 34, 6, 32, 13, 29, 12, 17], SD = 9.3"
+    },
+    {
+      "text": "Output contains no false-revelation pattern",
+      "passed": true,
+      "evidence": "No false-revelation patterns found"
+    },
+    {
+      "text": "Output has exactly 3 paragraphs as requested",
+      "passed": true,
+      "evidence": "Found 3 paragraphs"
+    },
+    {
+      "text": "Output does not open with a banned opening",
+      "passed": true,
+      "evidence": "Opening is clean"
+    },
+    {
+      "text": "Output contains no negation-assertion patterns",
+      "passed": true,
+      "evidence": "No negation-assertion patterns found"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "failed": 0,
+    "total": 7,
+    "pass_rate": 1.0
+  }
+}

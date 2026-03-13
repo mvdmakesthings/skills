@@ -1,0 +1,13 @@
+{
+  "eval_id": 1,
+  "eval_name": "blog-post-remote-work",
+  "prompt": "Write a 3-paragraph blog post about why remote work is here to stay. Target audience is HR professionals.",
+  "assertions": [
+    "Output contains none of the Tier 1 banned AI vocabulary: delve, leverage, foster, robust, utilize, nuanced, multifaceted, pivotal, holistic, synergy, paradigm, transformative, groundbreaking, cutting-edge, harness, streamline, cornerstone, encompasses, facilitates, moreover, furthermore, nevertheless, myriad, plethora, ensures, respective, respectively",
+    "Output contains no em dashes, en dashes used as em dashes, or double hyphens (no occurrences of the characters —, –, or the string --)",
+    "Sentence length standard deviation is 8 or more words (burstiness check)",
+    "Output contains no false-revelation pattern ('it's not just X, it's Y' or 'not only X, but also Y')",
+    "Output has exactly 3 paragraphs as requested",
+    "Output does not open with a sycophantic phrase or banned opening like 'In today's rapidly evolving' or 'In the realm of'"
+  ]
+}

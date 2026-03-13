@@ -1,0 +1,1 @@
+Most collaboration tools don't actually change how people work. They add features nobody asked for and dashboards nobody checks. AI-powered workflows are different because they handle the busywork (scheduling, summarizing, routing information to the right people) so your team spends time on the stuff that matters. Less friction. More actual output.

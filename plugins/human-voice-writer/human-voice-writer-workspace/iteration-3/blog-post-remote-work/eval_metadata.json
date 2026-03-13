@@ -1,0 +1,8 @@
+{
+  "eval_id": 1,
+  "eval_name": "blog-post-remote-work",
+  "prompt": "Write a 3-paragraph blog post about why remote work is here to stay. Target audience is HR professionals.",
+  "expected_output": "A 3-paragraph blog post that sounds authentically human, avoids AI vocabulary and patterns, has varied sentence lengths, and reads naturally for an HR audience.",
+  "num_expectations": 7,
+  "iteration": 3
+}

@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "Output contains none of the Tier 1 banned AI vocabulary (extended)",
+      "passed": true,
+      "evidence": "No banned words found"
+    },
+    {
+      "text": "Output contains no em dashes, en dashes, or double hyphens",
+      "passed": false,
+      "evidence": "Found dash types: --"
+    },
+    {
+      "text": "Output preserves the original meaning (collaboration, teams, AI workflows, productivity)",
+      "passed": false,
+      "evidence": "Found 2/5 key concepts: team, ai"
+    },
+    {
+      "text": "The false-revelation pattern has been removed",
+      "passed": true,
+      "evidence": "No false-revelation patterns found"
+    },
+    {
+      "text": "The false-choice framing has been removed",
+      "passed": false,
+      "evidence": "Found false-choice pattern"
+    },
+    {
+      "text": "No trailing participial phrases",
+      "passed": true,
+      "evidence": "No trailing participials found"
+    },
+    {
+      "text": "The word 'ensures' has been replaced or removed",
+      "passed": true,
+      "evidence": "'ensures' not found in output"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 3,
+    "total": 7,
+    "pass_rate": 0.57
+  },
+  "timing": {
+    "total_tokens": 33559,
+    "duration_ms": 22748,
+    "total_duration_seconds": 22.7
+  }
+}

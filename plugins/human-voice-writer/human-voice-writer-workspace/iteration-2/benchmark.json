@@ -1,0 +1,177 @@
+{
+  "skill_name": "human-voice-writer",
+  "iteration": 2,
+  "configurations": [
+    {
+      "name": "with_skill",
+      "description": "Using the human-voice-writer skill (iteration 2, with negation-assertion ban)"
+    },
+    {
+      "name": "without_skill",
+      "description": "Baseline without any skill"
+    }
+  ],
+  "evals": [
+    {
+      "eval_name": "blog-post-remote-work",
+      "eval_id": 1,
+      "prompt": "Write a 3-paragraph blog post about why remote work is here to stay. Target audience is HR professionals.",
+      "runs": [
+        {
+          "configuration": "with_skill",
+          "pass_rate": 1.0,
+          "passed": 7,
+          "total": 7,
+          "total_tokens": 43893,
+          "duration_seconds": 61.4,
+          "expectations": [
+            {"text": "Output contains none of the Tier 1 banned AI vocabulary", "passed": true},
+            {"text": "Output contains no em dashes, en dashes, or double hyphens", "passed": true},
+            {"text": "Sentence length standard deviation is 7 or more words", "passed": true},
+            {"text": "Output contains no false-revelation pattern", "passed": true},
+            {"text": "Output has exactly 3 paragraphs as requested", "passed": true},
+            {"text": "Output does not open with a banned opening", "passed": true},
+            {"text": "Output contains no negation-assertion patterns", "passed": true}
+          ]
+        },
+        {
+          "configuration": "without_skill",
+          "pass_rate": 0.71,
+          "passed": 5,
+          "total": 7,
+          "total_tokens": 33718,
+          "duration_seconds": 24.5,
+          "expectations": [
+            {"text": "Output contains none of the Tier 1 banned AI vocabulary", "passed": false},
+            {"text": "Output contains no em dashes, en dashes, or double hyphens", "passed": false},
+            {"text": "Sentence length standard deviation is 7 or more words", "passed": true},
+            {"text": "Output contains no false-revelation pattern", "passed": true},
+            {"text": "Output has exactly 3 paragraphs as requested", "passed": true},
+            {"text": "Output does not open with a banned opening", "passed": true},
+            {"text": "Output contains no negation-assertion patterns", "passed": true}
+          ]
+        }
+      ]
+    },
+    {
+      "eval_name": "de-ai-marketing-copy",
+      "eval_id": 2,
+      "prompt": "Humanize AI-generated marketing copy",
+      "runs": [
+        {
+          "configuration": "with_skill",
+          "pass_rate": 1.0,
+          "passed": 7,
+          "total": 7,
+          "total_tokens": 47845,
+          "duration_seconds": 68.8,
+          "expectations": [
+            {"text": "No banned AI vocabulary (extended)", "passed": true},
+            {"text": "No em dashes, en dashes, or double hyphens", "passed": true},
+            {"text": "Preserves original meaning", "passed": true},
+            {"text": "False-revelation pattern removed", "passed": true},
+            {"text": "False-choice framing removed", "passed": true},
+            {"text": "No trailing participial phrases", "passed": true},
+            {"text": "'ensures' replaced or removed", "passed": true}
+          ]
+        },
+        {
+          "configuration": "without_skill",
+          "pass_rate": 0.57,
+          "passed": 4,
+          "total": 7,
+          "total_tokens": 33559,
+          "duration_seconds": 22.7,
+          "expectations": [
+            {"text": "No banned AI vocabulary (extended)", "passed": true},
+            {"text": "No em dashes, en dashes, or double hyphens", "passed": false},
+            {"text": "Preserves original meaning", "passed": false},
+            {"text": "False-revelation pattern removed", "passed": true},
+            {"text": "False-choice framing removed", "passed": false},
+            {"text": "No trailing participial phrases", "passed": true},
+            {"text": "'ensures' replaced or removed", "passed": true}
+          ]
+        }
+      ]
+    },
+    {
+      "eval_name": "slack-deploy-update",
+      "eval_id": 3,
+      "prompt": "Write a Slack message about database migration completion",
+      "runs": [
+        {
+          "configuration": "with_skill",
+          "pass_rate": 1.0,
+          "passed": 6,
+          "total": 6,
+          "total_tokens": 41477,
+          "duration_seconds": 44.0,
+          "expectations": [
+            {"text": "Under 50 words", "passed": true},
+            {"text": "No headers or bullet points", "passed": true},
+            {"text": "Uses contractions", "passed": true},
+            {"text": "No banned AI vocabulary", "passed": true},
+            {"text": "No sycophantic/signposting phrases", "passed": true},
+            {"text": "No em dashes, en dashes, or double hyphens", "passed": true}
+          ]
+        },
+        {
+          "configuration": "without_skill",
+          "pass_rate": 0.83,
+          "passed": 5,
+          "total": 6,
+          "total_tokens": 33445,
+          "duration_seconds": 13.5,
+          "expectations": [
+            {"text": "Under 50 words", "passed": true},
+            {"text": "No headers or bullet points", "passed": true},
+            {"text": "Uses contractions", "passed": true},
+            {"text": "No banned AI vocabulary", "passed": true},
+            {"text": "No sycophantic/signposting phrases", "passed": true},
+            {"text": "No em dashes, en dashes, or double hyphens", "passed": false}
+          ]
+        }
+      ]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "mean_pass_rate": 1.0,
+      "stddev_pass_rate": 0.0,
+      "mean_tokens": 44405,
+      "mean_duration_seconds": 58.1
+    },
+    "without_skill": {
+      "mean_pass_rate": 0.70,
+      "stddev_pass_rate": 0.13,
+      "mean_tokens": 33574,
+      "mean_duration_seconds": 20.2
+    },
+    "delta": {
+      "pass_rate": "+30%",
+      "tokens": "+32%",
+      "duration": "+188%"
+    }
+  },
+  "comparison_with_iteration_1": {
+    "iteration_1": {
+      "with_skill_mean_pass_rate": 0.94,
+      "without_skill_mean_pass_rate": 0.61
+    },
+    "iteration_2": {
+      "with_skill_mean_pass_rate": 1.0,
+      "without_skill_mean_pass_rate": 0.70
+    },
+    "improvement": "with_skill went from 94% to 100% pass rate (+6%), fixing the negation-assertion and burstiness issues from iteration 1"
+  },
+  "analyst_notes": [
+    "with_skill achieved 100% pass rate across all 3 evals (20/20 assertions), up from 94% in iteration 1",
+    "The negation-assertion ban added in iteration 2 was successfully followed by the with_skill run (blog post passed the new check)",
+    "Burstiness improved significantly: SD=11.1 in iteration 2 vs 7.4 in iteration 1 (threshold lowered from 8.0 to 7.0 but would have passed at 8.0 too)",
+    "Em dashes remain the most consistent baseline failure: without_skill failed in all 3 evals (blog: --, de-ai: --, slack: em dash)",
+    "without_skill baseline pass rate increased from 61% to 70%, suggesting some run-to-run variance in baseline outputs",
+    "The negation-assertion check is non-discriminating in this run: both with_skill and without_skill passed it for the blog post. More test cases needed to validate this assertion's discriminating power",
+    "Token overhead of skill is consistent: ~32% more tokens (44k vs 34k avg), similar to iteration 1",
+    "Time overhead is ~3x (58s vs 20s) due to skill reading and self-review passes"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "reviews": [
+    {
+      "run_id": "de-ai-marketing-copy-with_skill",
+      "feedback": "\"The organizations that keep up aren't just buying new tools; they're rethinking how their teams actually work together.\" is a negation-assertion clause that we do not want in our output text.",
+      "timestamp": "2026-03-13T17:50:42.734Z"
+    }
+  ],
+  "status": "in_progress"
+}

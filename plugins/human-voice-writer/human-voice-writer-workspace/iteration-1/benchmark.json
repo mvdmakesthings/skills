@@ -1,0 +1,184 @@
+{
+  "metadata": {
+    "skill_name": "human-voice-writer",
+    "skill_path": "/Users/michaelvandyke/Dev/claude-marketplace/plugins/human-voice-writer/skills/human-voice-writer",
+    "executor_model": "claude-opus-4-6",
+    "analyzer_model": "claude-opus-4-6",
+    "timestamp": "2026-03-12T00:00:00Z",
+    "evals_run": [1, 2, 3],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "eval_name": "Blog Post (Remote Work)",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.83,
+        "passed": 5,
+        "failed": 1,
+        "total": 6,
+        "time_seconds": 82.8,
+        "tokens": 48318,
+        "tool_calls": 8,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "No banned AI vocabulary", "passed": true, "evidence": "No banned words found"},
+        {"text": "No em dashes or double hyphens", "passed": true, "evidence": "No dashes found"},
+        {"text": "Sentence length SD >= 8 (burstiness)", "passed": false, "evidence": "SD = 7.4 (just below threshold)"},
+        {"text": "No false-revelation pattern", "passed": true, "evidence": "No false-revelation patterns found"},
+        {"text": "Exactly 3 paragraphs", "passed": true, "evidence": "Found 3 paragraphs"},
+        {"text": "No banned opening", "passed": true, "evidence": "Opening is clean"}
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "Blog Post (Remote Work)",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.33,
+        "passed": 2,
+        "failed": 4,
+        "total": 6,
+        "time_seconds": 29.5,
+        "tokens": 33885,
+        "tool_calls": 3,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "No banned AI vocabulary", "passed": false, "evidence": "Found: ensure"},
+        {"text": "No em dashes or double hyphens", "passed": false, "evidence": "Found em dash"},
+        {"text": "Sentence length SD >= 8 (burstiness)", "passed": false, "evidence": "SD = 5.9"},
+        {"text": "No false-revelation pattern", "passed": false, "evidence": "Found false-revelation pattern"},
+        {"text": "Exactly 3 paragraphs", "passed": true, "evidence": "Found 3 paragraphs"},
+        {"text": "No banned opening", "passed": true, "evidence": "Opening is clean"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "De-AI Marketing Copy",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 7,
+        "failed": 0,
+        "total": 7,
+        "time_seconds": 90.6,
+        "tokens": 48950,
+        "tool_calls": 11,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "No banned AI vocabulary (extended)", "passed": true, "evidence": "No banned words found"},
+        {"text": "No em dashes or double hyphens", "passed": true, "evidence": "No dashes found"},
+        {"text": "Preserves original meaning", "passed": true, "evidence": "Found 4/5 key concepts"},
+        {"text": "False-revelation removed", "passed": true, "evidence": "Pattern removed"},
+        {"text": "False-choice framing removed", "passed": true, "evidence": "Pattern removed"},
+        {"text": "No trailing participials", "passed": true, "evidence": "None found"},
+        {"text": "'ensures' removed", "passed": true, "evidence": "Word removed"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "De-AI Marketing Copy",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.71,
+        "passed": 5,
+        "failed": 2,
+        "total": 7,
+        "time_seconds": 33.1,
+        "tokens": 34059,
+        "tool_calls": 3,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "No banned AI vocabulary (extended)", "passed": true, "evidence": "No banned words found"},
+        {"text": "No em dashes or double hyphens", "passed": false, "evidence": "Found double hyphens (--)"},
+        {"text": "Preserves original meaning", "passed": true, "evidence": "Found 3/5 key concepts"},
+        {"text": "False-revelation removed", "passed": true, "evidence": "Pattern removed"},
+        {"text": "False-choice framing removed", "passed": false, "evidence": "Still present: 'whether you're running a...'"},
+        {"text": "No trailing participials", "passed": true, "evidence": "None found"},
+        {"text": "'ensures' removed", "passed": true, "evidence": "Word removed"}
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "Slack Deploy Update",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 49.5,
+        "tokens": 46389,
+        "tool_calls": 6,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Under 50 words", "passed": true, "evidence": "Word count: 14"},
+        {"text": "No headers or bullet points", "passed": true, "evidence": "None found"},
+        {"text": "Uses contractions", "passed": true, "evidence": "Found: we're"},
+        {"text": "No banned AI vocabulary", "passed": true, "evidence": "No banned words found"},
+        {"text": "No sycophantic/signposting", "passed": true, "evidence": "None found"}
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "Slack Deploy Update",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8,
+        "passed": 4,
+        "failed": 1,
+        "total": 5,
+        "time_seconds": 19.8,
+        "tokens": 33514,
+        "tool_calls": 3,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "Under 50 words", "passed": false, "evidence": "Word count: 55"},
+        {"text": "No headers or bullet points", "passed": true, "evidence": "None found"},
+        {"text": "Uses contractions", "passed": true, "evidence": "Found: We're, you'd"},
+        {"text": "No banned AI vocabulary", "passed": true, "evidence": "No banned words found"},
+        {"text": "No sycophantic/signposting", "passed": true, "evidence": "None found"}
+      ]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 0.94, "stddev": 0.10, "min": 0.83, "max": 1.0},
+      "time_seconds": {"mean": 74.3, "stddev": 21.5, "min": 49.5, "max": 90.6},
+      "tokens": {"mean": 47886, "stddev": 1336, "min": 46389, "max": 48950}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.61, "stddev": 0.26, "min": 0.33, "max": 0.80},
+      "time_seconds": {"mean": 27.5, "stddev": 6.8, "min": 19.8, "max": 33.1},
+      "tokens": {"mean": 33819, "stddev": 274, "min": 33514, "max": 34059}
+    },
+    "delta": {
+      "pass_rate": "+0.33",
+      "time_seconds": "+46.8",
+      "tokens": "+14067"
+    }
+  },
+  "notes": [
+    "Skill improves pass rate by +33 percentage points on average (0.94 vs 0.61)",
+    "Blog post burstiness assertion (SD >= 8) failed with skill (SD=7.4) and without (SD=5.9) - both below threshold but skill closer. Consider lowering threshold to 7.",
+    "De-AI eval shows strongest skill impact: 100% vs 71%. Without-skill retained false-choice framing and used double hyphens.",
+    "Slack eval: without-skill produced 55 words (over limit) with em dash. With-skill produced 14 words.",
+    "'Exactly 3 paragraphs' and 'no banned opening' pass in both configs for blog post - not discriminating for skill value.",
+    "Skill adds ~47s average execution time and ~14k tokens, primarily from reading reference files and running self-review.",
+    "Without-skill Slack output had em dash and assistant-register closing not caught by assertions - consider adding checks.",
+    "Without-skill baseline still avoids most banned vocabulary on its own - the skill's biggest advantage is structural patterns (dashes, false-revelations, length discipline)."
+  ]
+}
