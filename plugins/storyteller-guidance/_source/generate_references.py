@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate reference markdown files for the storyteller-tactics skill from cards.json.
+"""Generate reference markdown files for the storyteller-guidance skill from cards.json.
 
 Reads `_source/cards.json` (the canonical, paraphrased card distillation) and writes:
   references/index.md            — full alphabetical and by-category catalog
@@ -17,7 +17,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CARDS = ROOT / "_source" / "cards.json"
-REF_DIR = ROOT / "skills" / "storyteller-tactics" / "references"
+REF_DIR = ROOT / "skills" / "storyteller-guidance" / "references"
 
 CATEGORY_FILES = {
     "Concept": "concept.md",

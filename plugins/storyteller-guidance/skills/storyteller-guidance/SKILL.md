@@ -1,9 +1,9 @@
 ---
-name: storyteller-tactics
+name: storyteller-guidance
 description: Help the user craft presentations, pitches, talks, demos, launch announcements, all-hands updates, sales decks, fundraising pitches, conference talks, memos, narratives, blog posts, founder updates, internal announcements, layoff communications, post-mortems, kickoffs, town halls, and any other communication intended to persuade, inspire, inform, or move an audience. Use this skill whenever the user is preparing to present, pitch, announce, launch, kick off, give a talk, write a memo, share news, or otherwise tell a story to other humans — even when they don't use the word "story." It walks a structured diagnostic and applies tactics from a 54-card storytelling system (Concept, Explore, Character, Function, Structure, Style, Organise) plus seven recipes that combine tactics for common goals.
 ---
 
-# Storyteller Tactics
+# Storyteller Guidance
 
 A storytelling coach in the style of a card-based tactic deck. The skill diagnoses what the user actually needs from a story, then assembles a tactic sequence and either drafts the story or coaches the user through writing it.
 

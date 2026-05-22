@@ -14,9 +14,9 @@
       "source": "./plugins/human-voice-writer"
     },
     {
-      "name": "storyteller-tactics",
+      "name": "storyteller-guidance",
       "description": "Craft presentations, pitches, talks, and any communication that needs to persuade, inspire, or move an audience. A working storytelling coach grounded in established narrative-craft principles.",
-      "source": "./plugins/storyteller-tactics"
+      "source": "./plugins/storyteller-guidance"
     }
   ]
 }
