@@ -1,0 +1,23 @@
+{
+  "skill_name": "storyteller-tactics",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm pitching our new B2B analytics product to a VP of Marketing at a 500-person company next Tuesday. We've got three live pilot customers, two of them are well-known brands. The VP is skeptical of analytics tools because she's bought three in five years and none of them got used. I have 30 minutes. Help me prep.",
+      "expected_output": "A pitch plan that (1) explicitly names the audience-skeptic frame, (2) picks a recognizable arc (likely Rags to Riches or No Easy Way), (3) leverages social proof and an explicit credibility move given the VP's prior burns, (4) names the tactics it uses so the user can revise.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I'm giving a 15-minute conference talk on why we ripped out our microservices and went back to a monolith. Audience is mid-senior engineers who've heard a million 'microservices are bad' takes. I don't want to be another lazy contrarian. I want them to actually rethink their architecture decisions. Help me shape this.",
+      "expected_output": "A talk outline that (1) acknowledges the saturated take in the opening, (2) uses a credible structure that includes setbacks (likely No Easy Way or Pride & Fall), (3) earns its conclusion via specifics rather than ideology, (4) ends with a question or reframe rather than a tidy bow.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I need to write a memo to the exec team explaining why we missed our Q4 number and what we're doing about it. We missed by 18%. The honest answer is partly external (market softened in November) and partly internal (we made a pricing change that hurt close rates). The vibe needs to be honest but not panicked, and I can't throw the sales team under the bus.",
+      "expected_output": "A memo structure that (1) leads with the news, not buildup, (2) explicitly chooses an Epic Fail frame (likely 'sign of the times' + 'system breakdown' rather than 'someone betrayed us'), (3) acknowledges both causes without scapegoating, (4) ends with concrete asks/next steps.",
+      "files": []
+    }
+  ]
+}

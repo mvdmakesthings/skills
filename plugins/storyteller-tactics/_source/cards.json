@@ -1,0 +1,1289 @@
+[
+  {
+    "id": 1,
+    "images": [
+      "IMG_9840",
+      "IMG_9841"
+    ],
+    "card_type": "system",
+    "category": "system",
+    "title_key": "story-building-system",
+    "title_display": "Story Building System",
+    "essence": "A diagnostic table of contents that routes you to the right category of storytelling tactic by asking a sequence of yes/no questions about where you're stuck.",
+    "when_to_use": "Start here when you know you need a story but don't yet know which kind of tactic to reach for. It acts as a triage tool that points you toward the relevant card family.",
+    "principle": "Most people approach storytelling without diagnosing what they actually need. By asking a small number of questions in sequence \u2014 each one assuming you've handled the previous \u2014 the system funnels you from the most foundational concern (do you even need a story?) down to the most tactical (how do you distribute it?). The first 'no' you hit tells you which category to study.",
+    "framework_approach": [
+      "Ask whether you understand why a story is needed at all; if not, work on Concept.",
+      "Ask whether you know where the raw material for the story lives; if not, work on Explore.",
+      "Ask whether you're clear on who you are within the story; if not, work on Character.",
+      "Ask whether you know what job the story has to do for the audience; if not, work on Function.",
+      "Ask whether you have a shape or plan for the story; if not, work on Structure.",
+      "Ask whether you know how to deliver it engagingly; if not, work on Style.",
+      "Ask whether you know how to distribute and share it well; if not, work on Organise."
+    ],
+    "constituent_tactics": [],
+    "notes": "Card 9841 is the back of the system card and lists short paraphrased descriptions of each of the seven categories plus an eighth Recipe category for combined tactics."
+  },
+  {
+    "id": 2,
+    "images": [
+      "IMG_9846",
+      "IMG_9847"
+    ],
+    "card_type": "recipe",
+    "category": "recipe",
+    "title_key": "stories-that-connect",
+    "title_display": "Stories that Connect",
+    "essence": "Build empathy across people \u2014 customers, colleagues, teammates \u2014 by collecting and reflecting their stories rather than broadcasting your own.",
+    "when_to_use": "Use when you're designing a product, leading a team, or navigating a relationship and you suspect you don't actually understand the other side's experience.",
+    "principle": "Empathy is the precondition for good decisions about other humans, and empathy can't be faked from a survey. People reveal what matters to them through stories they tell about their lives and through behavior, not through answers to direct questions. The path to connection is to gather raw narrative material, observe what people actually do, and find the shared human shapes that link your situation to theirs.",
+    "framework_approach": [
+      "Treat conversations as opportunities to receive other people's stories rather than to ask interview questions.",
+      "Watch how people behave and not just what they say \u2014 actions reveal what words conceal.",
+      "Hunt for situations and feelings that nearly everyone recognizes so you can meet on shared ground.",
+      "Make ordinary work conversations more narrative-flavored by drawing out specifics and change.",
+      "Turn what you've gathered into recognizable characters and journeys that others see themselves in."
+    ],
+    "constituent_tactics": [
+      "Story Listening",
+      "Abstractions",
+      "Universal Stories",
+      "Story-ish Conversations",
+      "Circle of Life"
+    ],
+    "notes": ""
+  },
+  {
+    "id": 3,
+    "images": [
+      "IMG_9844",
+      "IMG_9845"
+    ],
+    "card_type": "recipe",
+    "category": "recipe",
+    "title_key": "stories-that-convince",
+    "title_display": "Stories that Convince",
+    "essence": "Expertise alone doesn't persuade non-experts \u2014 translate years of work into a shape they can follow and a reason to trust your judgment.",
+    "when_to_use": "Use when you have deep knowledge or research that a less-informed audience needs to accept, and they're either drowning in your detail or skeptical of your authority.",
+    "principle": "Specialists routinely lose audiences by treating persuasion as an information transfer problem. Audiences have limited working memory, default to skepticism of expertise, and respond to feeling rather than fact density. Combining cognitive load limits with emotional engagement, story-shaped data, and a clear credibility move is what shifts a skeptical listener into a believer.",
+    "framework_approach": [
+      "Strip facts down to the few an audience can actually hold in their head.",
+      "Convey your genuine enthusiasm so the discovery feels alive, not dry.",
+      "Wrap statistics and findings inside narrative shapes instead of bullet lists.",
+      "Establish credibility deliberately rather than assuming the audience already grants it.",
+      "Take the role of a guide alongside the audience, not a distant authority over them."
+    ],
+    "constituent_tactics": [
+      "Three is the Magic Number",
+      "That's Funny",
+      "Data Detectives",
+      "Trust Me, I'm an Expert",
+      "Hero & Guide"
+    ],
+    "notes": ""
+  },
+  {
+    "id": 4,
+    "images": [
+      "IMG_9848",
+      "IMG_9849"
+    ],
+    "card_type": "recipe",
+    "category": "recipe",
+    "title_key": "stories-that-explain",
+    "title_display": "Stories that Explain",
+    "essence": "A strategy document is a story trying to escape \u2014 recast direction-setting as a narrative about navigating change so people actually internalize it.",
+    "when_to_use": "Use when you need to communicate strategy, vision, or organizational direction and you suspect the document or deck is going unread or unfelt.",
+    "principle": "Strategy is inherently about choosing a path through uncertainty, which is the same skeleton as any story: conflict, stakes, choices, and consequences. When strategy is presented as an abstract list of pillars, it activates none of the neural circuitry that makes humans remember and act. Translating it into a story shape gives stakeholders something they can recall, repeat, and align behind.",
+    "framework_approach": [
+      "Stake out where you stand relative to the disorder in the environment.",
+      "Pick the conflicts you're willing to fight and the ones you're not.",
+      "Make the meaning land \u2014 articulate why the strategy matters to the people executing it.",
+      "Show what success would actually look like in vivid, concrete terms.",
+      "Add narrative hooks that make the strategy interesting enough to engage with in the first place."
+    ],
+    "constituent_tactics": [
+      "Order & Chaos",
+      "Good & Evil",
+      "What's it About?",
+      "Rolls Royce Moment",
+      "Story Hooks"
+    ],
+    "notes": ""
+  },
+  {
+    "id": 5,
+    "images": [
+      "IMG_9852",
+      "IMG_9853"
+    ],
+    "card_type": "recipe",
+    "category": "recipe",
+    "title_key": "stories-that-impress",
+    "title_display": "Stories that Impress",
+    "essence": "Presentations fail when they default to corporate-deck conventions \u2014 make them feel like a story being told, with attention-grabbing openings, a shape, and a fallback plan.",
+    "when_to_use": "Use when you have to stand up and present something important and want it to land as a performance the audience remembers, not as a slide read-along.",
+    "principle": "Audiences in a presentation room are bored, distracted, and skeptical by default. The format itself trains them to expect tedium. Treating the slot like a story changes the contract \u2014 you owe them a beginning, middle, and end, sensory engagement through visuals, and a recovery plan if you lose the room. Every one of those moves works because it borrows from theater and oral tradition, which have spent millennia optimizing for attention.",
+    "framework_approach": [
+      "Confirm what you're delivering is actually a story and not just a stack of facts in narrative clothing.",
+      "Apply a simple, repeatable structural beat-pattern so the talk has shape.",
+      "Plant hooks throughout to keep attention from start to finish, not just at the opening.",
+      "Use visuals as illustration and emphasis, never as a substitute for what you're saying.",
+      "Have a contingency move ready for the moment when the room isn't responding."
+    ],
+    "constituent_tactics": [
+      "Movie Time",
+      "Five Ts",
+      "Story Hooks",
+      "Show and Tell",
+      "Cut to the Chase"
+    ],
+    "notes": ""
+  },
+  {
+    "id": 6,
+    "images": [
+      "IMG_9850",
+      "IMG_9851"
+    ],
+    "card_type": "recipe",
+    "category": "recipe",
+    "title_key": "stories-that-lead",
+    "title_display": "Stories that Lead",
+    "essence": "A team's culture is the sum of the stories it tells itself \u2014 leaders shape culture by curating which stories get surfaced, told, and remembered.",
+    "when_to_use": "Use when you want to build a more cohesive team, transmit shared norms without writing a values document, or make sure hard-won lessons survive turnover.",
+    "principle": "Culture is transmitted through narrative more than through policy. Every team already has stories \u2014 about heroes, near-misses, fights, customer moments \u2014 but most of them never get spoken aloud, so newcomers learn the culture by accident. Leaders who deliberately collect, examine, and circulate these stories convert lived experience into shared identity.",
+    "framework_approach": [
+      "Learn what genuinely drives each person on the team beyond their job description.",
+      "Reframe shared work as a meaningful, difficult journey rather than a backlog.",
+      "Track the emotional peaks and valleys of projects, not just the deliverables.",
+      "Mine failures for transferable lessons instead of burying them.",
+      "Keep a deliberate library of stories the whole team can draw from."
+    ],
+    "constituent_tactics": [
+      "Curious Tales",
+      "Man in a Hole",
+      "Emotional Dashboard",
+      "Thoughtful Failures",
+      "Story Bank"
+    ],
+    "notes": ""
+  },
+  {
+    "id": 7,
+    "images": [
+      "IMG_9854",
+      "IMG_9855"
+    ],
+    "card_type": "recipe",
+    "category": "recipe",
+    "title_key": "stories-that-motivate",
+    "title_display": "Stories that Motivate",
+    "essence": "To get people to follow you somewhere new, give them both a believable vision of the destination and an honest account of the journey \u2014 including the obstacles.",
+    "when_to_use": "Use when you need a team, investors, or stakeholders to commit to a meaningful change and you've noticed that a plan alone isn't moving anyone.",
+    "principle": "Asking people to change requires them to absorb risk. They'll only do it if they trust your destination and trust your account of the path. Pure cheerleading triggers skepticism because nothing important is ever truly easy; pure realism without an inspiring goal triggers despair. The motivating pattern is to combine vivid future, honest difficulty, and credible reassurance.",
+    "framework_approach": [
+      "Anchor the audience in the large-scale outcome you're pursuing.",
+      "Explain what's pulling you toward it personally so others can hook into the same motivation.",
+      "Name the real obstacles and adversaries you'll have to work through.",
+      "Acknowledge and de-risk the change you're asking people to accept.",
+      "Set honest expectations about how hard the journey will actually be."
+    ],
+    "constituent_tactics": [
+      "The Dragon & the City",
+      "Drive Stories",
+      "Three Great Conflicts",
+      "Innovation Curve",
+      "No Easy Way"
+    ],
+    "notes": ""
+  },
+  {
+    "id": 8,
+    "images": [
+      "IMG_9842",
+      "IMG_9843"
+    ],
+    "card_type": "recipe",
+    "category": "recipe",
+    "title_key": "stories-that-sell",
+    "title_display": "Stories that Sell",
+    "essence": "Selling is fundamentally a trust transaction, so combine several tactics that establish credibility and relatability rather than relying on numbers or feature lists.",
+    "when_to_use": "Use when you need to move a prospect, customer, or buyer toward a purchase decision and a spec sheet or pricing comparison isn't enough to close the gap.",
+    "principle": "Buyers commit when they believe a seller understands their situation and can deliver on a promised future. Both of those beliefs depend on trust, and trust is built through narrative more reliably than through data. Stacking audience research, relatable examples, third-party validation, an aspirational arc, and a tight verbal version creates a layered case that addresses both rational and emotional objections.",
+    "framework_approach": [
+      "First, get clear on who the buyer is and what problem they actually have.",
+      "Show them a story of someone like them who used your offering successfully.",
+      "Reinforce with external evidence \u2014 trends, prototypes, or testimonials.",
+      "Frame the buyer's situation using an optimistic arc where they become better off.",
+      "Distill the whole thing into a short, repeatable spoken version."
+    ],
+    "constituent_tactics": [
+      "Audience Profile",
+      "Simple Sales Stories",
+      "Social Proof",
+      "Rags to Riches",
+      "Pitch Perfect"
+    ],
+    "notes": ""
+  },
+  {
+    "id": 9,
+    "images": [
+      "IMG_9901",
+      "IMG_9902"
+    ],
+    "card_type": "tactic",
+    "category": "Concept",
+    "title_key": "circle-of-life",
+    "title_display": "Circle of Life",
+    "essence": "Tell your story through the universal life-stage archetypes \u2014 child, adult, parent \u2014 because audiences recognise themselves in the roles people occupy as they leave home, find a wider world, and build a new home of their own.",
+    "when_to_use": "Use when you want a story to feel deeply relatable across audiences by mapping your characters or users onto stages and roles everyone has lived through.",
+    "principle": "Some character patterns sit so deeply in shared experience that we recognise them instantly. We were all children \u2014 innocent, playful, naive. Many of us become adults \u2014 adventurous, clever, sometimes rebellious. Many of us become parents \u2014 wise, supportive, sometimes domineering. Each archetype has a positive and a negative face, and stories gain emotional traction when they place a person at one stage, show the role they're playing, and acknowledge both the strengths and the shadow of that role.",
+    "framework_approach": [
+      "Identify which life-stage your protagonist or user is in and which archetypal role they're occupying.",
+      "Decide whether the story is about an internal conflict between the good and bad sides of their current archetype.",
+      "Or decide whether it's about a transition \u2014 a rite of passage from one archetype to the next, and your role in helping them make it.",
+      "Or decide whether it's about the friction between the archetype they're supposed to play and the one they actually want to play.",
+      "Anchor specific scenes in recognisable life moments so the universality lands without becoming generic."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 10,
+    "images": [
+      "IMG_9899",
+      "IMG_9900"
+    ],
+    "card_type": "tactic",
+    "category": "Concept",
+    "title_key": "curious-tales",
+    "title_display": "Curious Tales",
+    "essence": "Surface the small things that genuinely fascinate someone \u2014 what surprises them, scares them, absorbs them, makes them envious, or makes them give things up \u2014 to reveal what really drives them.",
+    "when_to_use": "Use during research, interviews, or team-building when you need to understand what motivates a person more honestly than their stated goals will tell you.",
+    "principle": "Curiosity is involuntary and personal \u2014 you can't will yourself to find something interesting. Because of that, the things people actually pay attention to give away their underlying drives more reliably than the goals they tell you about. Asking what someone is currently noticing (with hope), what makes them uneasy (with caution), where they lose track of time (flow), who they envy (and what that envy reveals), and what they've sacrificed for a path they chose, builds up a portrait of motivation you can turn into a believable character story.",
+    "framework_approach": [
+      "Ask what new or unusual thing they keep noticing with a sense of possibility \u2014 eureka moments and slow-burn intrigues both count.",
+      "Ask what new or unusual thing makes them uneasy \u2014 what feels off, threatening, or potentially harmful.",
+      "Ask when they last lost themselves in absorbing work \u2014 what they were doing, who they were with, and what that flow says about their goals.",
+      "Ask who they envy in a healthy, motivating way \u2014 not luxury-coveting, but seeing someone else do the work they wish they were doing.",
+      "Ask what they've sacrificed to follow their chosen path \u2014 what was given up, what it cost, and what that choice reveals.",
+      "Stitch the answers together into a character study you can use to shape the rest of the story."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 11,
+    "images": [
+      "IMG_9895",
+      "IMG_9896"
+    ],
+    "card_type": "tactic",
+    "category": "Concept",
+    "title_key": "good-and-evil",
+    "title_display": "Good & Evil",
+    "essence": "Lift your story by anchoring it to a moral conflict, either a clean right-versus-wrong battle or, more powerfully, a collision between two competing rights or two unavoidable wrongs.",
+    "when_to_use": "Use when your story feels morally neutral and you want it to matter \u2014 or when the situation is genuinely complex and you need to honour that complexity rather than flatten it.",
+    "principle": "Six recurring moral conflicts show up across cultures: care versus harm, fairness versus cheating, freedom versus oppression, authority versus subversion, loyalty versus betrayal, and purity versus corruption. Simple stories pick a side and rally the audience. The richer move, following Hegel's idea that true tragedy is right colliding with right, is to put two genuine goods or two unavoidable evils in tension and let the audience feel the bind. That complexity is what gives serious storytelling \u2014 including the best prestige television \u2014 its hold on us.",
+    "framework_approach": [
+      "Identify which of the recurring moral axes your work touches.",
+      "For a simple version, pick a clear side on one axis and make the opponent's position visible enough to be defeated.",
+      "For a complex version, find two values in genuine tension and show your protagonist forced to balance them or choose the lesser evil.",
+      "Avoid manufacturing false moral stakes; if the conflict isn't there, this tactic will feel hollow.",
+      "Use the moral question as the engine of the story \u2014 the resolution of the conflict should be the climax."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 12,
+    "images": [
+      "IMG_9885",
+      "IMG_9886"
+    ],
+    "card_type": "tactic",
+    "category": "Concept",
+    "title_key": "order-and-chaos",
+    "title_display": "Order & Chaos",
+    "essence": "Show that your work either tames a chaotic situation or shakes loose one that has become too rigid, casting yourself or your user as the hero who finds the right balance.",
+    "when_to_use": "Use when you need to clarify the mission of a project by naming the system being changed and the kind of change being introduced.",
+    "principle": "Every meaningful story sits at the seam between the safe-but-stale known and the dangerous-but-fertile unknown. Naming both worlds and showing how they collide makes the stakes obvious: too much order and the system suffocates, too much chaos and it collapses. Putting a hero between them gives the audience someone to identify with and a clear question \u2014 restore stability or unleash potential? \u2014 that drives the rest of the narrative.",
+    "framework_approach": [
+      "Describe the known world your protagonist operates in \u2014 its strengths, its rules, and what's stifling about it.",
+      "Describe the unknown world pressing against it \u2014 competitors, new technology, shifting behaviour, or events outside anyone's control.",
+      "Show how the unknown disrupts the known \u2014 what sudden change, anomaly, or new information forces a response.",
+      "Position the hero's choice \u2014 are they imposing structure on a chaotic situation, or breathing new life into a stagnant one?"
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 13,
+    "images": [
+      "IMG_9889",
+      "IMG_9890"
+    ],
+    "card_type": "tactic",
+    "category": "Concept",
+    "title_key": "rules-cheats-and-rebels",
+    "title_display": "Rules, Cheats & Rebels",
+    "essence": "Name a rule, then show someone breaking it \u2014 the audience cannot look away from a transgression and will follow you to find out whether the breaker is punished or vindicated.",
+    "when_to_use": "Use when you're telling a story about an innovator, a disruptor, or anyone whose work depends on defying conventional wisdom or breaking a category norm.",
+    "principle": "Rule-breaking is one of the oldest narrative engines because we live inside countless rules \u2014 written and unwritten \u2014 and we pay close attention to anyone who flouts them. The interesting move is to separate two flavours of rule-breaker: the rebel acts selflessly, hides nothing, and breaks rules to serve a higher one; the cheat acts selfishly, hides their actions, and breaks rules everyone else still has to follow. The same act looks heroic or villainous depending on motive and concealment, and choosing the right framing controls how your audience feels.",
+    "framework_approach": [
+      "Identify whose rules are being broken \u2014 yours, your user's, your industry's, or society's broadly held assumptions.",
+      "Make the rule explicit so the break is visible, especially if the rule is unwritten or normative.",
+      "If your hero is a rebel, show that they break the rule openly, pay a personal cost, and serve a higher principle \u2014 and end by retiring the broken rule.",
+      "If your character is a cheat, show that they break the rule selfishly, hide their actions, force others to bear the cost \u2014 and end by re-affirming the rule.",
+      "Decide the moral up front so every detail of the telling pushes the audience to the verdict you want."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 14,
+    "images": [
+      "IMG_9887",
+      "IMG_9888"
+    ],
+    "card_type": "tactic",
+    "category": "Concept",
+    "title_key": "secrets-and-puzzles",
+    "title_display": "Secrets & Puzzles",
+    "essence": "Open with a hidden thing the audience wants revealed or a contradiction they want resolved, because an open information gap is one of the strongest attention hooks there is.",
+    "when_to_use": "Use for the opening line of a pitch, the subject line of an email, the headline of a blog, or any moment where you need to win attention quickly.",
+    "principle": "We are wired to close information gaps. A secret tells the audience that you possess knowledge they don't have, and they will stay with you to acquire it. A puzzle tells them that something doesn't add up \u2014 an anomaly, an irony, an inconsistency \u2014 and they will stay with you to resolve it. Both work by promising new information, so they only land if you actually deliver. Use them as a hook and then pay them off, or you've written clickbait.",
+    "framework_approach": [
+      "To open with a secret, point at something most people don't know \u2014 what was hidden, why it stayed hidden, and what audiences will gain by learning it.",
+      "To open with a puzzle, surface an oddity \u2014 a result that defies expectation, a behaviour that contradicts a stated value, an outcome that breaks a pattern \u2014 and promise to make sense of it.",
+      "Be sure the payoff genuinely delivers new information, or the trick erodes trust for next time.",
+      "Test the opening by checking it would survive being read aloud \u2014 does it create an itch the audience would actively scratch?"
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 15,
+    "images": [
+      "IMG_9903",
+      "IMG_9904"
+    ],
+    "card_type": "tactic",
+    "category": "Concept",
+    "title_key": "shock-of-the-old",
+    "title_display": "Shock of the Old",
+    "essence": "Mine objects and practices that have survived for generations for the deep insights they encode, because anything that has lasted that long is solving a problem we still have.",
+    "when_to_use": "Use when fascination with novelty is starving your story of substance, or when you need to make a point feel timeless by rooting it in something the audience already trusts.",
+    "principle": "New things usually fail. Old things \u2014 objects, customs, professions \u2014 that are still around carry hidden wisdom about human needs, because if they didn't serve some deep purpose they'd have disappeared long ago. Studying an enduring object closely reveals layers of obvious and hidden function, of symbolism, and of what it says about us. Connecting your story to that durable wisdom gives it gravity and a sense of inevitability that a story about a shiny new thing rarely achieves.",
+    "framework_approach": [
+      "Pick an old object or practice your audience or user lives with and ask what story it's telling.",
+      "Catalogue the obvious purposes \u2014 what it visibly does.",
+      "Probe the hidden purposes \u2014 emotional, social, ritual, symbolic functions that aren't on the label.",
+      "Note who owns it, who uses it, who adapts it, and what that ownership chain reveals.",
+      "Surface the symbolic and ritual power it holds \u2014 what feelings it triggers and why.",
+      "Connect those layers back to the point you're making so your story inherits the object's accumulated authority."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 16,
+    "images": [
+      "IMG_9893",
+      "IMG_9894"
+    ],
+    "card_type": "tactic",
+    "category": "Concept",
+    "title_key": "dragon-and-city",
+    "title_display": "The Dragon & the City",
+    "essence": "Recast your project as a city threatened by a dragon, with options of fleeing, fortifying, or attacking \u2014 a primal frame that makes ordinary business choices feel urgent and consequential.",
+    "when_to_use": "Use when you need to energise stakeholders around a strategic decision and want the choices to feel heroic and high-stakes rather than incremental.",
+    "principle": "Abstract business questions are hard to feel. Translating them into a fairy-tale-grade threat to a fortified home makes the stakes concrete and the options vivid. The city stands for the status quo \u2014 comfortable, valuable, limiting. The dragon stands for the disruptive threat or opportunity bearing down on it. Each of the three responses \u2014 run, defend, attack \u2014 comes with costs and rewards, which forces an honest conversation about trade-offs that a flat strategy memo would never produce.",
+    "framework_approach": [
+      "Define the city \u2014 what is valuable and worth protecting in the current state, what is unfair or wasteful, and who holds the keys.",
+      "Define the dragon \u2014 where the threat is coming from, why it grew, and what spoils it guards.",
+      "Lay out the option to escape \u2014 where you would go, what you'd take, and the cost of abandoning what you have.",
+      "Lay out the option to defend \u2014 what you'd reinforce, what new restrictions that creates, and what you'd give up to stay safe.",
+      "Lay out the option to attack \u2014 your best line, your odds, and whether the reward justifies the risk.",
+      "Make the trade-offs explicit so the audience feels the weight of choosing one path over the others."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 17,
+    "images": [
+      "IMG_9891",
+      "IMG_9892"
+    ],
+    "card_type": "tactic",
+    "category": "Concept",
+    "title_key": "three-great-conflicts",
+    "title_display": "Three Great Conflicts",
+    "essence": "Pick the right fight at the heart of your story \u2014 your hero against nature, against other people, or against themselves \u2014 because every memorable story turns on one of these three.",
+    "when_to_use": "Use when defining the central tension of a pitch, narrative, or campaign, especially when the work feels meandering or low-stakes.",
+    "principle": "Audiences engage with stories in proportion to the conflict at their core. The three classic fights map to three different anxieties: survival against an indifferent world, struggle for resources or values against other people, and the internal battle between who we are and who we know we should be. Sharp stories pick one as primary. The trick is to first articulate the dream version of your world and the nightmare version, then locate the conflict at the seam between them and decide which great fight you're actually telling.",
+    "framework_approach": [
+      "Sketch the dream \u2014 what your project's world looks like when everything goes right.",
+      "Sketch the nightmare \u2014 what it looks like when everything goes wrong.",
+      "Locate the seams where dream meets nightmare; those are the live conflicts in your story.",
+      "Choose the central fight \u2014 survival against the world, opposition with other people, or the internal struggle against one's own worst tendencies.",
+      "Show how the conflict resolves, even imperfectly, so the audience leaves with a sense of where the energy went."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 18,
+    "images": [
+      "IMG_9897",
+      "IMG_9898"
+    ],
+    "card_type": "tactic",
+    "category": "Concept",
+    "title_key": "universal-stories",
+    "title_display": "Universal Stories",
+    "essence": "Build your story on the human traits everyone shares across cultures, because those universals are the most reliable foundation for an audience to recognise themselves in.",
+    "when_to_use": "Use when you're addressing an audience whose backgrounds differ widely and you need to find the common ground that lets every listener connect.",
+    "principle": "Cultures vary enormously, but a handful of patterns show up everywhere: we feel like agents making real choices, we cooperate and conflict, our actions don't match our stated ideals, we know fear and courage, we have a shared sense of fairness and judgement, and we all pass through recognisable life stages. Stories anchored in these universals travel further and stick longer than stories that depend on local references, because the audience doesn't have to be taught what the building blocks mean.",
+    "framework_approach": [
+      "Ground a story in agency and choice when you want listeners to feel that real decisions are being made.",
+      "Ground it in cooperation versus competition when the action turns on whether people work together or against one another.",
+      "Ground it in the gap between what we say and what we do when the point is hypocrisy, blind spots, or self-deception.",
+      "Ground it in fear and courage when overcoming danger is the heart of the action.",
+      "Ground it in fairness and judgement when audiences need to feel the verdict is just.",
+      "Ground it in life-stage transitions when you're describing growth, coming-of-age, or a graduation from one phase to another."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 19,
+    "images": [
+      "IMG_9915",
+      "IMG_9916"
+    ],
+    "card_type": "tactic",
+    "category": "Explore",
+    "title_key": "abstractions",
+    "title_display": "Abstractions",
+    "essence": "Watch what people actually do rather than relying on what they say they do, because real understanding lives in behaviour, not explanation.",
+    "when_to_use": "When researching users, customers, or any audience whose lived experience matters more than their tidy after-the-fact account of it.",
+    "principle": "When humans describe their own behaviour, they typically deliver a rationalised, abstracted version that smooths over the messy details. The deeper layers (the actions, the imitation, the rituals, the stories people tell themselves) carry far more useful information than the polished explanation on top. Observation peels back the layers in a way that interviews on their own rarely can.",
+    "framework_approach": [
+      "Watch people in action and notice what they are physically doing.",
+      "Notice who they are copying or modelling their behaviour on.",
+      "Spot the patterns, routines, and unwritten rules they follow.",
+      "Listen for the stories they tell themselves about why they do this.",
+      "Compare their reasoning to what you actually observed, and treat any gap as a clue."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 20,
+    "images": [
+      "IMG_9909",
+      "IMG_9910"
+    ],
+    "card_type": "tactic",
+    "category": "Explore",
+    "title_key": "data-detectives",
+    "title_display": "Data Detectives",
+    "essence": "Wrap your data in story so people actually remember it, because numbers and charts decay fast in memory but a narrative built around them lasts.",
+    "when_to_use": "Use when you've done research or analysis and need stakeholders to retain not just the headline finding but the reasoning and the implications.",
+    "principle": "Most audiences struggle with data even when it's well-visualised. They will, however, remember a handful of facts if those facts are embedded in a story \u2014 a story that zooms in from pattern to vivid example, or one that mimics an investigation, or one that honestly acknowledges what the data can't say. Each style of data story plays a different role: one explains, one persuades, one builds trust by showing your epistemic limits.",
+    "framework_approach": [
+      "Tell a zoom story \u2014 start from the broad trend, drop into a single vivid example that typifies it, and connect them with phrasing that says here's the pattern and here's what it looks like up close.",
+      "Tell an investigation story \u2014 frame the question as the body on the floor, your sources as the search for evidence, the surprising finding as the vital clue, and the implication as the solution.",
+      "Tell a humble story \u2014 acknowledge how the data could mislead, what alternative readings exist, and what matters that simply can't be measured.",
+      "Pick the style that matches what your audience needs \u2014 comprehension, conviction, or trust \u2014 and don't try to do all three at once."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 21,
+    "images": [
+      "IMG_9907",
+      "IMG_9908"
+    ],
+    "card_type": "tactic",
+    "category": "Explore",
+    "title_key": "emotional-dashboard",
+    "title_display": "Emotional Dashboard",
+    "essence": "Track strong emotions \u2014 yours, your users', your stakeholders' \u2014 because they are the surest signal of where a real story is waiting to be told.",
+    "when_to_use": "Use during research or self-reflection when you need to find the moment in a project, journey, or experience that's worth telling a story about.",
+    "principle": "Emotions function like gauges on a dashboard. They flash red when we're being blocked from a goal, glow green when things are going to plan, and shift constantly as we read other people. Because emotions bind groups together \u2014 and tear them apart \u2014 moments of strong feeling are reliable markers of decisive change. If you can locate a strong emotion at a specific moment, you've almost certainly found a story; the rest is just turning the cause, the realisation, the original goal, and the lesson learned into sentences.",
+    "framework_approach": [
+      "List positive emotions you've felt in the project (happiness, confidence, love, delight, trust, pride, excitement, joy, conviction).",
+      "List negative emotions (sadness, fear, hurt, disgust, distrust, shame, boredom, anger, hate).",
+      "Take each strong emotion and turn it into a story sentence: I felt X, when I realised Y, because I wanted Z, and so I learned W.",
+      "Repeat the same exercise from your customer's or user's vantage point \u2014 what is the strongest feeling they're experiencing, and how does your work move that needle?",
+      "Build the most charged moment into a scene that anchors the larger narrative."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 22,
+    "images": [
+      "IMG_9917",
+      "IMG_9918"
+    ],
+    "card_type": "tactic",
+    "category": "Explore",
+    "title_key": "social-proof",
+    "title_display": "Social Proof",
+    "essence": "When trust is the bottleneck, borrow it by showing that other credible people are already moving in the direction you are recommending.",
+    "when_to_use": "Before a pitch, sales conversation, or persuasion moment where the audience is hesitant and looking around to see whether anyone else has taken the leap.",
+    "principle": "In uncertain situations, humans take cues from each other rather than reasoning from first principles. Evidence that other people are acting, especially people the audience identifies with, lowers the perceived risk of joining in. A specific story about real behaviour persuades far more than a generic claim, because it lets the listener picture themselves in the same position.",
+    "framework_approach": [
+      "Show trend data that lots of people are already moving a certain way, ideally with an early adopter worth watching.",
+      "Highlight prototypes, pilots, and trials and describe how people actually behaved, not just what they said.",
+      "Gather testimonials that reach past bland praise by asking about one specific thing the person loved, the moment they knew it was the right call, and how they would persuade a friend to try it.",
+      "Zoom out to the broad pattern and then zoom in on a single vivid example."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 23,
+    "images": [
+      "IMG_9905",
+      "IMG_9906"
+    ],
+    "card_type": "tactic",
+    "category": "Explore",
+    "title_key": "story-listening",
+    "title_display": "Story Listening",
+    "essence": "Treat listening to other people's stories as a discipline in its own right \u2014 at least equal to telling \u2014 because the wisdom you need to be a credible storyteller almost always lives in someone else's experience first.",
+    "when_to_use": "Use during user research, customer interviews, or any moment when you need real material for a story rather than imagined material.",
+    "principle": "Researchers who study experts under pressure \u2014 pilots, firefighters, nurses, soldiers \u2014 learn the most by listening for the moments where the expert learned something the hard way. The same approach works for understanding users and stakeholders. You're not gathering data points; you're hunting for the moments people return to, the strong emotions they attach, the decisions they made at branching points, and the gap between novice and expert thinking. Done well, story listening produces the raw material for stories that are true rather than invented.",
+    "framework_approach": [
+      "First pass \u2014 identify the memorable story by asking why it sticks and what strong emotion is attached.",
+      "Second pass \u2014 build the basic timeline of what they were trying to achieve and what actually happened.",
+      "Third pass \u2014 add the key decisions, the options they considered, and the roads not taken.",
+      "Fourth pass \u2014 identify the expertise by asking where a novice would have gone wrong and what someone with different expertise might have missed.",
+      "Convert the teachable moments into the spine of the story you'll tell back."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 24,
+    "images": [
+      "IMG_9913",
+      "IMG_9914"
+    ],
+    "card_type": "tactic",
+    "category": "Explore",
+    "title_key": "thats-funny",
+    "title_display": "That's Funny",
+    "essence": "Hunt for the small moments in your work that made you laugh, raise an eyebrow, or do a double-take, because they are the seeds of the best stories.",
+    "when_to_use": "While reviewing a project or research material for things worth telling, especially when the obvious headlines feel flat and you suspect a richer angle is hiding in the odd details.",
+    "principle": "Surprise is the brain noticing that its model of the world is wrong. Whether the surprise is amusing or unsettling, it signals that something interesting is happening just below the surface. By treating those moments as evidence rather than noise, you give yourself raw material that already carries built-in tension and audience interest.",
+    "framework_approach": [
+      "Replay the project and flag anything that made you snort, smile, or pause in confusion.",
+      "Treat amusement as a clue that a mental model just shifted and ask what changed.",
+      "Treat the strange or unexpected as a clue that your data or assumptions may be wrong somewhere.",
+      "Look for coincidences that hint at a connection you have not made explicit yet.",
+      "When people are acting out of character, ask what their behaviour says about your assumptions about them."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 25,
+    "images": [
+      "IMG_9911",
+      "IMG_9912"
+    ],
+    "card_type": "tactic",
+    "category": "Explore",
+    "title_key": "thoughtful-failures",
+    "title_display": "Thoughtful Failures",
+    "essence": "Treat your most considered failures as material worth talking about openly, because they're a richer source of insight \u2014 and an easier audience-builder \u2014 than your wins.",
+    "when_to_use": "Use when reflecting on a project that didn't land, or when deciding whether to share an experiment that didn't pay off the way you hoped.",
+    "principle": "People rarely fail through carelessness; most failures arrive after a lot of thought and reasonable bets. Companies that explicitly reward this kind of intelligent risk-taking know that the lessons inside a thoughtful failure are usually more valuable than the lessons inside a fluky success. The only thing that turns a failure into a tragedy is concealing it or refusing to learn from it \u2014 so the act of telling the story is itself what redeems the outcome.",
+    "framework_approach": [
+      "Map out what went wrong from many angles, focusing on decisions and process rather than individuals.",
+      "Sort the lessons into goals you were chasing, assumptions you held, new insights you gained, and skills you still need.",
+      "Ask what a future version of the team should do differently next time.",
+      "Identify who else needs this lesson so the same mistake does not happen elsewhere.",
+      "Shape the experience into a teachable narrative with a clear arc of struggle and learning."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 26,
+    "images": [
+      "IMG_9929",
+      "IMG_9930"
+    ],
+    "card_type": "tactic",
+    "category": "Character",
+    "title_key": "cut-to-the-chase",
+    "title_display": "Cut to the Chase",
+    "essence": "When your audience is drifting, abandon your build-up and jump straight to the moment of action, emotion, or insight that matters most.",
+    "when_to_use": "Whenever you can feel the room slipping away mid-story (in a meeting, a pitch, or a presentation) and a slow recovery is no longer an option.",
+    "principle": "Boredom is the single most reliable killer of stories. The cure is not to talk faster but to skip ahead to the part the audience would have wanted to hear if you had started there. By cutting to the action, the emotion, or the lesson, you reset attention and force yourself to put the load-bearing moment up front instead of buried in setup.",
+    "framework_approach": [
+      "Jump to the pivotal moment of action or crisis and start describing what happened.",
+      "Jump to the moment of peak emotion (shock, relief, dismay, joy) and let the feeling carry the listener back into the story.",
+      "Jump to the lesson learned and then rewind only as far as needed to show how you got there.",
+      "If even that is not landing, stop talking and turn the moment into a question that pulls the audience in."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 27,
+    "images": [
+      "IMG_9919",
+      "IMG_9920"
+    ],
+    "card_type": "tactic",
+    "category": "Character",
+    "title_key": "drive-stories",
+    "title_display": "Drive Stories",
+    "essence": "Build a motivating team culture by collecting real stories of when people felt autonomous, skilled, and connected to purpose, plus the times they did not.",
+    "when_to_use": "When you need to inspire a team through change, hard work, or uncertain reward, and slogans about mission are not going to do the job on their own.",
+    "principle": "Money and instructions are weak fuel for sustained effort; people stay motivated when they feel in control of their work, are getting better at it, and can see how it serves something larger. Stories that name specific moments of feeling those drives (or being deprived of them) are far more vivid than abstract talk about culture. Negative examples are as useful as positive ones because they show what to protect against.",
+    "framework_approach": [
+      "Surface autonomy stories: moments when people felt in charge of how, where, and with whom they worked, and the opposite moments when control was missing.",
+      "Surface mastery stories: moments when skills clearly improved or fell short of what the job demanded.",
+      "Surface purpose stories: moments when work clearly served a greater good, and moments when the bigger picture went missing.",
+      "Develop these raw moments into teachable team stories about how we work, how we grow, and why we do it."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 28,
+    "images": [
+      "IMG_9925",
+      "IMG_9926"
+    ],
+    "card_type": "tactic",
+    "category": "Character",
+    "title_key": "hero-and-guide",
+    "title_display": "Hero & Guide",
+    "essence": "Cast the audience as the hero of the story and yourself as the experienced guide who helps them get where they want to go.",
+    "when_to_use": "Any time you are tempted to make yourself the centre of attention in a pitch, talk, or piece of marketing, and especially when the audience needs to see themselves succeeding to believe your offer.",
+    "principle": "People care about their own story, not yours. When you make them the hero, they imagine acting on what you say; when you make yourself the hero, they tune out. The guide is still essential: a hero without a wise mentor rarely makes it through the journey. So you keep your authority by offering perspective, a gift, and a path, while letting the audience carry the action.",
+    "framework_approach": [
+      "Map where your audience is today, what their problem is, and where they want to be.",
+      "Decide what kind of guide you are for them: explorer, sage, rebel, defender, muse, or warrior.",
+      "Name the specific gift you bring (knowledge, tools, courage, safety, creativity, or focus).",
+      "Tell the story of their journey, not yours, with you cast in a supporting mentor role.",
+      "Borrow a familiar story shape, like a rise from nothing, recovery from a slump, or a hard road with no shortcut, to give the journey a recognisable arc."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 29,
+    "images": [
+      "IMG_9921",
+      "IMG_9922"
+    ],
+    "card_type": "tactic",
+    "category": "Character",
+    "title_key": "trust-me-im-an-expert",
+    "title_display": "Trust Me, I'm an Expert",
+    "essence": "Earn the audience's trust by telling a story in which your values and judgement showed up in action, not by reciting your credentials.",
+    "when_to_use": "When you need to be believed on something important and listing facts or titles alone will not close the credibility gap with your audience.",
+    "principle": "Expertise without character is brittle: people stop listening when an expert's actions contradict the values they claim. A specific story about a hard choice, a costly mistake, or a moment of doing the right thing is far more persuasive than a list of qualifications, because it lets the audience see your character at work and infer the rest.",
+    "framework_approach": [
+      "Identify what you genuinely value about your work beyond getting paid.",
+      "Recall hard lessons you learned the painful way and what they taught you.",
+      "Recall times you did the right thing even when it cost you time, money, or status.",
+      "Imagine your project failing and write the one line of consolation you could still honestly say about it.",
+      "Pick the rules of your field you have followed, broken, or rewritten, and explain why.",
+      "Point to concrete actions, not opinions, that demonstrate the values you share with your audience."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 30,
+    "images": [
+      "IMG_9923",
+      "IMG_9924"
+    ],
+    "card_type": "tactic",
+    "category": "Character",
+    "title_key": "whats-my-motivation",
+    "title_display": "What's My Motivation?",
+    "essence": "Step into the inner life of every key person in your story so you understand what they want and why they would or would not cooperate with you.",
+    "when_to_use": "When you are mapping a project that depends on the willing participation of users, clients, colleagues, or stakeholders and you cannot afford to misread their motives.",
+    "principle": "Anything ambitious requires the cooperation of other people, and cooperation depends on their motivations, not yours. By taking each stakeholder seriously as a character with their own goals, history, and obstacles, you spot conflicts and alliances early. This is the same method actors use to make a character convincing on stage, and it works because the questions are deep enough to surface real motives.",
+    "framework_approach": [
+      "List the key players in your project: clients, users, decision makers, and other stakeholders.",
+      "For each one, work through who they are, where they are, when this is happening, what they want, why they want it, how they will pursue it, and what they must overcome.",
+      "Draw out where their motivations align with yours and where they pull in opposite directions.",
+      "Use those points of cooperation and conflict to build a story about the real motivations driving the situation."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 31,
+    "images": [
+      "IMG_9927",
+      "IMG_9928"
+    ],
+    "card_type": "tactic",
+    "category": "Character",
+    "title_key": "whats-it-about",
+    "title_display": "What's it About?",
+    "essence": "Force yourself to answer the deceptively simple question of what your work is really about, so you can talk about it without rambling.",
+    "when_to_use": "When you cannot crisply explain what you are working on, when you need an elevator pitch, or when you suspect you are too close to your own project to see what matters.",
+    "principle": "Expertise breeds a curse: the more deeply you know something, the harder it is to remember what an outsider would and would not understand. Forcing yourself through a few simple lenses (what is changing, what is new, who benefits) breaks the curse by reconnecting you to the audience's perspective. The result is a short, confident summary that survives contact with strangers.",
+    "framework_approach": [
+      "Frame it as change: what is shifting in the world, and is your work responding to it or causing it?",
+      "Frame it as new information: what have you noticed that others have not, or what surprised you?",
+      "Frame it as personal benefit: who in the real world is better off because of this, and how?",
+      "Pick the framing that fits your audience and turn it into one short sentence you can say without stumbling."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 32,
+    "images": [
+      "IMG_9862",
+      "IMG_9863",
+      "IMG_9864"
+    ],
+    "card_type": "tactic",
+    "category": "Function",
+    "title_key": "icebreaker-stories",
+    "title_display": "Icebreaker Stories",
+    "essence": "Build a team's storytelling muscle through low-stakes invented exercises before anyone has to tell a high-stakes real story.",
+    "when_to_use": "Use at the start of a workshop, off-site, or new team formation when you want people to practice narrative thinking without the pressure of real consequences.",
+    "principle": "Storytelling is a skill that atrophies in adult professional settings, where people are trained to present data and conclusions rather than scenes and characters. Inviting a team to invent fictional stories around random prompts strips away the fear of getting facts wrong, exercises the imagination, and produces a shared experience that makes later real-stakes storytelling feel familiar.",
+    "framework_approach": [
+      "Use random images as raw material so people aren't biased by familiar topics.",
+      "Have participants impose a simple before-during-after shape on the images they pick.",
+      "Try a polarity exercise where different groups invent love-it and hate-it stories about the same object.",
+      "Push the stories toward sensory detail, emotion, and dramatic stakes.",
+      "Run these solo or with a group \u2014 the muscle builds either way."
+    ],
+    "constituent_tactics": [],
+    "notes": "IMG_9864 is an apparent duplicate photograph of the back side already captured in IMG_9863 \u2014 same content."
+  },
+  {
+    "id": 33,
+    "images": [
+      "IMG_9856",
+      "IMG_9857"
+    ],
+    "card_type": "tactic",
+    "category": "Function",
+    "title_key": "pitch-perfect",
+    "title_display": "Pitch Perfect",
+    "essence": "Boil your idea down to a tightly shaped verbal pitch with an emotional arc so it survives being the tenth thing your listener heard today.",
+    "when_to_use": "Use when you need to make a short, memorable case for an idea \u2014 pitching investors, asking for budget, selling a project internally.",
+    "principle": "Decisions about whether to back an idea are usually made in seconds, often by someone tired of hearing pitches. A pitch that is just a list of claims competes with every other claim in the listener's day and loses. Wrapping the same content in a problem-promise arc gives the listener emotional contours to remember it by \u2014 a low, a hope, a complication, a resolution.",
+    "framework_approach": [
+      "Write a single-sentence top-line version of the idea you can deliver to anyone.",
+      "Answer the three core questions of any short pitch: what problem you solve, how you solve it, and why you can be trusted to deliver.",
+      "Shape the longer version around a curve that moves through problem, opportunity, practical steps, and promised outcome.",
+      "Deliberately accentuate the dips and rises so the pitch has tension rather than reading flat.",
+      "If a visual or document is needed, build it as a story document and not a feature list."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 34,
+    "images": [
+      "IMG_9858",
+      "IMG_9859"
+    ],
+    "card_type": "tactic",
+    "category": "Function",
+    "title_key": "simple-sales-stories",
+    "title_display": "Simple Sales Stories",
+    "essence": "Convince new buyers by telling them short, relatable stories about existing customers \u2014 either someone like them, or someone they look up to.",
+    "when_to_use": "Use when you're trying to bring new customers on board and abstract product claims aren't moving them.",
+    "principle": "Humans constantly take cues from other humans about what's safe and worthwhile. A new buyer is essentially asking 'is this for someone like me, and is it endorsed by someone whose taste I trust?' Sales stories address both questions cheaply. They borrow credibility from existing customers, reduce perceived risk by acting as beta-test evidence, and use familiar narrative shapes to make the case stick.",
+    "framework_approach": [
+      "Tell the story of a customer the prospect resembles, so they see themselves succeeding with the product.",
+      "Tell the story of a customer the prospect admires, so trust flows down from influencer to follower.",
+      "Tell stories of long-tenured customers, returning customers, and well-handled complaint customers to demonstrate durability.",
+      "For each story, be clear on who the listener is and why a particular protagonist would resonate with them.",
+      "Use each story as evidence that the underlying problem is real and the solution actually lands."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 35,
+    "images": [
+      "IMG_9860",
+      "IMG_9861"
+    ],
+    "card_type": "tactic",
+    "category": "Function",
+    "title_key": "story-ish-conversations",
+    "title_display": "Story-ish Conversations",
+    "essence": "You don't need a stage to use storytelling \u2014 pull narrative elements out of everyday meetings and chats to surface insights that would otherwise stay hidden.",
+    "when_to_use": "Use when ordinary conversations at work feel abstract, circular, or unproductive and you suspect a more concrete framing would unstick them.",
+    "principle": "Abstract conversation hides specific knowledge. People know far more than they articulate when prompted only for opinions. Adding lightweight story scaffolding \u2014 when did this happen, who was there, what did you feel, what changed \u2014 converts vague positions into observable detail. The other person doesn't need to know you're using a technique; they just experience a sharper conversation.",
+    "framework_approach": [
+      "Push for concrete, visual moments instead of generic statements.",
+      "When the conversation stays abstract, ask who-what-where-when questions to ground it in a specific event.",
+      "Probe for emotional contour \u2014 what was the strongest feeling, and how did it shift?",
+      "Surface the conflicts people had to work through, because conflicts contain the real insight.",
+      "Look for the moment where new information forced a change of mind, which is usually the actionable nugget."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 36,
+    "images": [
+      "IMG_9875",
+      "IMG_9876"
+    ],
+    "card_type": "tactic",
+    "category": "Structure",
+    "title_key": "downfall",
+    "title_display": "Downfall",
+    "essence": "Tell the story of a once-mighty figure or organization brought down by a hidden internal flaw \u2014 both for the catharsis and for the practical lesson about what to avoid.",
+    "when_to_use": "Use during a post-mortem, retrospective, or cautionary explanation where you want the audience to internalize a specific failure pattern without feeling lectured.",
+    "principle": "Stories of the mighty falling combine two emotional engines: a guilty pleasure in seeing the powerful humbled, and the protective instinct to avoid making the same mistake. The structure works because it isolates a single fatal flaw \u2014 hubris, dishonesty, a strategic blindness \u2014 and traces a credible line from that flaw to ruin. When applied to your own past projects or a competitor's, it makes the lesson stick more than any list of best practices.",
+    "framework_approach": [
+      "Identify the protagonist who was once dominant or admired.",
+      "Name the specific hidden flaw \u2014 internal, not bad luck \u2014 that will undo them.",
+      "Trace how the flaw produced choices that looked fine in the moment.",
+      "Show the collapse as the inevitable consequence of those choices.",
+      "Use the story to draw out the lesson the audience should now apply."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 37,
+    "images": [
+      "IMG_9877",
+      "IMG_9878"
+    ],
+    "card_type": "tactic",
+    "category": "Structure",
+    "title_key": "epic-fail",
+    "title_display": "Epic Fail",
+    "essence": "When something goes wrong, choose deliberately which type of failure story you tell, because the frame you pick determines the lesson everyone takes away.",
+    "when_to_use": "Use after a setback, a missed launch, a botched project, or any retrospective where you and your audience need to make sense of what just happened.",
+    "principle": "Research on failed ventures shows people reach for a handful of recurring narratives to explain disaster: I broke it, we got cocky, someone betrayed us, the system failed, the times were against us, or an enemy did this to us. Each frame puts the spotlight in a different place \u2014 on the self, the team, an individual, the system, the era, or a villain \u2014 and each has trade-offs in what it teaches and what it dodges. Picking the frame consciously, rather than slipping into the most convenient one, lets you control the moral of the story and the resilience that follows.",
+    "framework_approach": [
+      "Frame the failure as personal accountability and growth when you want to model humility and learning.",
+      "Frame it as collective overconfidence when the lesson is about hubris and team blind spots.",
+      "Frame it as betrayal by someone close when the failure was a relationship or trust breakdown \u2014 but expect collateral damage.",
+      "Frame it as a system or process breakdown when you want to depersonalise the cause and fix the machinery.",
+      "Frame it as a sign of the times when context and broader forces meaningfully shaped the outcome.",
+      "Frame it as deliberate sabotage by an antagonist only when there really was hostile intent worth naming."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 38,
+    "images": [
+      "IMG_9879",
+      "IMG_9880"
+    ],
+    "card_type": "tactic",
+    "category": "Structure",
+    "title_key": "five-ts",
+    "title_display": "Five Ts",
+    "essence": "Keep a small checklist of story ingredients in your back pocket so that when someone unexpectedly asks for a story you can assemble one on the spot.",
+    "when_to_use": "Use when you need to be ready to improvise a credible story under pressure \u2014 a sudden question in a meeting, an interview, a panel, or a hallway conversation.",
+    "principle": "Off-the-cuff storytelling fails because we reach for impressive material and end up performing instead of telling. A short prompt list reminds you that any decent story needs a sequence in time, a moment where something turned, real emotional friction, a moral choice, and a lesson \u2014 and that's all you need to start. Working from those prompts keeps the telling natural rather than rehearsed, which is exactly what audiences trust.",
+    "framework_approach": [
+      "Set the sequence in time \u2014 a beginning state, what changed, and what resulted, even in three short sentences.",
+      "Pinpoint a turning point \u2014 a realisation, decision, or pivot that the rest of the story hinges on.",
+      "Surface tension \u2014 the worst moment, the anxiety, or the conflict that gives the story stakes.",
+      "Include a temptation \u2014 a moment where the easy or dishonest path was on offer and someone chose otherwise.",
+      "Land a teachable moment \u2014 what the experience taught you, framed as a takeaway your listener can use."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 39,
+    "images": [
+      "IMG_9881",
+      "IMG_9882"
+    ],
+    "card_type": "tactic",
+    "category": "Structure",
+    "title_key": "happy-ever-afters",
+    "title_display": "Happy Ever Afters",
+    "essence": "Give your story a satisfying resolution that shows a meaningful change in your protagonist, because audiences are wired to want a payoff that feels earned.",
+    "when_to_use": "Use when crafting the closing beat of a pitch, presentation, or case study so the audience leaves with a sense of completion rather than ambiguity.",
+    "principle": "Endings carry disproportionate weight in how we remember stories. The deepest satisfactions are not just outcomes but transformations: someone grew up, someone found belonging, someone did the right thing despite cost. Each of these resolutions taps a different universal hunger, so picking the right one for your protagonist and audience determines how the whole story lands. Even if real life is messier, holding out the hope of one of these endings lifts the audience and makes them root for the journey.",
+    "framework_approach": [
+      "Decide whether your protagonist grows up \u2014 what life-stage transition or new maturity have they reached, and how did you help.",
+      "Decide whether they find a home, love, or earned respect \u2014 how the place they return to is different because of who they've become.",
+      "Decide whether they do the right thing under pressure \u2014 what bad thing was put right, at what cost, and what made the moral choice possible.",
+      "Work backwards from the chosen ending so the body of the story makes that resolution feel inevitable rather than tacked on."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 40,
+    "images": [
+      "IMG_9869",
+      "IMG_9870"
+    ],
+    "card_type": "tactic",
+    "category": "Structure",
+    "title_key": "innovation-curve",
+    "title_display": "Innovation Curve",
+    "essence": "Different segments of an audience tolerate different amounts of risk \u2014 calibrate the story you tell about your idea to where each listener sits on the adoption curve.",
+    "when_to_use": "Use when you're selling something novel and noticing that the same pitch lands with some people and gets rejected by others.",
+    "principle": "Risk tolerance is a stable trait of audience segments, not a universal property. Pioneers are excited by novelty itself; mainstream buyers want proof other people have already gone first; traditional buyers want to feel they're the last safe holdouts joining a sure thing. The story stays roughly the same, but the framing, evidence, and emotional appeal must change based on what each segment fears and hopes for.",
+    "framework_approach": [
+      "Identify which adoption segment you're talking to \u2014 innovator, pioneer, early or late mainstream, or traditional.",
+      "For each segment, name the specific hope you can speak to and the specific fear you must address.",
+      "Lead with novelty and excitement for pioneers and early adopters; lead with safety and ubiquity for traditionals.",
+      "Use different evidence types \u2014 process and prototypes for early, full readiness and recommendations for late.",
+      "Don't pitch a traditional buyer like a pioneer or you'll be rejected as reckless."
+    ],
+    "constituent_tactics": [],
+    "notes": "Card credits the underlying adoption-curve model to E. Rogers's Diffusion of Innovations."
+  },
+  {
+    "id": 41,
+    "images": [
+      "IMG_9865",
+      "IMG_9866"
+    ],
+    "card_type": "tactic",
+    "category": "Structure",
+    "title_key": "man-in-a-hole",
+    "title_display": "Man in a Hole",
+    "essence": "Use the classic fall-and-recover arc \u2014 life is fine, something knocks the protagonist down, they learn something in the dark, and they climb back stronger.",
+    "when_to_use": "Use when you want to make a point about resilience, lessons learned, or a recovery from adversity \u2014 including pandemics, layoffs, failed launches, or personal setbacks.",
+    "principle": "This arc is universally legible because it mirrors lived experience. Audiences accept that protagonists can be knocked down, and they want to see what gets found in the dark. The structure works because the descent makes the recovery meaningful \u2014 without the hole, the climb has no weight. The wisdom acquired during the low point is what justifies telling the story at all.",
+    "framework_approach": [
+      "Open in a settled state \u2014 not utopia, but a recognizable normal with some latent gap.",
+      "Trigger the fall with an external shock or an ignored warning.",
+      "Spend real time in the crisis, because that's where the audience finds the lesson.",
+      "Show the recovery as deliberate application of what was learned, not luck.",
+      "Land in a better place that is wiser and more durable than the original normal."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 42,
+    "images": [
+      "IMG_9871",
+      "IMG_9872"
+    ],
+    "card_type": "tactic",
+    "category": "Structure",
+    "title_key": "no-easy-way",
+    "title_display": "No Easy Way",
+    "essence": "Use an extended up-and-down arc that includes early wins, setbacks, near-disasters, and hard-won recoveries \u2014 promising-nothing-is-free is more credible than promising-nothing-is-hard.",
+    "when_to_use": "Use when a simple optimistic story would sound suspicious because the audience knows real journeys aren't smooth \u2014 such as transformation stories, change initiatives, or product roadmaps.",
+    "principle": "Smooth success stories trigger skeptical pattern-matching with marketing fluff. Audiences trust narratives that include setbacks because real lives include setbacks. A story arc that traces a problem to early success to a serious crisis and finally to a tested recovery feels honest, and the honesty bleeds into trust about whatever you're advocating. Without showing the hard middle, you forfeit the credibility that makes the ending earned.",
+    "framework_approach": [
+      "Begin with a bad place where danger is real or potential is wasted.",
+      "Show an early opportunity that produces visible progress.",
+      "Introduce a setback that reveals a weakness or surfaces opposition.",
+      "Let it get genuinely bad \u2014 to the point where the audience wonders if it was worth starting.",
+      "Show recovery rooted in what was learned in the dark, and end in a better place than the start."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 43,
+    "images": [
+      "IMG_9873",
+      "IMG_9874"
+    ],
+    "card_type": "tactic",
+    "category": "Structure",
+    "title_key": "pride-and-fall",
+    "title_display": "Pride & Fall",
+    "essence": "Use the cautionary descent arc \u2014 a confident rise that ignores warnings and ends worse than it began \u2014 to address a skeptical audience's suspicion that things sound too good to be true.",
+    "when_to_use": "Use when you suspect your audience is mentally rehearsing the story of your project's failure, and you need to acknowledge that risk before pivoting toward credibility.",
+    "principle": "Skeptics aren't moved by more optimism; they're moved when you demonstrate that you've considered failure. Telling the failure-arc version of your own project \u2014 in the abstract or as a competitor's cautionary tale \u2014 proves you've thought about what could go wrong. Once that doubt is acknowledged, the audience is willing to consider why your version is different. The arc itself is among the oldest narrative shapes for exactly this reason.",
+    "framework_approach": [
+      "Identify the bad place your protagonist starts in.",
+      "Show the prideful rise \u2014 what looks like progress but contains the seed of failure.",
+      "Surface the warnings that get ignored along the way.",
+      "Let the fall happen as a consequence of those ignored warnings.",
+      "End in a worse place than the starting point, then use it as a setup for a more honest story you can tell about your own work."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 44,
+    "images": [
+      "IMG_9867",
+      "IMG_9868"
+    ],
+    "card_type": "tactic",
+    "category": "Structure",
+    "title_key": "rags-to-riches",
+    "title_display": "Rags to Riches",
+    "essence": "Use the optimistic ascent arc where a hero with hidden value rises from a bad situation \u2014 but remember the prize is the value being recognized, not literal wealth.",
+    "when_to_use": "Use when you want to tell an aspirational success story \u2014 a customer transformation, a founder origin, a product's underdog rise \u2014 without sounding hollow.",
+    "principle": "Audiences are drawn to ascent stories because they want to believe their own latent value will be recognized. The arc works because it withholds reward until the protagonist's hidden quality has been tested and proven. Telling it badly \u2014 promising money or status as the payoff \u2014 flattens it into a get-rich-quick pitch and triggers skepticism. Told well, the recognition of intrinsic worth is what the audience actually craves.",
+    "framework_approach": [
+      "Begin with the hero in a bad place, but with a quality nobody else can yet see.",
+      "Introduce a trigger that gives them a chance to act on what they have.",
+      "Show the struggle \u2014 they may get help, but the climb is fundamentally their own.",
+      "Resolve with deserved recognition of the quality that was there all along.",
+      "If telling someone else's story, ask whether you're the hero or the guide and play your role honestly."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 45,
+    "images": [
+      "IMG_9883",
+      "IMG_9884"
+    ],
+    "card_type": "tactic",
+    "category": "Structure",
+    "title_key": "voyage-and-return",
+    "title_display": "Voyage & Return",
+    "essence": "Frame the work as a round trip into an unfamiliar world, because audiences are hooked by the promise that the traveller \u2014 and home itself \u2014 will be changed by the journey.",
+    "when_to_use": "Use when describing an innovation, an exploration, or any project that takes someone out of their comfort zone and brings them back transformed.",
+    "principle": "The voyage structure works because it mirrors how change actually feels: safety becomes restless, the unknown looks dangerous and seductive, the new world teaches you things you couldn't learn at home, and the return reframes everything familiar. You can cast yourself as the traveller or, more powerfully, cast the customer as the traveller and yourself as their guide. Either way, the arc lets the audience feel risk and resolution without leaving the room.",
+    "framework_approach": [
+      "Sketch the starting home \u2014 safe, known, and ultimately too small for what your protagonist needs.",
+      "Show what pulls them outward \u2014 a desire, a force, or an accident that initiates the journey.",
+      "Describe the strange new world \u2014 its threats, its strangeness, and the lessons available there.",
+      "Mark the price of progress \u2014 what is gained, what is given up, and what nearly went wrong.",
+      "Bring them back changed \u2014 how home looks different now and how they'll make it better with what they learned."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 46,
+    "images": [
+      "IMG_9939",
+      "IMG_9940"
+    ],
+    "card_type": "tactic",
+    "category": "Style",
+    "title_key": "leave-it-out",
+    "title_display": "Leave it Out!",
+    "essence": "Trust the audience to fill in the gaps; the part you withhold is often more powerful than the part you tell.",
+    "when_to_use": "When your draft feels overstuffed or obvious, when you suspect you are spelling out things the audience would enjoy figuring out, or when you want to spark curiosity rather than satisfy it.",
+    "principle": "The mind is uncomfortable with gaps and will rush to fill them, which is exactly why suggestion is so much more engaging than full description. By implying instead of explaining, you make the audience co-author of the story, and their version is more vivid than anything you could have written. As a side benefit, what they fill in reveals their assumptions back to you.",
+    "framework_approach": [
+      "List what your audience is expecting to hear and consider cutting some of it.",
+      "Hint at what has been left out so the gap is felt rather than missed.",
+      "Plant questions they will want to answer themselves, such as what happens next or how we got here.",
+      "Leave them wanting more rather than fully satisfied.",
+      "After they fill in the gap, check whether their version matches yours or reveals a difference worth knowing."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 47,
+    "images": [
+      "IMG_9937",
+      "IMG_9938"
+    ],
+    "card_type": "tactic",
+    "category": "Style",
+    "title_key": "movie-time",
+    "title_display": "Movie Time",
+    "essence": "For every abstract idea you want to land, give the audience a concrete scene their imagination can actually play in their head.",
+    "when_to_use": "When your subject matter is full of jargon, theory, or data, and you can feel listeners glazing over because there is nothing for their mind's eye to look at.",
+    "principle": "Brains process language by simulating it visually. Words like sustainability or accessibility do not start any movie playing, so they slide past. A short scene with action, characters, and stakes hijacks the same neural machinery the audience uses for real experience, which makes the message both clearer and more memorable.",
+    "framework_approach": [
+      "Pick the abstract concept you want to convey and decide what scene best illustrates it.",
+      "Set the action: where are we, what is happening, what happens next?",
+      "Set the emotion: who is involved, what is at stake, how does it feel?",
+      "Land the meaning: what changed, why does it matter, what should we think or do now?",
+      "Self-check by asking, at the end of every paragraph, what movie is now playing in the audience's head."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 48,
+    "images": [
+      "IMG_9933",
+      "IMG_9934"
+    ],
+    "card_type": "tactic",
+    "category": "Style",
+    "title_key": "rolls-royce-moment",
+    "title_display": "Rolls Royce Moment",
+    "essence": "Find one tiny, vivid, sensory detail that stands in for everything you want the audience to believe about your product or idea.",
+    "when_to_use": "When you have done the research and have impressive facts, but they are not landing emotionally and you need a single image that makes the quality feel real.",
+    "principle": "Abstract qualities like quality or care are forgettable; sensory specifics are sticky. A small, surprising detail acts as evidence the audience can replay in their imagination, and it tells them you did the homework needed to find it. Done well, one well-chosen image carries more conviction than a page of claims.",
+    "framework_approach": [
+      "Make the moment vivid: pick a detail your audience can see, hear, taste, smell, or feel.",
+      "Make sure it is exemplary: that one small fact should stand in for the whole story about what your work does well.",
+      "Make sure it is relatable: anchor it to something the audience already knows so they can feel the contrast.",
+      "Do the digging needed to find this detail; the homework is the work."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 49,
+    "images": [
+      "IMG_9941",
+      "IMG_9942"
+    ],
+    "card_type": "tactic",
+    "category": "Style",
+    "title_key": "show-and-tell",
+    "title_display": "Show & Tell",
+    "essence": "Make slides and words pull in different but complementary directions so the audience stays engaged with both you and what is on screen.",
+    "when_to_use": "When preparing a presentation, deck, or any visual talk where the temptation is either to read your slides aloud or to ignore them while talking about something else.",
+    "principle": "When the words you say match the words on screen, the audience reads ahead and tunes you out. When the words stray too far from the visuals, the audience gets confused and gives up. The sweet spot is a rhythm where the slide refreshes attention with a new image, and your voice tells the audience what about that image to notice. The two channels alternate like clothes on a washing line, each one pulling attention back to the other.",
+    "framework_approach": [
+      "Decide what the slide is for: a fresh focus, not a script.",
+      "Use the visual to introduce something the audience cannot get from your words alone.",
+      "Use your voice to say what the visual means, not what it literally shows.",
+      "When the audience has absorbed the current pairing, swap in a new image to refresh attention and repeat the pattern.",
+      "Avoid mirroring the slide text in your speech; that combination puts everyone to sleep."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 50,
+    "images": [
+      "IMG_9935",
+      "IMG_9936"
+    ],
+    "card_type": "tactic",
+    "category": "Style",
+    "title_key": "story-hooks",
+    "title_display": "Story Hooks",
+    "essence": "Open with a sharp, curiosity-baiting hook that makes people want to find out what happens next, otherwise the rest of your story never gets read.",
+    "when_to_use": "Whenever the first few seconds will decide whether the audience keeps reading or listening, such as an email subject line, a talk opener, an article lead, or a video thumbnail.",
+    "principle": "Attention is the scarcest resource you are competing for. A hook works by opening a curiosity gap (a question your audience now needs to close) or by promising something they could not get anywhere else. Several reliable hook patterns exploit different cognitive itches, and choosing the right one for your audience matters more than the rest of the writing.",
+    "framework_approach": [
+      "Open with a question that makes the audience need an answer.",
+      "Frame the topic in an unexpected way, such as how to fail at something everyone wants to succeed at.",
+      "Lean into irony when reality contradicts what it should be.",
+      "Use direct, personal language (you, we, us) so the audience feels addressed.",
+      "Promise specific knowledge they did not have a minute ago.",
+      "Tease a secret, a reveal, or something hidden that they will want let in on."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 51,
+    "images": [
+      "IMG_9931",
+      "IMG_9932"
+    ],
+    "card_type": "tactic",
+    "category": "Style",
+    "title_key": "three-is-the-magic-number",
+    "title_display": "Three is the Magic Number",
+    "essence": "Group the most important parts of your story into threes, because three is the smallest pattern your audience can hold, feel, and remember.",
+    "when_to_use": "Any time you need an idea to stick: a key message, a structure for a talk, a list of takeaways, or a build that needs to feel both complete and digestible.",
+    "principle": "Working memory is tiny, and two items feel arbitrary while four feel like a list. Three is the smallest number that registers as a deliberate pattern, which is why it shows up everywhere from fairy tales to political speeches. Three also gives you room to use repetition, contrast, or escalation without dragging.",
+    "framework_approach": [
+      "Use a three-fold repetition to signal that a detail is deliberate and worth paying attention to.",
+      "Use a setup-setup-twist pattern, where two parallel beats build an expectation that the third breaks.",
+      "Use two extremes plus a middle ground to argue for the balanced answer.",
+      "Cut anything that does not earn its place inside one of the three slots."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 52,
+    "images": [
+      "IMG_9947",
+      "IMG_9948"
+    ],
+    "card_type": "tactic",
+    "category": "Organise",
+    "title_key": "audience-profile",
+    "title_display": "Audience Profile",
+    "essence": "Invest real time in understanding who your audience is before you decide what story to tell, because a great story aimed at the wrong people lands as noise.",
+    "when_to_use": "Before any significant pitch, talk, piece of marketing, or campaign, especially when you catch yourself assuming the audience will care about whatever you find interesting.",
+    "principle": "Storytellers consistently overestimate how universal their own taste is. The same content that thrills one audience bores another, so the audience must be the starting point, not an afterthought. By profiling who they are, what they need, what they fear, and what they already think about you, you can choose stories that fit them rather than hoping they fit yours.",
+    "framework_approach": [
+      "Capture the basic facts about the audience: who they are, where they are in life, what they do.",
+      "Identify the problems and pains your story can credibly help them with.",
+      "Map their hopes and ambitions so you know which positives to play to.",
+      "Map their fears and objections so you know which negatives to address head-on.",
+      "Note what they already say or assume about your idea so you start from where they are.",
+      "Decide who is best placed to tell the story, given that a satisfied customer often beats a self-promoting expert.",
+      "Be honest about whether the story is yours to tell or whether you are borrowing someone else's lived experience."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 53,
+    "images": [
+      "IMG_9945",
+      "IMG_9946"
+    ],
+    "card_type": "tactic",
+    "category": "Organise",
+    "title_key": "big-small-inside-outside",
+    "title_display": "Big, Small, Inside, Outside",
+    "essence": "Different audiences and situations need different kinds of stories, so sort yours along two axes: how rehearsed they are and who they are for.",
+    "when_to_use": "When you realise the polished story that works for an external pitch is wrong for a coffee with a colleague, or vice versa, and you need a quick way to pick the right register.",
+    "principle": "There is no single best story; there is the right story for the situation. Big stories are rehearsed and delivered to many; small stories are spontaneous and shared one-on-one. Inside stories speak to people who share your context; outside stories speak to those who do not. Mapping your repertoire onto this two-by-two grid makes it obvious where you are well stocked and where you have gaps to fill.",
+    "framework_approach": [
+      "Sort each story by whether it is rehearsed and prepared (big) or quick and spontaneous (small).",
+      "Sort each story by whether it is for colleagues who share your context (inside) or for an outside audience.",
+      "Use small inside stories to shape culture and habits, such as how we do things here and what good looks like.",
+      "Use small outside stories to give external audiences practical examples of what you do and what you stand for.",
+      "Use big inside stories for moments like onboarding, awards, and team celebrations.",
+      "Use big outside stories for high-stakes set pieces like pitches, conferences, and recruitment."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  },
+  {
+    "id": 54,
+    "images": [
+      "IMG_9943",
+      "IMG_9944"
+    ],
+    "card_type": "tactic",
+    "category": "Organise",
+    "title_key": "story-bank",
+    "title_display": "Story Bank",
+    "essence": "Keep a living collection of your best stories along with the context that protects you from telling them in the wrong place or to the wrong person.",
+    "when_to_use": "Once you have a few good stories worth repeating, especially across a team, and you cannot rely on memory alone to track who you have told what, when, and whether you are allowed to share it.",
+    "principle": "Reusable stories are an asset, but they go stale, get repeated to the same audience, or slip out of their original context with embarrassing results. A simple structured store (a notebook or spreadsheet) lets you find the right story for the moment, remember its source and permissions, and refresh it before it ages out. Treat the metadata around the story as seriously as the story itself.",
+    "framework_approach": [
+      "Capture each story with a short title or keyword and a one-line summary of the point.",
+      "Note who would find it useful and in which situations.",
+      "Track who you have already told it to so you do not repeat it on the same audience.",
+      "Record whose story it really is and whether you have permission to retell it.",
+      "Add an expiry sense-check: is it still current, or is it past its sell-by date?",
+      "If it lives online, link out to the underlying posts, articles, or documents for the full story."
+    ],
+    "constituent_tactics": [],
+    "notes": ""
+  }
+]

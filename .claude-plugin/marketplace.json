@@ -12,6 +12,11 @@
       "name": "writer",
       "description": "Write prose that sounds authentically human rather than AI-generated.",
       "source": "./plugins/human-voice-writer"
+    },
+    {
+      "name": "storyteller-tactics",
+      "description": "Craft presentations, pitches, talks, and any communication that needs to persuade, inspire, or move an audience. A working storytelling coach grounded in established narrative-craft principles.",
+      "source": "./plugins/storyteller-tactics"
     }
   ]
 }
