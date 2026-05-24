@@ -1,0 +1,35 @@
+name: test-time-track
+
+on:
+  push:
+    paths:
+      - 'plugins/time-track/**'
+      - '.github/workflows/test-time-track.yml'
+  pull_request:
+    paths:
+      - 'plugins/time-track/**'
+      - '.github/workflows/test-time-track.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install bats-core, shellcheck, jq
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bats shellcheck jq
+
+      - name: Configure git identity (needed by preflight)
+        run: |
+          git config --global user.email "ci@example.com"
+          git config --global user.name  "CI Bot"
+
+      - name: shellcheck dispatcher
+        run: shellcheck plugins/time-track/bin/track.sh
+
+      - name: bats test suite
+        run: bats plugins/time-track/tests/
