@@ -31,6 +31,7 @@ You can also install plugins directly:
 | Plugin | Command | Description | Example |
 |--------|---------|-------------|---------|
 | `writer` | `/writer:human [prompt]` | Write prose that sounds authentically human. | [Before & After](plugins/human-voice-writer/examples/before-after.md) |
+| `track` | `/track:start <client>` | Console-native billable hours tracker. Git-versioned plaintext ledger under `~/.time-tracker/`. | [README](plugins/time-track/README.md) |
 
 ## Using Skills in Claude.ai / Claude Desktop
 

@@ -17,6 +17,11 @@
       "name": "storyteller-guidance",
       "description": "Craft presentations, pitches, talks, and any communication that needs to persuade, inspire, or move an audience. A working storytelling coach grounded in established narrative-craft principles.",
       "source": "./plugins/storyteller-guidance"
+    },
+    {
+      "name": "track",
+      "description": "Console-native billable hours tracker. Slash commands (/track:start, /track:stop, /track:status, /track:report) record billable sessions to a git-versioned plaintext ledger under ~/.time-tracker/.",
+      "source": "./plugins/time-track"
     }
   ]
 }
