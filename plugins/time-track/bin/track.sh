@@ -125,6 +125,83 @@ format_duration() {
   fi
 }
 
+# parse_ago "30m" | "2h" | "1h30m" | "90s" -> seconds (positive integer) on stdout.
+# Exits 2 on malformed or non-positive input.
+parse_ago() {
+  local input="$1"
+  if [ -z "$input" ]; then
+    echo "[track] --ago requires a value (e.g., 30m, 2h, 1h30m)" >&2
+    exit 2
+  fi
+  if ! [[ "$input" =~ ^([0-9]+h)?([0-9]+m)?([0-9]+s)?$ ]]; then
+    echo "[track] --ago format: <Nh><Nm><Ns> (e.g., 30m, 2h, 1h30m, 90s) — got: '$input'" >&2
+    exit 2
+  fi
+  local total=0
+  [[ "$input" =~ ([0-9]+)h ]] && total=$((total + 10#${BASH_REMATCH[1]} * 3600))
+  [[ "$input" =~ ([0-9]+)m ]] && total=$((total + 10#${BASH_REMATCH[1]} * 60))
+  [[ "$input" =~ ([0-9]+)s ]] && total=$((total + 10#${BASH_REMATCH[1]}))
+  if [ "$total" -le 0 ]; then
+    echo "[track] --ago must be a positive duration (got: '$input')" >&2
+    exit 2
+  fi
+  echo "$total"
+}
+
+# parse_at_today "14:30" -> UTC ISO timestamp "YYYY-MM-DDTHH:MM:SSZ" on stdout.
+# Combines today's local date with HH:MM, converts to UTC.
+# Exits 2 on malformed input.
+parse_at_today() {
+  local hhmm="$1"
+  if ! [[ "$hhmm" =~ ^([0-9]{1,2}):([0-9]{2})$ ]]; then
+    echo "[track] --at format: HH:MM (24-hour local time) — got: '$hhmm'" >&2
+    exit 2
+  fi
+  local h="${BASH_REMATCH[1]}" m="${BASH_REMATCH[2]}"
+  # Force base-10 to avoid octal interpretation of leading-zero values.
+  h=$((10#$h)); m=$((10#$m))
+  if [ "$h" -gt 23 ] || [ "$m" -gt 59 ]; then
+    echo "[track] --at hour must be 0-23, minute 0-59 (got: '$hhmm')" >&2
+    exit 2
+  fi
+  local today_local hhmmss epoch
+  today_local=$(date +%Y-%m-%d)
+  # Force seconds to 00 for deterministic parsing — BSD date would otherwise
+  # fill missing SS with the current wall-clock seconds.
+  hhmmss=$(printf '%02d:%02d:00' "$h" "$m")
+  # Two-step: parse as LOCAL to epoch, then format epoch as UTC ISO. BSD `date -u -j`
+  # would interpret the input as UTC, which is wrong — the user typed local HH:MM.
+  epoch=$(date -j -f "%Y-%m-%d %H:%M:%S" "$today_local $hhmmss" +%s 2>/dev/null) \
+    || epoch=$(date -d "$today_local $hhmmss" +%s)
+  date -u -r "$epoch" +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null \
+    || date -u -d "@$epoch" +"%Y-%m-%dT%H:%M:%SZ"
+}
+
+# resolve_timestamp "<at_val>" "<ago_val>" -> UTC ISO timestamp on stdout.
+# Both empty -> now. Both set -> error (mutually exclusive). Otherwise dispatch.
+resolve_timestamp() {
+  local at_val="$1" ago_val="$2"
+  if [ -n "$at_val" ] && [ -n "$ago_val" ]; then
+    echo "[track] --at and --ago are mutually exclusive" >&2
+    exit 2
+  fi
+  if [ -n "$at_val" ]; then
+    parse_at_today "$at_val"
+    return
+  fi
+  if [ -n "$ago_val" ]; then
+    local secs target_epoch
+    # Subshells don't inherit set -e by default, so propagate explicitly:
+    # parse_ago's exit 2 only kills its own subshell, not this one.
+    secs=$(parse_ago "$ago_val") || exit $?
+    target_epoch=$(( $(date +%s) - secs ))
+    date -u -r "$target_epoch" +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null \
+      || date -u -d "@$target_epoch" +"%Y-%m-%dT%H:%M:%SZ"
+    return
+  fi
+  date -u +"%Y-%m-%dT%H:%M:%SZ"
+}
+
 # validate_client NAME -> exits 1 with hint if invalid or unregistered
 validate_client() {
   local client="$1"
@@ -162,9 +239,37 @@ today_total_for_client() {
 # ---------- commands ----------
 
 cmd_start() {
-  local client="${1:-}"
+  local client="" at_val="" ago_val=""
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --at)
+        at_val="${2:-}"
+        if [ -z "$at_val" ]; then
+          echo "[track] --at requires a value (HH:MM)" >&2
+          exit 2
+        fi
+        shift 2
+        ;;
+      --ago)
+        ago_val="${2:-}"
+        if [ -z "$ago_val" ]; then
+          echo "[track] --ago requires a value (e.g., 30m)" >&2
+          exit 2
+        fi
+        shift 2
+        ;;
+      *)
+        if [ -n "$client" ]; then
+          echo "[track] /track:start takes one client name (got extra arg: '$1')" >&2
+          exit 2
+        fi
+        client="$1"
+        shift
+        ;;
+    esac
+  done
   if [ -z "$client" ]; then
-    echo "[track] usage: /track:start <client>" >&2
+    echo "[track] usage: /track:start <client> [--at HH:MM | --ago <duration>]" >&2
     exit 2
   fi
   preflight
@@ -184,21 +289,47 @@ EOF
 
   validate_client "$client"
 
-  local now_utc
-  now_utc=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+  local start_utc
+  start_utc=$(resolve_timestamp "$at_val" "$ago_val")
 
   # Atomic write: tmp + mv.
-  jq -nc --arg c "$client" --arg s "$now_utc" '{client: $c, start: $s}' > "$TRACKER_DIR/active.json.tmp"
+  jq -nc --arg c "$client" --arg s "$start_utc" '{client: $c, start: $s}' > "$TRACKER_DIR/active.json.tmp"
   mv "$TRACKER_DIR/active.json.tmp" "$TRACKER_DIR/active.json"
 
   release_lock
 
   local hhmm
-  hhmm=$(date +"%H:%M")
+  hhmm=$(jq -nr --arg s "$start_utc" '$s | fromdate | strflocaltime("%H:%M")')
   echo "[track] started: $client @ $hhmm"
 }
 
 cmd_stop() {
+  local at_val="" ago_val=""
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --at)
+        at_val="${2:-}"
+        if [ -z "$at_val" ]; then
+          echo "[track] --at requires a value (HH:MM)" >&2
+          exit 2
+        fi
+        shift 2
+        ;;
+      --ago)
+        ago_val="${2:-}"
+        if [ -z "$ago_val" ]; then
+          echo "[track] --ago requires a value (e.g., 30m)" >&2
+          exit 2
+        fi
+        shift 2
+        ;;
+      *)
+        echo "[track] /track:stop unknown arg: '$1' (the note must come via stdin, not argv)" >&2
+        exit 2
+        ;;
+    esac
+  done
+
   preflight
   acquire_lock
 
@@ -214,11 +345,23 @@ cmd_stop() {
     note=$(cat)
   fi
 
-  local client start now_utc duration_min bucket
+  local client start end_utc duration_min bucket
   client=$(jq -r '.client' "$TRACKER_DIR/active.json")
   start=$(jq -r '.start' "$TRACKER_DIR/active.json")
-  now_utc=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-  duration_min=$(jq -nr --arg s "$start" --arg e "$now_utc" '(($e | fromdate) - ($s | fromdate)) / 60 | floor')
+  end_utc=$(resolve_timestamp "$at_val" "$ago_val")
+  duration_min=$(jq -nr --arg s "$start" --arg e "$end_utc" '(($e | fromdate) - ($s | fromdate)) / 60 | floor')
+
+  # Reject end < start BEFORE writing or committing, so active.json stays intact.
+  if [ "$duration_min" -lt 0 ]; then
+    local start_hhmm end_hhmm
+    start_hhmm=$(jq -nr --arg s "$start" '$s | fromdate | strflocaltime("%H:%M")')
+    end_hhmm=$(jq -nr --arg e "$end_utc" '$e | fromdate | strflocaltime("%H:%M")')
+    release_lock
+    echo "[track] end time $end_hhmm is before start time $start_hhmm; refusing." >&2
+    echo "[track] active timer preserved — re-run /track:stop with a valid --at/--ago." >&2
+    exit 1
+  fi
+
   bucket=$(jq -nr --arg s "$start" '$s | fromdate | strflocaltime("%Y-%m")')
 
   local entries_file="$TRACKER_DIR/entries/${bucket}.jsonl"
@@ -227,7 +370,7 @@ cmd_stop() {
   jq -nc \
     --arg c "$client" \
     --arg s "$start" \
-    --arg e "$now_utc" \
+    --arg e "$end_utc" \
     --arg n "$note" \
     --argjson d "$duration_min" \
     '{client:$c, start:$s, end:$e, duration_min:$d, note:$n}' \
@@ -409,8 +552,13 @@ main() {
     cat >&2 <<'EOF'
 usage: track.sh {start|stop|status|report} [args...]
 
-  start <client>                      Start a timer for the named client.
-  stop                                Stop the active timer; reads note from stdin.
+  start <client> [--at HH:MM | --ago <dur>]
+                                      Start a timer for the named client.
+                                      --at backdates to today's HH:MM (local).
+                                      --ago backdates by a duration (e.g., 30m, 2h, 1h30m).
+  stop [--at HH:MM | --ago <dur>]     Stop the active timer; reads note from stdin.
+                                      --at/--ago set the end time the same way as start.
+                                      Refuses end < start.
   status                              Show active timer + today's totals.
   report [--week|--month YYYY-MM] [--client <name>]
                                       Print invoice-ready markdown rollup.
