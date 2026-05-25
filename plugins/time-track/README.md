@@ -4,6 +4,17 @@ Console-native billable hours tracker for Claude Code.
 
 Most engineers lose money to "I forgot to start the timer." Toggl and friends live in a browser tab; switching to them mid-flow costs enough activation energy that tracking gets skipped and invoices get reconstructed from memory at month-end. `track` puts the timer one slash command away inside the same terminal where the work happens, and stores every session as a git-versioned plaintext JSONL line so the ledger is auditable, hand-editable, and survives the plugin getting uninstalled.
 
+## Documentation
+
+Full docs live in [`docs/time-track/`](../../docs/time-track/):
+
+- [Tutorial: from zero to first invoice](../../docs/time-track/tutorial.md) — install, register a client, run a timer, produce an invoice
+- [How-to](../../docs/time-track/how-to.md) — backdating, hand-editing, recovering from a commit failure, auditing, `jq` queries
+- [Reference](../../docs/time-track/reference.md) — every flag, file format, exit code, env var
+- [Explanation](../../docs/time-track/explanation.md) — why plaintext + git, why stdin for notes, why the skill is a thin wrapper
+
+Quick orientation continues below.
+
 ## Install
 
 ```
