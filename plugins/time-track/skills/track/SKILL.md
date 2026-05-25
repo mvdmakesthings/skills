@@ -1,6 +1,6 @@
 ---
 name: track
-description: Console-native billable hours tracker. Routes /track:start, /track:stop, /track:status, /track:report to a bash dispatcher that maintains a git-versioned JSONL ledger under ~/.time-tracker/. Use whenever the user invokes one of those slash commands. The skill itself does no time arithmetic, file I/O, or git work — the dispatcher does all of that. The skill's job is to construct the correct Bash invocation, especially for /track:stop where the user's note must be piped through stdin rather than passed as an argument (so shell metacharacters in the note cannot be interpreted).
+description: Console-native billable hours tracker. Routes /track:start, /track:stop, /track:status, /track:report to a bash dispatcher that maintains a git-versioned JSONL ledger under ~/.time-tracker/. Use whenever the user invokes one of those slash commands. The skill itself does no time arithmetic, file I/O, or git work — the dispatcher does all of that. The skill's job is to construct the correct Bash invocation: for /track:start and /track:stop, split optional --at/--ago flags from the positional client name (start) or the note (stop). For /track:stop the user's note must be piped through stdin rather than passed as an argument (so shell metacharacters in the note cannot be interpreted).
 ---
 
 # track skill
@@ -17,32 +17,47 @@ For each subcommand, run the Bash tool with the exact command shape below. Do NO
 
 ### /track:start
 
-User invocation: `/track:start <client>` (with `$ARGUMENTS` containing the client name)
+User invocation: `/track:start <client> [--at HH:MM | --ago <duration>]` (with `$ARGUMENTS` containing the client name and optional backdating flag)
 
 Bash invocation:
 ```
-bash "${CLAUDE_PLUGIN_ROOT}/bin/track.sh" start <client>
+bash "${CLAUDE_PLUGIN_ROOT}/bin/track.sh" start $ARGUMENTS
 ```
 
-The `<client>` argument is constrained by the dispatcher to alphanumeric + dash + underscore characters; it is safe to pass positionally.
+The `<client>` argument is constrained by the dispatcher to alphanumeric + dash + underscore characters. The optional flags are also dispatcher-validated (`--at` requires `HH:MM`, `--ago` requires `<Nh><Nm><Ns>` like `30m`, `1h30m`, `90s`). Both are safe to pass positionally.
+
+**Backdating flag-parsing rule:** if `$ARGUMENTS` contains `--at <VAL>` or `--ago <VAL>` tokens, they are flag-value pairs consumed by the dispatcher. They are only meaningful at the start of `$ARGUMENTS`, before the client name token. Order between `--at`/`--ago` and the client is flexible (either `start vytl --ago 30m` or `start --ago 30m vytl` works), but pass through `$ARGUMENTS` as the user typed it — let the dispatcher's flag loop handle the parsing.
 
 ### /track:stop
 
-User invocation: `/track:stop [note...]` (with `$ARGUMENTS` containing the optional note)
+User invocation: `/track:stop [--at HH:MM | --ago <duration>] [note...]` (with `$ARGUMENTS` containing optional backdating flag(s) followed by an optional note)
 
-**Critical: the note is piped through stdin, never passed as an argument.** This is a security boundary — the note is the only user-controlled input string in the system, and stdin-piping eliminates any possibility of shell metacharacter interpretation.
+**Critical: the note is piped through stdin, never passed as an argument.** This is a security boundary — the note is the only user-controlled input string in the system, and stdin-piping eliminates any possibility of shell metacharacter interpretation. Backdating flags go on argv (the dispatcher rejects any positional arg as ambiguous).
 
-- If `$ARGUMENTS` is empty (no note provided):
+**Flag-parsing rule (getopt convention):** when splitting `$ARGUMENTS`, the dispatcher consumes `--at <VAL>` or `--ago <VAL>` **only when they appear at the start of `$ARGUMENTS`, before the first non-flag token.** After the first non-flag token, all remaining tokens are part of the note — including any literal `--at` or `--ago` strings inside it. This prevents a note like `"fixed bug --at line 47"` from being mis-parsed as a flag.
+
+So when invoking:
+
+- If `$ARGUMENTS` is empty (no flags, no note):
   ```
   bash "${CLAUDE_PLUGIN_ROOT}/bin/track.sh" stop
   ```
-- If `$ARGUMENTS` is non-empty (note provided):
+- If `$ARGUMENTS` starts with `--at <VAL>` or `--ago <VAL>` (with no note after):
+  ```
+  bash "${CLAUDE_PLUGIN_ROOT}/bin/track.sh" stop <FLAG> <VAL>
+  ```
+- If `$ARGUMENTS` contains only a note (no leading flags):
   ```
   printf '%s' "<NOTE>" | bash "${CLAUDE_PLUGIN_ROOT}/bin/track.sh" stop
   ```
-  where `<NOTE>` is the literal text of `$ARGUMENTS` quoted as a shell string. The `printf '%s'` (not `echo`) avoids any escape-sequence interpretation of the note content.
+- If `$ARGUMENTS` starts with a flag AND has a note after:
+  ```
+  printf '%s' "<NOTE>" | bash "${CLAUDE_PLUGIN_ROOT}/bin/track.sh" stop <FLAG> <VAL>
+  ```
 
-The dispatcher's `cmd_stop` checks `[ ! -t 0 ]` and reads stdin when present.
+In every case `<NOTE>` is the literal text of the note portion (after any leading flag tokens are consumed), quoted as a shell string. Use `printf '%s'` rather than `echo` to avoid escape-sequence interpretation of the note content.
+
+The dispatcher's `cmd_stop` parses argv flags first, then checks `[ ! -t 0 ]` and reads stdin for the note when present. It refuses end-before-start (the only validation on backdating), preserving the active timer for retry.
 
 ### /track:status
 

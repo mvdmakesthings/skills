@@ -1,6 +1,6 @@
 ---
 description: Stop the active timer, optionally with a note that describes the session.
-argument-hint: "[note...]"
+argument-hint: "[--at HH:MM | --ago <duration>] [note...]"
 ---
 
 # Track: Stop
