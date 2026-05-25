@@ -28,10 +28,21 @@ You can also install plugins directly:
 
 ## Available Plugins
 
-| Plugin | Command | Description | Example |
-|--------|---------|-------------|---------|
-| `writer` | `/writer:human [prompt]` | Write prose that sounds authentically human. | [Before & After](plugins/human-voice-writer/examples/before-after.md) |
-| `track` | `/track:start <client>` | Console-native billable hours tracker. Git-versioned plaintext ledger under `~/.time-tracker/`. | [README](plugins/time-track/README.md) |
+| Plugin | Command | Description | Docs |
+|--------|---------|-------------|------|
+| `writer` | `/writer:human [prompt]` | Write prose that sounds authentically human. | [Docs](docs/writer/) · [Before & After](plugins/human-voice-writer/examples/before-after.md) |
+| `track` | `/track:start <client>` | Console-native billable hours tracker. Git-versioned plaintext ledger under `~/.time-tracker/`. | [Docs](docs/time-track/) · [README](plugins/time-track/README.md) |
+| `storyteller-guidance` | auto-triggers on pitch / talk / memo phrasing | Storytelling coach. Diagnoses your goal, picks tactics from a 54-card system, drafts or coaches. | [Docs](docs/storyteller-guidance/) |
+
+## Documentation
+
+Each plugin has a Diataxis-structured documentation set under `docs/`:
+
+- **`docs/time-track/`** — [tutorial](docs/time-track/tutorial.md) · [how-to](docs/time-track/how-to.md) · [reference](docs/time-track/reference.md) · [explanation](docs/time-track/explanation.md)
+- **`docs/writer/`** — [how-to](docs/writer/how-to.md) · [reference](docs/writer/reference.md) · [explanation](docs/writer/explanation.md)
+- **`docs/storyteller-guidance/`** — [how-to](docs/storyteller-guidance/how-to.md) · [reference](docs/storyteller-guidance/reference.md) · [explanation](docs/storyteller-guidance/explanation.md)
+
+Reference docs cover the complete public surface. How-to docs solve specific tasks. Explanation docs cover the design rationale. The time-track tutorial walks you from install to your first invoice.
 
 ## Using Skills in Claude.ai / Claude Desktop
 
