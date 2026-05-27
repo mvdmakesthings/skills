@@ -2,11 +2,23 @@ name: Release Skills
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches: [main]
+    paths:
+      - 'plugins/**'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Explicit version tag to release (e.g. v1.2.0). Leave blank to auto-bump the patch.'
+        required: false
+        type: string
 
 permissions:
   contents: write
+
+# Serialize releases so two quick merges can't compute the same next version.
+concurrency:
+  group: release-skills
+  cancel-in-progress: false
 
 jobs:
   package-skills:
@@ -15,6 +27,30 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          fetch-tags: true
+
+      - name: Determine version
+        id: version
+        run: |
+          INPUT="${{ github.event.inputs.version }}"
+          LATEST="$(git tag --list 'v*' --sort=-v:refname | head -n1)"
+          if [ -n "$INPUT" ]; then
+            NEXT="$INPUT"
+          elif [ -z "$LATEST" ]; then
+            NEXT="v1.0.0"
+          else
+            ver="${LATEST#v}"
+            major="${ver%%.*}"
+            rest="${ver#*.}"
+            minor="${rest%%.*}"
+            patch="${rest##*.}"
+            patch=$((patch + 1))
+            NEXT="v${major}.${minor}.${patch}"
+          fi
+          echo "Latest tag: ${LATEST:-<none>}"
+          echo "Next version: $NEXT"
+          echo "latest=$LATEST" >> "$GITHUB_OUTPUT"
+          echo "next=$NEXT" >> "$GITHUB_OUTPUT"
 
       - name: Package skills
         run: |
@@ -28,8 +64,8 @@ jobs:
 
       - name: Generate release summary
         run: |
-          TAG="${GITHUB_REF_NAME}"
-          PREV_TAG=$(git tag --list 'v*' --sort=-v:refname | sed -n '2p')
+          TAG="${{ steps.version.outputs.next }}"
+          PREV_TAG="${{ steps.version.outputs.latest }}"
 
           {
             echo "## Plugins"
@@ -47,7 +83,7 @@ jobs:
             if [ -n "$PREV_TAG" ]; then
               echo "## What Changed"
               echo ""
-              git log "${PREV_TAG}..${TAG}" --pretty=format:"- %s" --no-merges
+              git log "${PREV_TAG}..HEAD" --pretty=format:"- %s" --no-merges
               echo ""
             else
               echo "_Initial release._"
@@ -58,6 +94,7 @@ jobs:
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.version.outputs.next }}
           body_path: dist/release-body.md
           generate_release_notes: true
           files: dist/*.skill
