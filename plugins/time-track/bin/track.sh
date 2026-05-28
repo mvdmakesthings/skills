@@ -4,7 +4,7 @@
 # Authoritative spec:
 #   ~/.gstack/projects/mvdmakesthings-claude-marketplace/michaelvandyke-main-design-20260524-174009.md
 #
-# Subcommands: start | stop | status | report
+# Subcommands: start | stop | status | report | pause | resume
 # Storage:     ~/.time-tracker/ (git repo). Lock: ~/.time-tracker/.lock/ (mkdir-based).
 # Note input:  /track:stop reads the session note from stdin (never argv).
 
@@ -345,11 +345,33 @@ cmd_stop() {
     note=$(cat)
   fi
 
-  local client start end_utc duration_min bucket
+  local client start end_utc duration_min bucket paused_at paused_sec_total
   client=$(jq -r '.client' "$TRACKER_DIR/active.json")
   start=$(jq -r '.start' "$TRACKER_DIR/active.json")
-  end_utc=$(resolve_timestamp "$at_val" "$ago_val")
-  duration_min=$(jq -nr --arg s "$start" --arg e "$end_utc" '(($e | fromdate) - ($s | fromdate)) / 60 | floor')
+  paused_at=$(jq -r '.paused_at // ""' "$TRACKER_DIR/active.json")
+  paused_sec_total=$(jq -r '.paused_sec_total // 0' "$TRACKER_DIR/active.json")
+
+  # Refuse stop --at/--ago while paused: the open pause window would silently
+  # be billed as worked time. Force the user to /track:resume first (which
+  # also accepts --at/--ago) so the boundary between paused and worked is
+  # explicit in the ledger.
+  if [ -n "$paused_at" ] && { [ -n "$at_val" ] || [ -n "$ago_val" ]; }; then
+    release_lock
+    echo "[track] cannot /track:stop with --at/--ago while paused." >&2
+    echo "[track] /track:resume first (also accepts --at/--ago), then /track:stop." >&2
+    exit 1
+  fi
+
+  # If the timer is paused and the user did not supply an explicit end time,
+  # use the pause point as the end so further idle time isn't counted.
+  if [ -n "$paused_at" ]; then
+    end_utc="$paused_at"
+  else
+    end_utc=$(resolve_timestamp "$at_val" "$ago_val")
+  fi
+
+  duration_min=$(jq -nr --arg s "$start" --arg e "$end_utc" --argjson p "$paused_sec_total" \
+    '((($e | fromdate) - ($s | fromdate)) - $p) / 60 | floor')
 
   # Reject end < start BEFORE writing or committing, so active.json stays intact.
   if [ "$duration_min" -lt 0 ]; then
@@ -357,7 +379,7 @@ cmd_stop() {
     start_hhmm=$(jq -nr --arg s "$start" '$s | fromdate | strflocaltime("%H:%M")')
     end_hhmm=$(jq -nr --arg e "$end_utc" '$e | fromdate | strflocaltime("%H:%M")')
     release_lock
-    echo "[track] end time $end_hhmm is before start time $start_hhmm; refusing." >&2
+    echo "[track] end time $end_hhmm is before start time $start_hhmm (after subtracting $((paused_sec_total / 60))m of paused time); refusing." >&2
     echo "[track] active timer preserved — re-run /track:stop with a valid --at/--ago." >&2
     exit 1
   fi
@@ -407,27 +429,53 @@ EOF
   rm -f "$TRACKER_DIR/active.json"
   release_lock
 
-  local today_min today_human session_human
+  local today_min today_human session_human break_min break_note=""
   today_min=$(today_total_for_client "$client")
   today_human=$(format_duration "$today_min")
   session_human=$(format_duration "$duration_min")
-  echo "[track] stopped: $client · $session_human · today's $client total: $today_human"
+  break_min=$((paused_sec_total / 60))
+  if [ "$break_min" -gt 0 ]; then
+    break_note=" (excl. $(format_duration "$break_min") breaks)"
+  fi
+  echo "[track] stopped: $client · ${session_human}${break_note} · today's $client total: $today_human"
 }
 
 cmd_status() {
   preflight
 
   if [ -f "$TRACKER_DIR/active.json" ]; then
-    local client start_utc running_min start_hhmm running_human now_utc
+    local client start_utc paused_at paused_sec_total now_utc start_hhmm
     client=$(jq -r '.client' "$TRACKER_DIR/active.json")
     start_utc=$(jq -r '.start' "$TRACKER_DIR/active.json")
+    paused_at=$(jq -r '.paused_at // ""' "$TRACKER_DIR/active.json")
+    paused_sec_total=$(jq -r '.paused_sec_total // 0' "$TRACKER_DIR/active.json")
     now_utc=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-    running_min=$(jq -nr --arg s "$start_utc" --arg e "$now_utc" '(($e | fromdate) - ($s | fromdate)) / 60 | floor')
     start_hhmm=$(jq -nr --arg s "$start_utc" '$s | fromdate | strflocaltime("%H:%M")')
-    running_human=$(format_duration "$running_min")
-    echo "[track] active: $client · running for $running_human · started $start_hhmm local"
-    if [ "$running_min" -gt 720 ]; then
-      echo "[track] heads-up: timer has been running for $running_human. Did you forget to /track:stop?"
+
+    if [ -n "$paused_at" ]; then
+      # Paused: worked time excludes ALL breaks (including the open one's start point).
+      local worked_min pause_now_min pause_hhmm worked_human pause_human
+      worked_min=$(jq -nr --arg s "$start_utc" --arg e "$paused_at" --argjson p "$paused_sec_total" \
+        '((($e | fromdate) - ($s | fromdate)) - $p) / 60 | floor')
+      pause_now_min=$(jq -nr --arg p "$paused_at" --arg e "$now_utc" \
+        '(($e | fromdate) - ($p | fromdate)) / 60 | floor')
+      pause_hhmm=$(jq -nr --arg p "$paused_at" '$p | fromdate | strflocaltime("%H:%M")')
+      worked_human=$(format_duration "$worked_min")
+      pause_human=$(format_duration "$pause_now_min")
+      echo "[track] paused: $client · worked $worked_human · paused for $pause_human (since $pause_hhmm local)"
+    else
+      local running_min running_human break_min break_note=""
+      running_min=$(jq -nr --arg s "$start_utc" --arg e "$now_utc" --argjson p "$paused_sec_total" \
+        '((($e | fromdate) - ($s | fromdate)) - $p) / 60 | floor')
+      running_human=$(format_duration "$running_min")
+      break_min=$((paused_sec_total / 60))
+      if [ "$break_min" -gt 0 ]; then
+        break_note=" (excl. $(format_duration "$break_min") breaks)"
+      fi
+      echo "[track] active: $client · running for ${running_human}${break_note} · started $start_hhmm local"
+      if [ "$running_min" -gt 720 ]; then
+        echo "[track] heads-up: timer has been running for $running_human. Did you forget to /track:stop?"
+      fi
     fi
   else
     echo "[track] no active timer."
@@ -544,13 +592,172 @@ cmd_report() {
       '
 }
 
+cmd_pause() {
+  local at_val="" ago_val=""
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --at)
+        at_val="${2:-}"
+        if [ -z "$at_val" ]; then
+          echo "[track] --at requires a value (HH:MM)" >&2
+          exit 2
+        fi
+        shift 2
+        ;;
+      --ago)
+        ago_val="${2:-}"
+        if [ -z "$ago_val" ]; then
+          echo "[track] --ago requires a value (e.g., 30m)" >&2
+          exit 2
+        fi
+        shift 2
+        ;;
+      *)
+        echo "[track] /track:pause takes no positional args (got: '$1')" >&2
+        exit 2
+        ;;
+    esac
+  done
+
+  preflight
+  acquire_lock
+
+  if [ ! -f "$TRACKER_DIR/active.json" ]; then
+    release_lock
+    echo "[track] no active timer." >&2
+    exit 1
+  fi
+
+  local client start_utc existing_pause paused_sec_total
+  client=$(jq -r '.client' "$TRACKER_DIR/active.json")
+  start_utc=$(jq -r '.start' "$TRACKER_DIR/active.json")
+  existing_pause=$(jq -r '.paused_at // ""' "$TRACKER_DIR/active.json")
+  paused_sec_total=$(jq -r '.paused_sec_total // 0' "$TRACKER_DIR/active.json")
+
+  if [ -n "$existing_pause" ]; then
+    local pause_hhmm
+    pause_hhmm=$(jq -nr --arg p "$existing_pause" '$p | fromdate | strflocaltime("%H:%M")')
+    release_lock
+    echo "[track] timer is already paused since $pause_hhmm." >&2
+    exit 1
+  fi
+
+  local pause_ts delta
+  pause_ts=$(resolve_timestamp "$at_val" "$ago_val")
+  delta=$(jq -nr --arg s "$start_utc" --arg p "$pause_ts" '($p | fromdate) - ($s | fromdate)')
+  if [ "$delta" -lt 0 ]; then
+    local start_hhmm pause_hhmm
+    start_hhmm=$(jq -nr --arg s "$start_utc" '$s | fromdate | strflocaltime("%H:%M")')
+    pause_hhmm=$(jq -nr --arg p "$pause_ts" '$p | fromdate | strflocaltime("%H:%M")')
+    release_lock
+    echo "[track] pause time $pause_hhmm is before start time $start_hhmm; refusing." >&2
+    exit 2
+  fi
+
+  jq -nc \
+    --arg c "$client" \
+    --arg s "$start_utc" \
+    --arg p "$pause_ts" \
+    --argjson pt "$paused_sec_total" \
+    '{client:$c, start:$s, paused_at:$p, paused_sec_total:$pt}' \
+    > "$TRACKER_DIR/active.json.tmp"
+  mv "$TRACKER_DIR/active.json.tmp" "$TRACKER_DIR/active.json"
+
+  release_lock
+
+  local worked_min worked_human pause_hhmm
+  worked_min=$(jq -nr --arg s "$start_utc" --arg p "$pause_ts" --argjson pt "$paused_sec_total" \
+    '((($p | fromdate) - ($s | fromdate)) - $pt) / 60 | floor')
+  worked_human=$(format_duration "$worked_min")
+  pause_hhmm=$(jq -nr --arg p "$pause_ts" '$p | fromdate | strflocaltime("%H:%M")')
+  echo "[track] paused: $client · worked $worked_human so far · paused at $pause_hhmm"
+}
+
+cmd_resume() {
+  local at_val="" ago_val=""
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --at)
+        at_val="${2:-}"
+        if [ -z "$at_val" ]; then
+          echo "[track] --at requires a value (HH:MM)" >&2
+          exit 2
+        fi
+        shift 2
+        ;;
+      --ago)
+        ago_val="${2:-}"
+        if [ -z "$ago_val" ]; then
+          echo "[track] --ago requires a value (e.g., 30m)" >&2
+          exit 2
+        fi
+        shift 2
+        ;;
+      *)
+        echo "[track] /track:resume takes no positional args (got: '$1')" >&2
+        exit 2
+        ;;
+    esac
+  done
+
+  preflight
+  acquire_lock
+
+  if [ ! -f "$TRACKER_DIR/active.json" ]; then
+    release_lock
+    echo "[track] no active timer." >&2
+    exit 1
+  fi
+
+  local client start_utc paused_at paused_sec_total
+  client=$(jq -r '.client' "$TRACKER_DIR/active.json")
+  start_utc=$(jq -r '.start' "$TRACKER_DIR/active.json")
+  paused_at=$(jq -r '.paused_at // ""' "$TRACKER_DIR/active.json")
+  paused_sec_total=$(jq -r '.paused_sec_total // 0' "$TRACKER_DIR/active.json")
+
+  if [ -z "$paused_at" ]; then
+    release_lock
+    echo "[track] timer is not paused." >&2
+    exit 1
+  fi
+
+  local resume_ts delta new_total
+  resume_ts=$(resolve_timestamp "$at_val" "$ago_val")
+  delta=$(jq -nr --arg p "$paused_at" --arg r "$resume_ts" '($r | fromdate) - ($p | fromdate)')
+  if [ "$delta" -lt 0 ]; then
+    local pause_hhmm resume_hhmm
+    pause_hhmm=$(jq -nr --arg p "$paused_at" '$p | fromdate | strflocaltime("%H:%M")')
+    resume_hhmm=$(jq -nr --arg r "$resume_ts" '$r | fromdate | strflocaltime("%H:%M")')
+    release_lock
+    echo "[track] resume time $resume_hhmm is before pause time $pause_hhmm; refusing." >&2
+    exit 2
+  fi
+  new_total=$((paused_sec_total + delta))
+
+  jq -nc \
+    --arg c "$client" \
+    --arg s "$start_utc" \
+    --argjson pt "$new_total" \
+    '{client:$c, start:$s, paused_sec_total:$pt}' \
+    > "$TRACKER_DIR/active.json.tmp"
+  mv "$TRACKER_DIR/active.json.tmp" "$TRACKER_DIR/active.json"
+
+  release_lock
+
+  local segment_min segment_human total_human
+  segment_min=$((delta / 60))
+  segment_human=$(format_duration "$segment_min")
+  total_human=$(format_duration "$((new_total / 60))")
+  echo "[track] resumed: $client · paused for $segment_human · total paused $total_human"
+}
+
 # ---------- main ----------
 
 main() {
   local sub="${1:-}"
   if [ -z "$sub" ]; then
     cat >&2 <<'EOF'
-usage: track.sh {start|stop|status|report} [args...]
+usage: track.sh {start|stop|pause|resume|status|report} [args...]
 
   start <client> [--at HH:MM | --ago <dur>]
                                       Start a timer for the named client.
@@ -558,7 +765,11 @@ usage: track.sh {start|stop|status|report} [args...]
                                       --ago backdates by a duration (e.g., 30m, 2h, 1h30m).
   stop [--at HH:MM | --ago <dur>]     Stop the active timer; reads note from stdin.
                                       --at/--ago set the end time the same way as start.
+                                      If paused, end defaults to the pause point.
                                       Refuses end < start.
+  pause [--at HH:MM | --ago <dur>]    Pause the active timer; paused time is excluded
+                                      from the final session duration.
+  resume [--at HH:MM | --ago <dur>]   Resume a paused timer.
   status                              Show active timer + today's totals.
   report [--week|--month YYYY-MM] [--client <name>]
                                       Print invoice-ready markdown rollup.
@@ -569,10 +780,12 @@ EOF
   case "$sub" in
     start)  cmd_start  "$@" ;;
     stop)   cmd_stop   "$@" ;;
+    pause)  cmd_pause  "$@" ;;
+    resume) cmd_resume "$@" ;;
     status) cmd_status "$@" ;;
     report) cmd_report "$@" ;;
     *)
-      echo "[track] unknown subcommand: '$sub' (use start|stop|status|report)" >&2
+      echo "[track] unknown subcommand: '$sub' (use start|stop|pause|resume|status|report)" >&2
       exit 2
       ;;
   esac

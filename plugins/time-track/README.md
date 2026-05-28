@@ -89,9 +89,28 @@ Stop the active timer. The optional note is passed through stdin internally, so 
 
 On success, prints the session length and today's total for that client. On failure (e.g. `git commit` fails because GPG agent is locked), prints a recovery hint and **preserves the active timer** so you can retry after fixing the underlying issue.
 
+### `/track:pause` and `/track:resume`
+
+Pause the running timer when you step away (lunch, meeting, interruption); resume when you're back. Paused time is excluded from the session total, and the whole work block lands as a single ledger entry when you eventually `/track:stop`.
+
+```
+/track:start acme
+/track:pause                    # take a break
+/track:resume                   # come back
+/track:pause --at 12:30         # forgot to pause when you went to lunch
+/track:resume --at 13:15
+/track:stop fixed the auth bug  # ONE entry, with breaks subtracted
+```
+
+If you `/track:stop` while paused, the end time is the pause point — you don't have to resume first. To stop with an explicit `--at`/`--ago`, resume first (resume also accepts `--at`/`--ago`); this keeps the worked/paused boundary explicit in the ledger.
+
+Both commands accept `--at HH:MM` and `--ago <duration>` for backdating, the same way `start` and `stop` do.
+
+**Backdating caveat:** if you backdate a pause to a moment *before* an earlier resume in the same session, the overlapping window can be counted incorrectly (paused time may be double-subtracted). The dispatcher won't catch this. Hand-edit the JSONL entry after stopping if you need to reconstruct a session with that kind of history.
+
 ### `/track:status`
 
-Prints the active timer (if any) and today's completed totals per client. Heads-up message appears if the active timer has been running > 12 hours.
+Prints the active timer (if any) and today's completed totals per client. When the timer is paused, shows worked time and how long the current pause has been open. Heads-up message appears if a running timer has been active > 12 hours.
 
 ### `/track:report [--week | --month YYYY-MM] [--client <name>]`
 
