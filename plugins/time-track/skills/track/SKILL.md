@@ -1,11 +1,11 @@
 ---
 name: track
-description: Console-native billable hours tracker. Routes /track:start, /track:stop, /track:status, /track:report to a bash dispatcher that maintains a git-versioned JSONL ledger under ~/.time-tracker/. Use whenever the user invokes one of those slash commands. The skill itself does no time arithmetic, file I/O, or git work — the dispatcher does all of that. The skill's job is to construct the correct Bash invocation: for /track:start and /track:stop, split optional --at/--ago flags from the positional client name (start) or the note (stop). For /track:stop the user's note must be piped through stdin rather than passed as an argument (so shell metacharacters in the note cannot be interpreted).
+description: Console-native billable hours tracker. Routes /track:start, /track:stop, /track:pause, /track:resume, /track:status, /track:report to a bash dispatcher that maintains a git-versioned JSONL ledger under ~/.time-tracker/. Use whenever the user invokes one of those slash commands. The skill itself does no time arithmetic, file I/O, or git work — the dispatcher does all of that. The skill's job is to construct the correct Bash invocation: for /track:start, /track:stop, /track:pause, and /track:resume, split optional --at/--ago flags from the positional client name (start). For /track:stop the user's note must be piped through stdin rather than passed as an argument (so shell metacharacters in the note cannot be interpreted). /track:pause and /track:resume take no positional args.
 ---
 
 # track skill
 
-This skill is the safe-invocation wrapper around `bin/track.sh`. Its sole job is to translate one of the four `/track:*` slash commands into a `Bash` tool invocation that runs the dispatcher correctly. All ledger logic, locking, atomic writes, git commits, jq math, and error messages live in `bin/track.sh` — do not reimplement any of that here.
+This skill is the safe-invocation wrapper around `bin/track.sh`. Its sole job is to translate one of the `/track:*` slash commands into a `Bash` tool invocation that runs the dispatcher correctly. All ledger logic, locking, atomic writes, git commits, jq math, and error messages live in `bin/track.sh` — do not reimplement any of that here.
 
 ## Locating the dispatcher
 
@@ -58,6 +58,30 @@ So when invoking:
 In every case `<NOTE>` is the literal text of the note portion (after any leading flag tokens are consumed), quoted as a shell string. Use `printf '%s'` rather than `echo` to avoid escape-sequence interpretation of the note content.
 
 The dispatcher's `cmd_stop` parses argv flags first, then checks `[ ! -t 0 ]` and reads stdin for the note when present. It refuses end-before-start (the only validation on backdating), preserving the active timer for retry.
+
+If the timer is currently paused and the user did not pass `--at`/`--ago`, the dispatcher uses the pause point as the end automatically — the user does not need to resume before stopping.
+
+### /track:pause
+
+User invocation: `/track:pause [--at HH:MM | --ago <duration>]` (with `$ARGUMENTS` containing the optional backdating flag)
+
+Bash invocation:
+```
+bash "${CLAUDE_PLUGIN_ROOT}/bin/track.sh" pause $ARGUMENTS
+```
+
+`/track:pause` takes no positional args (no client, no note). `--at`/`--ago` backdate the moment the pause began — useful if the user forgot to pause when they actually stepped away. The dispatcher refuses a pause timestamp before the timer's start, and refuses to pause if the timer is already paused or if no timer is running.
+
+### /track:resume
+
+User invocation: `/track:resume [--at HH:MM | --ago <duration>]` (with `$ARGUMENTS` containing the optional backdating flag)
+
+Bash invocation:
+```
+bash "${CLAUDE_PLUGIN_ROOT}/bin/track.sh" resume $ARGUMENTS
+```
+
+`/track:resume` takes no positional args. `--at`/`--ago` backdate the resume moment. The dispatcher refuses a resume timestamp before the pause point, and refuses to resume if no timer is running or the timer isn't currently paused.
 
 ### /track:status
 
