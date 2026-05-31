@@ -1,5 +1,13 @@
 {
   "name": "track",
+  "displayName": "Time Track",
   "description": "Console-native billable hours tracker with git-versioned plaintext ledger.",
-  "version": "0.3.0"
+  "version": "0.3.0",
+  "author": {
+    "name": "Michael VanDyke",
+    "url": "https://github.com/mvdmakesthings"
+  },
+  "keywords": ["time-tracking", "billing", "invoicing", "hours", "productivity"],
+  "license": "MIT",
+  "homepage": "https://github.com/mvdmakesthings/skills"
 }

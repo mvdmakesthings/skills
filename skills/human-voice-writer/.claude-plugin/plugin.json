@@ -1,5 +1,13 @@
 {
   "name": "writer",
+  "displayName": "Human Voice Writer",
   "description": "Write prose that sounds authentically human rather than AI-generated. Applies research-backed techniques from CMU/PNAS stylometric research, Nielsen Norman Group, and GPTZero detection methodology to produce natural-sounding long-form content, emails, articles, and more.",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "author": {
+    "name": "Michael VanDyke",
+    "url": "https://github.com/mvdmakesthings"
+  },
+  "keywords": ["writing", "humanization", "prose", "content", "editing"],
+  "license": "MIT",
+  "homepage": "https://github.com/mvdmakesthings/skills"
 }

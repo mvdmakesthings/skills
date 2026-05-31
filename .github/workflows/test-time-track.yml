@@ -3,11 +3,11 @@ name: test-time-track
 on:
   push:
     paths:
-      - 'plugins/time-track/**'
+      - 'skills/time-track/**'
       - '.github/workflows/test-time-track.yml'
   pull_request:
     paths:
-      - 'plugins/time-track/**'
+      - 'skills/time-track/**'
       - '.github/workflows/test-time-track.yml'
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
           git config --global user.name  "CI Bot"
 
       - name: shellcheck dispatcher
-        run: shellcheck plugins/time-track/bin/track.sh
+        run: shellcheck skills/time-track/bin/track.sh
 
       - name: bats test suite
-        run: bats plugins/time-track/tests/
+        run: bats skills/time-track/tests/

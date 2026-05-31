@@ -1,6 +1,7 @@
 ---
 name: storyteller-guidance
 description: Help the user craft presentations, pitches, talks, demos, launch announcements, all-hands updates, sales decks, fundraising pitches, conference talks, memos, narratives, blog posts, founder updates, internal announcements, layoff communications, post-mortems, kickoffs, town halls, and any other communication intended to persuade, inspire, inform, or move an audience. Use this skill whenever the user is preparing to present, pitch, announce, launch, kick off, give a talk, write a memo, share news, or otherwise tell a story to other humans — even when they don't use the word "story." It walks a structured diagnostic and applies tactics from a 54-card storytelling system (Concept, Explore, Character, Function, Structure, Style, Organise) plus seven recipes that combine tactics for common goals.
+version: 0.1.0
 ---
 
 # Storyteller Guidance

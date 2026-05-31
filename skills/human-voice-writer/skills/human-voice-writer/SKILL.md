@@ -1,6 +1,7 @@
 ---
 name: human-voice-writer
 description: Write prose that sounds authentically human rather than AI-generated. Use this skill whenever writing long-form content, emails, articles, reports, documentation, blog posts, creative writing, social media copy, proposals, memos, or any text where sounding like a real person matters. Triggers on requests like "write this naturally," "make it sound human," "don't sound like AI," "write like a real person," or any writing task where the user has indicated they want authentic, non-robotic prose. Also use when editing existing text to remove AI-sounding patterns.
+version: 1.0.0
 ---
 
 # Human Voice Writer

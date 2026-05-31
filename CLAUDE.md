@@ -10,7 +10,7 @@ This is a **Claude Code plugin marketplace** — a public catalog of plugins tha
 
 ```
 .claude-plugin/marketplace.json   ← Marketplace catalog (the registry)
-plugins/                           ← All plugins live here
+skills/                            ← All plugins live here
   <plugin-name>/
     .claude-plugin/plugin.json     ← Plugin manifest (required)
     skills/                        ← SKILL.md files
@@ -19,16 +19,16 @@ plugins/                           ← All plugins live here
     hooks/                         ← Hook configurations
 ```
 
-Plugin source paths in the `plugins` array use relative paths from the repository root (e.g., `"source": "./plugins/my-plugin"`).
+Plugin source paths in the `plugins` array use relative paths from the repository root (e.g., `"source": "./skills/my-plugin"`).
 
 ## Key Files
 
 - **`.claude-plugin/marketplace.json`** — The marketplace registry. Every plugin must have an entry here to be discoverable. The `name` field (`mvdmakesthings`) is what users reference during install (`/plugin install <plugin>@mvdmakesthings`).
-- **`plugins/<name>/.claude-plugin/plugin.json`** — Each plugin's manifest with name, description, and version.
+- **`skills/<name>/.claude-plugin/plugin.json`** — Each plugin's manifest with name, description, and version.
 
 ## Adding a Plugin
 
-1. Create `plugins/<name>/.claude-plugin/plugin.json` with the manifest
+1. Create `skills/<name>/.claude-plugin/plugin.json` with the manifest
 2. Add component directories (skills/, agents/, commands/, hooks/) as needed
 3. Add an entry to the `plugins` array in `.claude-plugin/marketplace.json`
 
