@@ -24,6 +24,11 @@
       "source": "./plugins/grill-with-docs"
     },
     {
+      "name": "to-issues",
+      "description": "Break a plan, spec, or PRD into independently-grabbable issues on the project issue tracker using tracer-bullet vertical slices.",
+      "source": "./plugins/to-issues"
+    },
+    {
       "name": "to-prd",
       "description": "Turn the current conversation context into a PRD and publish it to the project issue tracker in Linear.",
       "source": "./plugins/to-prd"
