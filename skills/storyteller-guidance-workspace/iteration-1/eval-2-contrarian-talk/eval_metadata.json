@@ -1,0 +1,14 @@
+{
+  "eval_id": 2,
+  "eval_name": "contrarian-conf-talk-microservices-to-monolith",
+  "prompt": "I'm giving a 15-minute conference talk on why we ripped out our microservices and went back to a monolith. Audience is mid-senior engineers who've heard a million 'microservices are bad' takes. I don't want to be another lazy contrarian. I want them to actually rethink their architecture decisions. Help me shape this.",
+  "expected_output": "A talk outline that (1) acknowledges the saturated take in the opening, (2) uses a credible structure that includes setbacks (likely No Easy Way or Pride & Fall), (3) earns its conclusion via specifics rather than ideology, (4) ends with a question or reframe rather than a tidy bow.",
+  "assertions": [
+    {"text": "Acknowledges the saturated/lazy-contrarian framing the user explicitly worries about", "type": "qualitative"},
+    {"text": "Picks a structure that includes setbacks or earned credibility (No Easy Way, Pride & Fall, Man in a Hole, Epic Fail) rather than pure optimistic arc", "type": "qualitative"},
+    {"text": "Produces a beat-by-beat talk outline with time estimates or sequence (not just bullet themes)", "type": "qualitative"},
+    {"text": "Plans specifics (numbers, before/after, named incidents) rather than abstract claims", "type": "qualitative"},
+    {"text": "Ends with a reframing question or open challenge to the audience rather than a clean wrap", "type": "qualitative"},
+    {"text": "Names which tactics or structural devices are being used and why", "type": "qualitative"}
+  ]
+}

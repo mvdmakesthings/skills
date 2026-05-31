@@ -1,0 +1,13 @@
+{
+  "eval_id": 1,
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "Asks at least one clarifying question OR explicitly states an assumption about the audience/situation", "passed": true, "evidence": "Opens with explicit diagnosis ('she has scar tissue'), then 'Sound right? If your read of her is different... tell me' offers a redirect."},
+    {"text": "Names a specific story arc or structure and explains why it fits", "passed": true, "evidence": "Explicitly picks No Easy Way over Rags to Riches with reasoning: 'a three-strikes buyer would pattern-match a smooth ascent arc as marketing fluff — the messy-middle version is the credibility move.'"},
+    {"text": "Addresses the VP's prior-bad-experience skepticism directly (does not paper over it)", "passed": true, "evidence": "Opens by stating she's 'skeptical of being sold to about analytics' and the opener line names her exact pattern out loud."},
+    {"text": "Recommends using the pilot customers as social proof or named-brand evidence", "passed": true, "evidence": "Picks the messier pilot for the arc story, uses the other two for social proof in minutes 22-25 with an honest 'still in the messy middle' tag for one."},
+    {"text": "Produces a structured artifact (outline, scene list, beat sequence) rather than a wall of prose", "passed": true, "evidence": "30-minute structure broken into time-blocked sections, the body is a five-beat No Easy Way arc with time estimates per beat."},
+    {"text": "Ends with a revision handle: a question, an ask for input, or a 'here's what only you can fill in' callout", "passed": true, "evidence": "Final section 'The one question you need to answer before Tuesday' names the specific Beat 3 detail only the user can supply."}
+  ],
+  "summary": "6/6 — full coverage. The with-skill output is highly structured, names specific tactics with rationale, and leaves a clear handoff for the user."
+}

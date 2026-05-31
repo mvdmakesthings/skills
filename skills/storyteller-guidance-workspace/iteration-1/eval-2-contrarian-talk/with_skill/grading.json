@@ -1,0 +1,13 @@
+{
+  "eval_id": 2,
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "Acknowledges the saturated/lazy-contrarian framing the user explicitly worries about", "passed": true, "evidence": "Multiple direct references: 'this is the move that separates you from the lazy contrarians', 'the line between thoughtful re-examination and smug contrarian is whether you implicate yourself in Beat 2'."},
+    {"text": "Picks a structure that includes setbacks or earned credibility rather than pure optimistic arc", "passed": true, "evidence": "Explicitly chooses No Easy Way and explains the reasoning: 'Not Man-in-a-Hole (too clean), not Rags-to-Riches (too triumphant)... your audience trusts a story with scars.'"},
+    {"text": "Produces a beat-by-beat talk outline with time estimates or sequence (not just bullet themes)", "passed": true, "evidence": "Five labeled beats (1.5min/3min/4min/4min/2.5min) each with content, purpose, and connection to a named tactic."},
+    {"text": "Plans specifics (numbers, before/after, named incidents) rather than abstract claims", "passed": true, "evidence": "Calls out exactly where specifics are needed (Beat 3 setback, Beat 4 metric), provides candidate shapes but flags them as placeholders for the user's real specifics."},
+    {"text": "Ends with a reframing question or open challenge to the audience rather than a clean wrap", "passed": true, "evidence": "Beat 5 is explicitly designed as 'three questions they walk out and run on their own org', closing line is 'whatever you're running right now — make sure you didn't pick it for the same reasons we did.'"},
+    {"text": "Names which tactics or structural devices are being used and why", "passed": true, "evidence": "Tactic stack listed at top with per-tactic rationale, each beat has a 'Why this beat is here' note, summary tactics block at the bottom."}
+  ],
+  "summary": "6/6 — disciplined application of named tactics with explicit rationale at every step."
+}

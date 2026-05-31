@@ -1,0 +1,13 @@
+{
+  "eval_id": 3,
+  "configuration": "without_skill",
+  "expectations": [
+    {"text": "Leads with the news (the 18% miss) in the first line or paragraph, not buildup", "passed": true, "evidence": "'The Bottom Line: We finished Q4 18% below target.' News up front."},
+    {"text": "Explicitly chooses a failure frame and explains why", "passed": false, "evidence": "Implicitly handles both external and internal cause but does not name or justify a failure frame as a craft decision."},
+    {"text": "Names both causes (external softening + internal pricing change) without scapegoating", "passed": true, "evidence": "Both causes named in '1. The market softened in November' and '2. Our pricing change underperformed our model' — explicit 'This is on the strategy, not the execution.'"},
+    {"text": "Ends with concrete asks or next steps, not just analysis", "passed": true, "evidence": "Three explicit asks: 'Hold the line on Q1 targets', 'Air cover on the pricing reversion', 'Time on next week's agenda'."},
+    {"text": "Tone is honest-not-panicked as requested", "passed": true, "evidence": "Confident but measured throughout; closes 'I'm confident in where we're going. Q4 was a real miss, but it was a knowable one.'"},
+    {"text": "Produces a memo structure (sections or clear paragraphs) the user can edit, not free-flowing prose", "passed": true, "evidence": "Standard memo headers and clean sections (Bottom Line / What Happened / What We're Doing / What I'd Ask)."}
+  ],
+  "summary": "5/6 — a polished memo on first principles. The missing assertion is the deliberate failure-frame choice, which is exactly the craft move the skill teaches."
+}

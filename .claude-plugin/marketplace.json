@@ -11,32 +11,32 @@
     {
       "name": "writer",
       "description": "Write prose that sounds authentically human rather than AI-generated.",
-      "source": "./plugins/human-voice-writer"
+      "source": "./skills/human-voice-writer"
     },
     {
       "name": "storyteller-guidance",
       "description": "Craft presentations, pitches, talks, and any communication that needs to persuade, inspire, or move an audience. A working storytelling coach grounded in established narrative-craft principles.",
-      "source": "./plugins/storyteller-guidance"
+      "source": "./skills/storyteller-guidance"
     },
     {
       "name": "grill-with-docs",
       "description": "Stress-test a plan against your project's domain model. Challenges terminology, resolves design decisions one-by-one, and updates CONTEXT.md and ADRs inline as decisions crystallise.",
-      "source": "./plugins/grill-with-docs"
+      "source": "./skills/grill-with-docs"
     },
     {
       "name": "to-issues",
       "description": "Break a plan, spec, or PRD into independently-grabbable issues on the project issue tracker using tracer-bullet vertical slices.",
-      "source": "./plugins/to-issues"
+      "source": "./skills/to-issues"
     },
     {
       "name": "to-prd",
       "description": "Turn the current conversation context into a PRD and publish it to the project issue tracker in Linear.",
-      "source": "./plugins/to-prd"
+      "source": "./skills/to-prd"
     },
     {
       "name": "track",
       "description": "Console-native billable hours tracker. Slash commands (/track:start, /track:stop, /track:pause, /track:resume, /track:status, /track:report) record billable sessions to a git-versioned plaintext ledger under ~/.time-tracker/.",
-      "source": "./plugins/time-track"
+      "source": "./skills/time-track"
     }
   ]
 }
