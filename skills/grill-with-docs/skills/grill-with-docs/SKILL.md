@@ -54,6 +54,10 @@ Create files lazily — only when you have something to write. If no `CONTEXT.md
 
 ## During the session
 
+### Explain things simply
+
+When you ask a question, or explain something, do so as simply as possible. Use simple language and avoid jargon. If you need to use a technical term, explain what it means in plain English.
+
 ### Challenge against the glossary
 
 When the user uses a term that conflicts with the existing language in `CONTEXT.md`, call it out immediately. "Your glossary defines 'cancellation' as X, but you seem to mean Y — which is it?"
@@ -86,4 +90,7 @@ Only offer to create an ADR when all three are true:
 
 If any of the three is missing, skip the ADR. Use the format in [ADR-FORMAT.md](./references/ADR-FORMAT.md).
 
+### Update linear if needed
+
+If you make a decision that has implications for implementation, update the relevant issue in the project or issue within linear. Update the docs as you go, don't batch them up for later.
 </supporting-info>
