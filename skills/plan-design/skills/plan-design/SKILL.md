@@ -159,7 +159,7 @@ Save to `./design-assets/mockup.html`.
 
 ## Phase 5: Attach to Linear
 
-Attach all four assets to the Linear issue so they're accessible to anyone working from the ticket — developers during implementation, designers during review.
+Attach the two assets (chosen mockup PNG and mockup.html) to the Linear issue so they're accessible to anyone working from the ticket — developers during implementation, designers during review.
 
 **For each file (the chosen option PNG and mockup.html only — do not upload the rejected options):**
 
