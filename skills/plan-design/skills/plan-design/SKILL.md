@@ -161,7 +161,7 @@ Save to `./design-assets/mockup.html`.
 
 Attach all four assets to the Linear issue so they're accessible to anyone working from the ticket — developers during implementation, designers during review.
 
-**For each file (option-a.png, option-b.png, option-c.png, mockup.html):**
+**For each file (the chosen option PNG and mockup.html only — do not upload the rejected options):**
 
 1. Use `mcp__plugin_linear_linear__prepare_attachment_upload` to get an upload URL for the file
 2. Upload the file content to that URL
@@ -180,7 +180,7 @@ Attach all four assets to the Linear issue so they're accessible to anyone worki
 - [any other decisions from the interview worth preserving]
 
 ### Assets (attached above)
-- `option-a.png`, `option-b.png`, `option-c.png` — the three candidate mockups
+- `option-[x].png` — the chosen mockup
 - `mockup.html` — HTML/CSS implementation of the chosen direction
 
 These assets are the implementation target and will be used for final review against the shipped feature.
