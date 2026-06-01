@@ -1,6 +1,6 @@
 ---
 name: plan-design
-description: Design planning entry point — reads DESIGN.md, CONTEXT.md, and ADRs plus a Linear issue, conducts a short alignment interview, generates three layout-archetype mockups via DALL-E (sidebar nav / top nav + cards / full-width scroll), lets you pick one, then produces an HTML/CSS implementation using your exact design tokens and attaches all assets to the Linear issue for use during implementation and review. Use when starting design work on any feature, when you need visual options before committing to layout, or any time you want a Linear ticket to carry its own design artifacts.
+description: Design planning entry point — reads DESIGN.md, CONTEXT.md, and ADRs plus a Linear issue, conducts a short alignment interview, generates three layout-archetype mockups via OpenAI image generation (sidebar nav / top nav + cards / full-width scroll), lets you pick one, then produces an HTML/CSS implementation using your exact design tokens and attaches all assets to the Linear issue for use during implementation and review. Use when starting design work on any feature, when you need visual options before committing to layout, or any time you want a Linear ticket to carry its own design artifacts.
 version: 0.1.0
 ---
 
@@ -100,19 +100,16 @@ mkdir -p ./design-assets
 For each archetype, make one call and save the result:
 
 ```bash
-IMAGE_URL=$(curl -s https://api.openai.com/v1/images/generations \
+curl -s https://api.openai.com/v1/images/generations \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $OPENAI_API_KEY" \
   -d "{
-    \"model\": \"dall-e-3\",
+    \"model\": \"gpt-image-1\",
     \"prompt\": \"$PROMPT_A\",
     \"n\": 1,
-    \"size\": \"1792x1024\",
-    \"quality\": \"hd\",
-    \"response_format\": \"url\"
-  }" | jq -r '.data[0].url')
-
-curl -s "$IMAGE_URL" -o ./design-assets/option-a.png
+    \"size\": \"1536x1024\",
+    \"quality\": \"high\"
+  }" | jq -r '.data[0].b64_json' | base64 -d > ./design-assets/option-a.png
 ```
 
 Repeat for `$PROMPT_B` → `option-b.png` and `$PROMPT_C` → `option-c.png`.
