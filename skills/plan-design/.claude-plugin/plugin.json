@@ -2,7 +2,7 @@
   "name": "plan-design",
   "displayName": "Plan Design",
   "description": "Doc-aware design planning: reads your DESIGN.md, CONTEXT.md, and ADRs plus a Linear issue, conducts an alignment interview, generates three layout-archetype mockups via OpenAI image generation, lets you pick one, then produces an HTML/CSS implementation using your exact design tokens and attaches the chosen assets to the Linear issue.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "Michael VanDyke",
     "url": "https://github.com/mvdmakesthings"
