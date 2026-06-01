@@ -192,9 +192,9 @@ Wait for the subagent to confirm completion before proceeding to Phase 5.
 
 ## Phase 5: Attach to Linear
 
-Attach the two assets (chosen mockup PNG and mockup.html) to the Linear issue so they're accessible to anyone working from the ticket — developers during implementation, designers during review.
+Attach `mockup.html` to the Linear issue — this is the only file that gets uploaded. Do not upload any PNGs.
 
-**For each file (the chosen option PNG and mockup.html only — do not upload the rejected options):**
+**For the file mockup.html only:**
 
 1. Use `mcp__plugin_linear_linear__prepare_attachment_upload` to get an upload URL for the file
 2. Upload the file content to that URL
@@ -213,7 +213,6 @@ Attach the two assets (chosen mockup PNG and mockup.html) to the Linear issue so
 - [any other decisions from the interview worth preserving]
 
 ### Assets (attached above)
-- `option-[x].png` — the chosen mockup
 - `mockup.html` — HTML/CSS implementation of the chosen direction
 
 These assets are the implementation target and will be used for final review against the shipped feature.
