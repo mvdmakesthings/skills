@@ -1,0 +1,13 @@
+{
+  "name": "qa",
+  "displayName": "QA",
+  "description": "Software QA skill that reviews current changes against a Linear issue, validates acceptance criteria in code and tests, and uses Playwright to visually verify the UI against the expected design.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Michael VanDyke",
+    "url": "https://github.com/mvdmakesthings"
+  },
+  "keywords": ["qa", "testing", "playwright", "linear", "acceptance-criteria", "visual-regression"],
+  "license": "MIT",
+  "homepage": "https://github.com/mvdmakesthings/skills"
+}
