@@ -150,17 +150,43 @@ Wait for their choice. Acknowledge any modifications before proceeding.
 
 ## Phase 4: Generate HTML/CSS Implementation
 
-Write `./design-assets/mockup.html` — a production-quality static HTML/CSS file that implements the chosen layout using the project's exact design tokens. This file will be used as the implementation target and the review artifact, so it needs to represent the real layout accurately.
+Delegate this step to a subagent via the `Task` tool to keep this session's context lean. Pass all context the subagent needs inline — it has no access to the conversation history.
+
+**Spawn a Task with a prompt structured as follows:**
+
+---
+You are generating a production-quality static HTML/CSS mockup file.
+
+**Output path:** `./design-assets/mockup.html`
+
+**Chosen layout archetype:** [archetype name, e.g. "Sidebar Nav"] [any user modifications from Phase 3]
+
+**Design tokens (use these exact values as CSS custom properties at `:root`):**
+- Primary: [primary-hex]
+- Accent: [accent-hex]
+- Background: [bg-hex]
+- Surface: [surface-hex or white]
+- Text: [text-hex]
+- Font family: [font-family]
+- Border radius: [radius value]
+- Spacing scale: [spacing values]
+
+**Linear issue:** [KEY] — [title]
+
+**UI requirements from the issue and alignment interview:**
+- [bullet each confirmed UI element, interaction, or constraint]
 
 **Requirements:**
-- Define all design tokens as CSS custom properties at `:root` — pull values directly from DESIGN.md so there's no drift between the spec and the mockup
-- Implement the chosen archetype's structure faithfully (sidebar, top nav, or scroll sections)
-- Include all key UI elements mentioned in the Linear issue and confirmed during the alignment interview
-- Use realistic placeholder content (not "Lorem ipsum" — use plausible labels, actions, and data relevant to the feature)
+- Define all design tokens as CSS custom properties at `:root`
+- Implement the chosen archetype structure faithfully
+- Use realistic placeholder content (not "Lorem ipsum" — use plausible labels and data relevant to the feature)
 - No external dependencies — inline all CSS, use system fonts as fallbacks, no CDN links
-- Add a header comment: `<!-- plan-design | Direction: [archetype name] | Issue: [KEY] | Date: [date] -->`
+- First line of the file must be: `<!-- plan-design | Direction: [archetype name] | Issue: [KEY] | Date: [today's date] -->`
 
-Save to `./design-assets/mockup.html`.
+Write the file to `./design-assets/mockup.html` and confirm the path and file size when done.
+---
+
+Wait for the subagent to confirm completion before proceeding to Phase 5.
 
 ---
 
