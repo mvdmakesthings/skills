@@ -91,30 +91,37 @@ The three options differ in information architecture, not in visual polish — a
 Use `references/image-prompts.md` as your template. Fill every placeholder with real values from the DESIGN.md tokens and the alignment interview. Include the feature name from the Linear issue to anchor the content — a prompt for "a payment settings screen" generates far more useful output than a generic "web app UI."
 
 ### Making the API calls
-Generate all three images, creating the output directory first:
+
+**IMPORTANT — use `chatgpt-image-latest` exactly as shown below. Do NOT use `dall-e-3`. Do NOT add `response_format` — this parameter is rejected by the current API. The model always returns base64; save it with `base64 -d`.**
+
+Create the output directory and generate all three images:
 
 ```bash
 mkdir -p ./design-assets
-```
 
-For each archetype, make one call and save the result:
-
-```bash
+# Option A
 curl -s https://api.openai.com/v1/images/generations \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $OPENAI_API_KEY" \
-  -d "{
-    \"model\": \"gpt-image-1\",
-    \"prompt\": \"$PROMPT_A\",
-    \"n\": 1,
-    \"size\": \"1536x1024\",
-    \"quality\": \"high\"
-  }" | jq -r '.data[0].b64_json' | base64 -d > ./design-assets/option-a.png
+  -d "{\"model\":\"chatgpt-image-latest\",\"prompt\":\"$PROMPT_A\",\"n\":1,\"size\":\"1536x1024\",\"quality\":\"high\"}" \
+  | jq -r '.data[0].b64_json' | base64 -d > ./design-assets/option-a.png
+
+# Option B
+curl -s https://api.openai.com/v1/images/generations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $OPENAI_API_KEY" \
+  -d "{\"model\":\"chatgpt-image-latest\",\"prompt\":\"$PROMPT_B\",\"n\":1,\"size\":\"1536x1024\",\"quality\":\"high\"}" \
+  | jq -r '.data[0].b64_json' | base64 -d > ./design-assets/option-b.png
+
+# Option C
+curl -s https://api.openai.com/v1/images/generations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $OPENAI_API_KEY" \
+  -d "{\"model\":\"chatgpt-image-latest\",\"prompt\":\"$PROMPT_C\",\"n\":1,\"size\":\"1536x1024\",\"quality\":\"high\"}" \
+  | jq -r '.data[0].b64_json' | base64 -d > ./design-assets/option-c.png
 ```
 
-Repeat for `$PROMPT_B` → `option-b.png` and `$PROMPT_C` → `option-c.png`.
-
-If a call fails, retry once with the same prompt. If it fails again, note it and continue with the remaining archetypes — two options are better than blocking.
+If a call produces an empty file (0 bytes), retry that option once with the same prompt. If it fails again, note it and continue — two options are better than blocking.
 
 ---
 

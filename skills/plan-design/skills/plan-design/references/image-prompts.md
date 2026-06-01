@@ -1,6 +1,6 @@
 # Image Prompt Templates
 
-Use these templates when building gpt-image-1 prompts in Phase 2. Fill every placeholder with real values from DESIGN.md and the alignment interview.
+Use these templates when building chatgpt-image-latest prompts in Phase 2. Fill every placeholder with real values from DESIGN.md and the alignment interview.
 
 ## General formula
 
@@ -15,7 +15,7 @@ UI/UX professional design
 ```
 
 **Why these specific words matter:**
-- "UI mockup screenshot" — tells gpt-image-1 this is interface design, not illustration
+- "UI mockup screenshot" — tells chatgpt-image-latest this is interface design, not illustration
 - "high-fidelity" — produces crisper, more realistic output than "wireframe"
 - "no readable text" — prevents garbled text artifacts in the output
 - "placeholder content" — avoids hallucinated real company names or data
@@ -60,4 +60,4 @@ Best for: onboarding flows, landing pages, document or article reading experienc
 - **Add tone adjectives** from CONTEXT.md — "professional and focused" produces very different output than "playful and colorful"
 - **If the user named a reference app** in the alignment interview, describe its aesthetic quality (e.g. "similar visual weight and density to Linear", "minimal like Notion", "data-dense like Grafana")
 - **Avoid:** "wireframe", "sketch", "low-fidelity", "hand-drawn" — these produce lower-quality, less useful outputs
-- **One call per archetype** — gpt-image-1 n=1 produces more coherent results than n=3 at once
+- **One call per archetype** — chatgpt-image-latest n=1 produces more coherent results than n=3 at once
