@@ -1,0 +1,13 @@
+{
+  "name": "plan-design",
+  "displayName": "Plan Design",
+  "description": "Doc-aware design planning: reads your DESIGN.md, CONTEXT.md, and ADRs plus a Linear issue, conducts an alignment interview, generates three layout-archetype mockups via DALL-E, lets you pick one, then produces an HTML/CSS implementation using your exact design tokens and attaches all assets to the Linear issue.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Michael VanDyke",
+    "url": "https://github.com/mvdmakesthings"
+  },
+  "keywords": ["design", "mockup", "ui", "ux", "linear", "dall-e", "design-tokens", "html", "css"],
+  "license": "MIT",
+  "homepage": "https://github.com/mvdmakesthings/skills"
+}

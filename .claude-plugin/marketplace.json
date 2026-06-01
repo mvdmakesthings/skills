@@ -37,6 +37,11 @@
       "name": "track",
       "description": "Console-native billable hours tracker. Slash commands (/track:start, /track:stop, /track:pause, /track:resume, /track:status, /track:report) record billable sessions to a git-versioned plaintext ledger under ~/.time-tracker/.",
       "source": "./skills/time-track"
+    },
+    {
+      "name": "plan-design",
+      "description": "Doc-aware design planning: reads your DESIGN.md, CONTEXT.md, and ADRs plus a Linear issue, conducts an alignment interview, generates three layout-archetype mockups via DALL-E, lets you pick one, then produces an HTML/CSS implementation using your exact design tokens and attaches all assets to the Linear issue.",
+      "source": "./skills/plan-design"
     }
   ]
 }
