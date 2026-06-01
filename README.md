@@ -9,7 +9,7 @@ A curated collection of plugins, skills, and agents for [Claude Code](https://do
 Add the marketplace:
 
 ```
-/plugin marketplace add mvdmakesthings/claude-marketplace
+/plugin marketplace add mvdmakesthings/skills
 ```
 
 Browse available plugins:
@@ -28,39 +28,23 @@ You can also install plugins directly:
 
 ## Available Plugins
 
-| Plugin | Command | Description | Docs |
-|--------|---------|-------------|------|
-| `writer` | `/writer:human [prompt]` | Write prose that sounds authentically human. | [Docs](docs/writer/) · [Before & After](plugins/human-voice-writer/examples/before-after.md) |
-| `track` | `/track:start <client>` | Console-native billable hours tracker. Git-versioned plaintext ledger under `~/.time-tracker/`. | [Docs](docs/time-track/) · [README](plugins/time-track/README.md) |
-| `storyteller-guidance` | auto-triggers on pitch / talk / memo phrasing | Storytelling coach. Diagnoses your goal, picks tactics from a 54-card system, drafts or coaches. | [Docs](docs/storyteller-guidance/) |
-
-## Documentation
-
-Each plugin has a Diataxis-structured documentation set under `docs/`:
-
-- **`docs/time-track/`** — [tutorial](docs/time-track/tutorial.md) · [how-to](docs/time-track/how-to.md) · [reference](docs/time-track/reference.md) · [explanation](docs/time-track/explanation.md)
-- **`docs/writer/`** — [how-to](docs/writer/how-to.md) · [reference](docs/writer/reference.md) · [explanation](docs/writer/explanation.md)
-- **`docs/storyteller-guidance/`** — [how-to](docs/storyteller-guidance/how-to.md) · [reference](docs/storyteller-guidance/reference.md) · [explanation](docs/storyteller-guidance/explanation.md)
-
-Reference docs cover the complete public surface. How-to docs solve specific tasks. Explanation docs cover the design rationale. The time-track tutorial walks you from install to your first invoice.
-
-## Using Skills in Claude.ai / Claude Desktop
-
-Skills from this marketplace can also be used in Claude.ai and Claude Desktop (no CLI required).
-
-1. Go to the [Releases](../../releases) page
-2. Download the `.skill` file for the skill you want (e.g., `human-voice-writer.skill`)
-3. In Claude.ai or Claude Desktop, go to **Settings > Capabilities**
-4. Upload the `.skill` file
-
-Each release automatically packages every skill in the marketplace as a standalone `.skill` file.
+| Plugin | Command | Description |
+|--------|---------|-------------|
+| `qa` | `/qa [issue-id]` | Software QA: reviews current changes against a Linear issue, runs tests, screenshots the UI with Playwright, and posts a pass/fail report with screenshots as a Linear comment. |
+| `plan-design` | `/plan-design <issue-id>` | Design planning: reads your DESIGN.md and a Linear issue, interviews you on key decisions, generates three layout mockups via DALL-E, lets you pick one, then produces an HTML/CSS implementation and attaches all assets to Linear. |
+| `grill-with-docs` | `/grill-with-docs` | Stress-tests a plan against your project's domain model. Challenges terminology, resolves design decisions one at a time, and updates CONTEXT.md and ADRs inline as decisions crystallise. |
+| `to-issues` | `/to-issues` | Breaks a plan, spec, or PRD into independently-grabbable Linear issues using tracer-bullet vertical slices. |
+| `to-prd` | `/to-prd` | Turns the current conversation context into a PRD and publishes it to Linear. |
+| `writer` | `/writer:human [prompt]` | Writes prose that sounds authentically human rather than AI-generated. |
+| `storyteller-guidance` | auto-triggers on pitch / talk / memo phrasing | Storytelling coach. Diagnoses your goal, picks tactics from a 54-card system, drafts or coaches. |
+| `track` | `/track:start <client>` | Console-native billable hours tracker. Git-versioned plaintext ledger under `~/.time-tracker/`. |
 
 ## Adding a Plugin
 
-Each plugin lives in its own directory under `plugins/`. Here's the structure:
+Each plugin lives in its own directory under `skills/`. Here's the structure:
 
 ```
-plugins/
+skills/
 └── your-plugin/
     ├── .claude-plugin/
     │   └── plugin.json        # Plugin manifest (required)
@@ -77,12 +61,12 @@ plugins/
 ### 1. Create the plugin directory
 
 ```bash
-mkdir -p plugins/your-plugin/.claude-plugin
+mkdir -p skills/your-plugin/.claude-plugin
 ```
 
 ### 2. Add a plugin manifest
 
-Create `plugins/your-plugin/.claude-plugin/plugin.json`:
+Create `skills/your-plugin/.claude-plugin/plugin.json`:
 
 ```json
 {
@@ -94,7 +78,7 @@ Create `plugins/your-plugin/.claude-plugin/plugin.json`:
 
 ### 3. Add your components
 
-Add skills, agents, commands, or hooks to their respective directories. See the [Claude Code plugin docs](https://code.claude.com/docs/en/plugins) for details on each component type.
+Add skills, agents, commands, or hooks to their respective directories. See the [Claude Code plugin docs](https://docs.anthropic.com/en/docs/claude-code/plugins) for details on each component type.
 
 ### 4. Register it in the marketplace
 
@@ -105,26 +89,27 @@ Add an entry to `.claude-plugin/marketplace.json`:
   "plugins": [
     {
       "name": "your-plugin",
-      "source": "./plugins/your-plugin",
+      "source": "./skills/your-plugin",
       "description": "What your plugin does"
     }
   ]
 }
 ```
 
-### 5. Test locally
+### 5. Validate and test locally
 
 ```
-/plugin marketplace add ./path/to/claude-marketplace
+claude plugin validate .
+/plugin marketplace add ./path/to/skills
 /plugin install your-plugin@mvdmakesthings
 ```
 
 ## Contributing
 
 1. Fork this repository
-2. Create your plugin under `plugins/`
+2. Create your plugin under `skills/`
 3. Add the marketplace entry to `.claude-plugin/marketplace.json`
-4. Test locally
+4. Validate with `claude plugin validate .`
 5. Open a pull request
 
 Please keep plugins focused — one clear purpose per plugin.

@@ -4,7 +4,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **Claude Code plugin marketplace** — a public catalog of plugins that users install via `/plugin marketplace add mvdmakesthings/claude-marketplace`. It contains no application code; the repo is entirely plugin definitions (skills, agents, commands, hooks) and marketplace configuration.
+This is a **Claude Code plugin marketplace** — a public catalog of plugins that users install via `/plugin marketplace add mvdmakesthings/skills`. It contains no application code; the repo is entirely plugin definitions (skills, agents, commands, hooks) and marketplace configuration.
+
+## Current Plugins
+
+| Name | Skill command | Purpose |
+|------|--------------|---------|
+| `qa` | `/qa [issue-id]` | QA against a Linear issue; runs tests, screenshots UI, posts to Linear |
+| `plan-design` | `/plan-design <issue-id>` | Design mockups via DALL-E + HTML implementation, attached to Linear |
+| `grill-with-docs` | `/grill-with-docs` | Stress-test a plan against domain model; updates CONTEXT.md + ADRs |
+| `to-issues` | `/to-issues` | Break a plan into Linear issues as vertical slices |
+| `to-prd` | `/to-prd` | Convert conversation context into a PRD and publish to Linear |
+| `writer` | `/writer:human` | Human-sounding prose |
+| `storyteller-guidance` | auto-triggers | Storytelling coach for pitches and talks |
+| `track` | `/track:start <client>` | Billable hours tracker |
 
 ## Architecture
 
@@ -20,6 +33,8 @@ skills/                            ← All plugins live here
 ```
 
 Plugin source paths in the `plugins` array use relative paths from the repository root (e.g., `"source": "./skills/my-plugin"`).
+
+**Why the double `skills/` nesting?** The outer `skills/<plugin-name>/` is the plugin package root (contains `plugin.json`). The inner `skills/` holds the actual SKILL.md components. A plugin can also have `agents/`, `commands/`, and `hooks/` siblings at the same level. So `skills/qa/skills/qa/SKILL.md` reads as: plugin `qa` → skill component named `qa`.
 
 ## Key Files
 
