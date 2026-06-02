@@ -1,7 +1,7 @@
 ---
 name: qa
-description: Software QA skill — validates that current code changes satisfy the linked Linear issue. Fetches the issue, reads acceptance criteria, runs the full test suite, and uses Playwright to visually verify the UI against any design attachments on the ticket. Use whenever the user wants to QA a feature, verify a fix, check that code matches a ticket's acceptance criteria, run a pre-merge review, or confirm the UI looks right against a design. Trigger on: "/qa", "run QA", "QA this", "verify the feature", "does this match the ticket", "check AC", "acceptance criteria check", "visual QA", "playwright verify", "does this pass QA".
-version: 0.1.0
+description: Software QA skill — validates that current code changes satisfy the linked Linear issue. Fetches the issue, reads acceptance criteria, executes the ticket's attached test plan when one exists (produced by /plan-qa), runs every test layer it finds, and uses Playwright to visually verify the UI against any design attachments on the ticket. Use whenever the user wants to QA a feature, verify a fix, check that code matches a ticket's acceptance criteria, run a pre-merge review, or confirm the UI looks right against a design. Trigger on — "/qa", "run QA", "QA this", "verify the feature", "does this match the ticket", "check AC", "acceptance criteria check", "visual QA", "playwright verify", "does this pass QA".
+version: 0.3.0
 ---
 
 # QA
@@ -10,11 +10,39 @@ You are a software QA agent. Your job is to determine whether the current code c
 
 Be thorough but efficient. Your final report should give the developer an unambiguous pass/fail verdict per acceptance criterion so they know exactly what's done, what's broken, and what's untested.
 
+### Vocabulary & principles
+
+A few canonical terms used throughout this skill — apply them consistently:
+
+- **Layer** — an independent verification harness (typecheck, lint, unit, DB
+  tests, e2e, build). A project usually has several; treat each as its own pass.
+- **Pre-existing red** — a test failure *proven* to be present on the baseline
+  (i.e. before this change), not caused by the work under review.
+- **Verdict buckets** — every finding lands in exactly one of: **(a)** this
+  change's own checks, **(b)** pre-existing reds (with proof), **(c)** untested.
+  A pre-existing red **never** flips an AC or the overall verdict to FAIL.
+- **The change under test** — only the work that belongs to this issue. Diffs
+  may be uncommitted or untracked; unrelated stray files are *not* in scope.
+- **Read-only by default** — prefer states you can observe without writing.
+  Never mutate shared state (DB seeds, migrations) without explicit consent, and
+  disclose any write the run performs.
+- **Test plan** — an authored set of scenarios for this issue, grouped by AC,
+  produced by `/plan-qa` and attached to the ticket as `<issue-id>-test-plan.md`.
+  When present it is your **primary checklist**; when absent you derive checks
+  from the ACs yourself (the original behaviour). It is an accelerant, not a
+  prerequisite.
+- **Scenario** — one planned check from the test plan: an ID (`1.2` = second
+  scenario under AC-1), a **type** (positive / edge / negative), a target
+  **layer**, and an **expected result**. Scenarios are pre-mapped to layers, so
+  they tell you what to run and what "pass" looks like without re-deriving it.
+
 ---
 
 ## Phase 0: Gather Context
 
-Run these in parallel — you need all of them before proceeding.
+Run the context-gathering steps (1–4) in parallel — you need all of them before
+proceeding. Step 5 is a quick interactive confirmation; ask it up front too so
+the rest of the run can proceed without stalling.
 
 ### 1. Identify the Linear issue
 
@@ -28,9 +56,32 @@ Once you have the ID, fetch the full issue using `mcp__plugin_linear_linear__get
 - Title
 - Description and acceptance criteria (usually a checklist in the body)
 - Any attachments (images, mockups, HTML files — these are your visual targets)
+- **A test plan, if one exists** — an attachment titled `<issue-id>-test-plan.md`
+  (or any `*-test-plan.md`), produced by `/plan-qa`. This is the QA contract for
+  the ticket; pull it in now (see "Read the test plan" below).
 - Status and assignee (for context only)
 
 If the issue has linked issues, check if any are design tickets with additional mockups.
+
+#### Read the test plan (if present)
+
+If an attachment matches `*-test-plan.md`, download and read it **before** parsing
+the ACs yourself — it already did that work and mapped each AC to concrete,
+layered scenarios. Fetch it the same way Phase 4a fetches design targets:
+
+```bash
+curl -L "<test_plan_attachment_url>" -o /tmp/qa-test-plan.md 2>/dev/null || true
+```
+
+Then `Read` `/tmp/qa-test-plan.md`. If the URL 401s or the file comes back empty,
+fall back to `mcp__plugin_linear_linear__get_attachment` for the content. Parse:
+- the **scenario tables** under each AC (ID, type, layer, expected result),
+- the **Environment & Setup** section (auth roles, fixtures, flags — this
+  front-runs Phase 4b),
+- the **Regression watch** list (extra areas worth checking).
+
+If there's **no** test-plan attachment, note "no test plan found — deriving checks
+from the ACs directly" and proceed exactly as today.
 
 ### 2. Read the current diff
 
@@ -46,22 +97,49 @@ git diff HEAD~1 --stat
 git diff HEAD~1
 ```
 
-Build a mental model of what changed: which files, which components, what logic was added or removed.
-
-### 3. Discover the test setup
-
-Look for test runner config:
+**If both come back thin** (a feature branch with zero commits beyond `main`, or
+an unrelated last commit), the work under test is likely sitting in the working
+tree. Fall back to uncommitted + untracked state:
 
 ```bash
-ls package.json pyproject.toml Makefile 2>/dev/null
-cat package.json | grep -E '"test|"jest|"vitest|"playwright' 2>/dev/null || true
+git status --short
+git diff                                   # unstaged
+git diff --staged                          # staged
+git ls-files --others --exclude-standard   # untracked files
+```
+
+- **Untracked new files never appear in `git diff`** — enumerate them and `Read`
+  each one directly, or they go un-reviewed.
+- Scope to **the change under test**: identify and **exclude pre-existing,
+  unrelated untracked paths** (e.g. a stray `design-assets/` dir) so they don't
+  pollute the review. Use the issue's scope to judge relevance; **ask if it's
+  ambiguous** which paths belong to this change.
+
+Build a mental model of what changed: which files, which components, what logic was added or removed.
+
+### 3. Discover the test setup — *every* layer, not just one command
+
+A repo usually has **several independent layers** (typecheck, lint, unit, DB
+tests, e2e, build). Don't stop at the first `test` script — enumerate them all,
+because the layers that prove the trickiest ACs are often the ones a single
+`npm test` skips.
+
+```bash
+ls package.json pyproject.toml Makefile Cargo.toml 2>/dev/null
+cat package.json | grep -E '"test|"lint|"typecheck|"build|"jest|"vitest|"playwright' 2>/dev/null || true
 ls -la pytest.ini setup.cfg vitest.config.* jest.config.* playwright.config.* 2>/dev/null || true
 ```
 
-Identify:
-- The test command (e.g. `npm test`, `pytest`, `npx vitest`)
-- Whether Playwright is configured and what `baseURL` it uses
-- Any existing Playwright test files for the changed feature
+Identify each layer that exists:
+- **Every test-ish `package.json` script** — `test`, `test:db`, `test:e2e`,
+  `typecheck`, `lint`, `build` (each is a distinct layer worth running).
+- **Non-JS harnesses** that scripts may not surface — e.g. a database test runner
+  (pgTAP via `supabase test db`), `cargo test`, `pytest`, a `Makefile` target.
+- Whether **e2e** is configured (e.g. Playwright) and what `baseURL` it uses, plus
+  any existing e2e files for the changed feature.
+
+(The tools named above are *examples* — match whatever this project actually
+uses.) You'll run each relevant layer in Phase 3 and report them per-layer.
 
 ### 4. Identify the dev server
 
@@ -73,6 +151,20 @@ ls Procfile docker-compose.yml 2>/dev/null || true
 ```
 
 You'll need this if you have to start the app for visual verification.
+
+### 5. Confirm how to publish (ask up front)
+
+Posting to Linear is an **outward-facing action** — invoking `/qa` does not by
+itself authorize publishing to a shared tool. Ask once, now, so the rest of the
+run is autonomous and doesn't stall at the finish line:
+
+> "How should I publish the QA report — **comment + screenshots**, **comment
+> only**, or **don't post** (terminal only)?"
+
+Record the answer and carry it to Phase 5. **If the question goes unanswered**
+(e.g. an unattended run), default to **don't post** — the safe outward-facing
+default. Regardless of the answer, the full report is **always** printed to the
+terminal (Phase 5c); only the Linear publish (5a/5b) is gated on it.
 
 ---
 
@@ -90,6 +182,14 @@ AC-2: [criterion text]
 
 You'll grade each one at the end. If the issue has no criteria and the description is thin, note this as a risk in your report — you'll do your best but the standard is unclear.
 
+**If you loaded a test plan in Phase 0**, you already have the ACs *and* a set of
+scenarios beneath each one. Use those scenarios as your primary checklist — they
+are pre-mapped to layers and carry expected results, so you don't re-derive what
+to test. Keep the plan's `AC-N` numbering (it mirrors this convention by design)
+and reference scenarios by ID (`AC-1 / 1.2`). The ACs stay the **verdict anchor**;
+the scenarios are the concrete checks beneath them. You may still add a check the
+plan missed — mark it `(added during QA)` so the gap in the plan is visible.
+
 ---
 
 ## Phase 2: Code Review Against ACs
@@ -104,35 +204,72 @@ Be specific. "The form validation in `src/components/Form.tsx:42` addresses AC-2
 
 Don't just skim the diff summary — read the actual changed code to understand what it does.
 
+When a test plan exists, review the code against its **scenarios**, not just the
+ACs: is there an implementation path for scenario 1.3's unauthorized case? A
+scenario with no corresponding code is a gap the plan *predicted* — exactly the
+kind of thing this step should catch.
+
 ---
 
-## Phase 3: Run the Test Suite
+## Phase 3: Run Every Test Layer
 
-Run all tests and capture the output:
+Run **each layer** you discovered in Phase 0.3, not a single test command.
+Capture each one's output separately.
 
-```bash
-# Try the most common test commands in order
-npm test 2>&1 || npx vitest run 2>&1 || npx jest --no-coverage 2>&1 || pytest 2>&1 || echo "TEST COMMAND NOT FOUND"
-```
-
-If you identified the test command in Phase 0, use it directly.
-
-**Capture:**
-- Total tests: passed / failed / skipped
-- Names of any failing tests
-- Coverage summary if available (don't add `--coverage` yourself if it wasn't in the config — it can be slow)
-
-If tests fail, note the failure output verbatim — you'll include it in the report.
-
-**Also run Playwright e2e tests if they exist** and aren't already covered by the main test command:
+If you loaded a test plan, let it drive this phase: it already names the layer
+that should prove each scenario and the expected result to check against. Run
+those layers, then grade each scenario by whether the **observed** behaviour
+matches its **expected result**. If the plan named a layer this repo doesn't
+actually have (it planned `e2e` but none is configured), that scenario is
+**untested** — never silently passed.
 
 ```bash
-npx playwright test 2>&1 | tail -30 || true
+# Example — run whatever layers the project actually has, one at a time:
+npm run typecheck 2>&1 | tail -30 || true
+npm run lint      2>&1 | tail -30 || true
+npm test          2>&1 | tail -40 || true   # unit (vitest/jest/etc.)
+supabase test db  2>&1 | tail -40 || true   # DB tests (pgTAP), if present
+npx playwright test 2>&1 | tail -40 || true # e2e, if not already in `npm test`
 ```
 
-Only do this if `playwright.config.*` exists and the main test command doesn't already run e2e tests.
+(These commands are *examples* — substitute the project's real layers, e.g.
+`pytest`, `cargo test`, a `Makefile` target.) If a layer can't run (missing deps,
+build required first), say so clearly rather than skipping silently.
 
-If no test command is found or tests cannot be run (missing deps, build required first), note this clearly rather than skipping silently.
+### Per-layer result table
+
+Report one row per layer, never a single rolled-up number:
+
+| Layer | Command | Result | Passed / Failed / Skipped |
+|-------|---------|--------|---------------------------|
+| typecheck | `npm run typecheck` | ✅/❌ | — |
+| unit | `npm test` | ✅/❌ | N / N / N |
+| db | `supabase test db` | ✅/❌ | N / N / N |
+| e2e | `npx playwright test` | ✅/❌ | N / N / N |
+
+Note the names of any failing tests and keep the failure output verbatim.
+
+### Map each AC to the layer(s) that cover it
+
+Tie acceptance criteria to evidence. For each AC, name the layer(s) that
+actually exercise it (e.g. "RLS member/admin/other-tenant → DB tests";
+"completion math → unit"; "renders + autosaves → e2e"). An AC with **no covering
+layer** is a **tested-coverage gap** — flag it even when the code looks right,
+because nothing proves it.
+
+### Triage red suites before blaming the change
+
+A red suite is **not** automatically an AC/verdict failure. When a layer is red:
+
+1. **Touch test** — do the failing tests touch files in the change set? If none
+   do, they're *suspected pre-existing*.
+2. **Confirm against a baseline** — prove it. `git stash`, temporarily move the
+   new test aside, or compare against `main`, and check the failure set is
+   **unchanged**. (Stashing mutates the working tree — re-apply it afterward.)
+3. **Bucket it** — report confirmed pre-existing failures in their own bucket
+   with the baseline proof. A **pre-existing red never flips an AC or the overall
+   verdict to FAIL**; it reads as "repo currently red for unrelated reason X." A
+   failure that *does* appear because of this change is a real red.
 
 ---
 
@@ -181,6 +318,25 @@ lsof -i :3000 -i :5173 -i :8080 2>/dev/null | grep LISTEN | head -3
 
 If you can't determine the port or the server won't start, ask the user: "What URL is the app running at? (e.g. http://localhost:3000)"
 
+**Authenticate if the route is gated.** Don't assume the app is anonymous — if
+navigating to the target URL just bounces to a sign-in page, you need a session.
+Reuse the project's **existing** auth rather than logging in from scratch, in
+this order:
+
+1. **Reuse a saved session.** If the project's e2e suite produces a Playwright
+   `storageState` (commonly `tests/e2e/.auth/*.json`, written by a `globalSetup`
+   — *example path*), create the browser context with `{ storageState }` and the
+   right `baseURL`.
+2. **Provision one.** If no storageState exists yet, run the project's e2e
+   global-setup first (or run the e2e suite once) to generate it, then reuse it.
+3. **Dev-login backdoor.** Fall back to a development login route if the project
+   has one (example: `ALLOW_DEV_LOGIN=1` + `POST /api/dev/login`).
+4. **Match the role to the surface.** storageState is per-identity — pick the
+   role the surface targets (operator / admin / end-user), or you'll screenshot
+   the wrong view.
+5. If none of these is available, **ask** the user how to authenticate rather
+   than guessing credentials.
+
 ### 4c. Screenshot the relevant UI
 
 Create the screenshot directory first:
@@ -218,6 +374,16 @@ Be honest about uncertainty. "The layout looks structurally correct but I can't 
 
 ## Phase 5: Publish to Linear and Report
 
+Honor the publish preference captured in **Phase 0.5**. Publishing to Linear is
+outward-facing and conditional; the terminal report is not:
+
+- **comment + screenshots** → run 5a (upload), then 5b (post with embeds).
+- **comment only** → skip 5a; run 5b without screenshot embeds.
+- **don't post** (including the unanswered default) → skip 5a **and** 5b.
+- **5c always runs** — print the full report to the terminal no matter what, even
+  if the publish was declined, denied by policy, or the user is away. 5c is the
+  guaranteed deliverable; 5a/5b are conditional on it.
+
 ### 5a. Upload screenshots to Linear
 
 For each screenshot saved in `/tmp/qa-screenshots/`:
@@ -250,21 +416,46 @@ Include inline screenshot references by embedding the attachment URLs from step 
 
 ---
 
-### Test Suite
+### Test Layers
 
-**Status:** ✅ PASS / ❌ FAIL / ⚠️ NOT RUN
-[N passed, N failed, N skipped]
-[Failing test names if any, in a code block]
+| Layer | Result | Passed / Failed / Skipped |
+|-------|--------|---------------------------|
+| typecheck | ✅/❌ | — |
+| unit | ✅/❌ | N / N / N |
+| db | ✅/❌ | N / N / N |
+| e2e | ✅/❌ | N / N / N |
+
+[Failing test names, if any, in a code block]
+
+**Pre-existing reds (not caused by this change):**
+[List any failures proven present on baseline, with the proof — e.g. "same 3
+failures with the new test removed / on `main`." Or "None."]
+
+---
+
+### Test Plan Coverage
+
+[Include this section only when the ticket has a test plan (from `/plan-qa`).
+If there was none, write "No test plan on the ticket — checks derived from ACs
+directly." and omit the table.]
+
+| Scenario | Type | Layer | Expected | Observed | Result |
+|----------|------|-------|----------|----------|--------|
+| AC-1 / 1.1 | positive | e2e | [expected] | [observed] | ✅/❌/⏭️ |
+| AC-1 / 1.2 | edge | unit | … | … | … |
+
+_⏭️ = untested: the plan named a layer this repo doesn't have, or the scenario
+couldn't be exercised. Untested scenarios never count as passed._
 
 ---
 
 ### Acceptance Criteria
 
-| # | Criterion | Code | Test | Visual | Status |
-|---|-----------|------|------|--------|--------|
-| AC-1 | [text] | ✅/❌/⚠️ | ✅/❌/⚠️ | ✅/❌/N/A | **PASS/FAIL/PARTIAL** |
+| # | Criterion | Code | Covering scenarios / layer(s) | Visual | Status |
+|---|-----------|------|-------------------------------|--------|--------|
+| AC-1 | [text] | ✅/❌/⚠️ | [scenario IDs + layer, or ⚠️ no coverage] | ✅/❌/N/A | **PASS/FAIL/PARTIAL** |
 
-_Legend: ✅ confirmed · ❌ missing or broken · ⚠️ partial/unclear · N/A not applicable_
+_Legend: ✅ confirmed · ❌ missing or broken · ⚠️ partial/unclear/untested · N/A not applicable_
 
 ---
 
@@ -272,7 +463,7 @@ _Legend: ✅ confirmed · ❌ missing or broken · ⚠️ partial/unclear · N/A
 
 **AC-1 — [criterion]**
 - **Code:** [file:line where this is addressed, or why it's missing]
-- **Test:** [test name(s), or gap noted]
+- **Covered by:** [which layer(s) exercise it, or "no covering layer — untested"]
 - **Visual:** [observation vs. design]
 
 [Repeat for each criterion]
@@ -295,14 +486,25 @@ _Legend: ✅ confirmed · ❌ missing or broken · ⚠️ partial/unclear · N/A
 
 ### Overall Verdict
 
-**✅ PASS** — all ACs satisfied, tests green, UI matches design.
+**✅ PASS** — all ACs satisfied, this change's checks are green, UI matches design.
+
+_Separate the buckets explicitly:_
+- **This change's checks:** [green / red — only failures caused by the work]
+- **Pre-existing repo state:** [e.g. "repo is currently red for unrelated reason
+  X (proven on baseline)" — does not affect this verdict]
+- **Untested:** [ACs with no covering layer, plus any planned scenarios that
+  couldn't be exercised (⏭️) — graded by inspection only, never as passed]
 ```
 
-Replace the verdict line with `**❌ FAIL**` or `**⚠️ PARTIAL**` as appropriate, with a brief reason.
+Replace the verdict line with `**❌ FAIL**` or `**⚠️ PARTIAL**` as appropriate,
+with a brief reason. A pre-existing red **never** makes this FAIL — only a
+failure or gap in *this change's* checks does.
 
-### 5c. Print the same report in the terminal
+### 5c. Print the same report in the terminal (always)
 
-Echo the full report to the conversation so the developer sees it immediately without having to open Linear.
+Echo the full report to the conversation so the developer sees it immediately
+without having to open Linear. **Do this unconditionally** — it is the guaranteed
+deliverable, even when 5a/5b were skipped or blocked.
 
 ---
 
