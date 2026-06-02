@@ -1,0 +1,13 @@
+{
+  "name": "plan-qa",
+  "displayName": "Plan QA",
+  "description": "Refinement-time test planning: reads a Linear issue's acceptance criteria and the repo's test conventions, then drafts a layer-aware test plan — per-AC scenarios tagged with a test layer and an expected result, plus auth roles, fixtures, visual states, and regression watch areas — and after your approval attaches it to the ticket as <issue-id>-test-plan.md for the qa skill to execute against.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Michael VanDyke",
+    "url": "https://github.com/mvdmakesthings"
+  },
+  "keywords": ["qa", "test-plan", "testing", "linear", "acceptance-criteria", "refinement", "test-strategy"],
+  "license": "MIT",
+  "homepage": "https://github.com/mvdmakesthings/skills"
+}
