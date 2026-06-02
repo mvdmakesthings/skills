@@ -10,7 +10,8 @@ This is a **Claude Code plugin marketplace** — a public catalog of plugins tha
 
 | Name | Skill command | Purpose |
 |------|--------------|---------|
-| `qa` | `/qa [issue-id]` | QA against a Linear issue; runs tests, screenshots UI, posts to Linear |
+| `qa` | `/qa [issue-id]` | QA against a Linear issue; runs tests, screenshots UI, posts to Linear; executes the ticket's test plan when one is attached |
+| `plan-qa` | `/plan-qa <issue-id>` | Drafts a layer-aware test plan from a Linear issue's ACs and attaches it as `<issue-id>-test-plan.md`; consumed by `/qa` |
 | `plan-design` | `/plan-design <issue-id>` | Design mockups via DALL-E + HTML implementation, attached to Linear |
 | `grill-with-docs` | `/grill-with-docs` | Stress-test a plan against domain model; updates CONTEXT.md + ADRs |
 | `to-issues` | `/to-issues` | Break a plan into Linear issues as vertical slices |

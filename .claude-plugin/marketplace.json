@@ -44,8 +44,13 @@
       "source": "./skills/plan-design"
     },
     {
+      "name": "plan-qa",
+      "description": "Refinement-time test planning: reads a Linear issue's acceptance criteria and the repo's test conventions, then drafts a layer-aware test plan — per-AC scenarios tagged with a test layer and an expected result, plus auth roles, fixtures, visual states, and regression watch areas — and after your approval attaches it to the ticket as <issue-id>-test-plan.md for the qa skill to execute against.",
+      "source": "./skills/plan-qa"
+    },
+    {
       "name": "qa",
-      "description": "Software QA: reviews current code changes against a Linear issue, maps each acceptance criterion to the code and tests that cover it, runs every test layer it finds, and uses Playwright to visually verify the UI against design attachments on the ticket.",
+      "description": "Software QA: reviews current code changes against a Linear issue, maps each acceptance criterion to the code and tests that cover it (executing the ticket's plan-qa test plan when one is attached), runs every test layer it finds, and uses Playwright to visually verify the UI against design attachments on the ticket.",
       "source": "./skills/qa"
     }
   ]
