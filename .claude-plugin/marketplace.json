@@ -40,12 +40,12 @@
     },
     {
       "name": "plan-design",
-      "description": "Doc-aware design planning: reads your DESIGN.md, CONTEXT.md, and ADRs plus a Linear issue, conducts an alignment interview, generates three layout-archetype mockups via DALL-E, lets you pick one, then produces an HTML/CSS implementation using your exact design tokens and attaches all assets to the Linear issue.",
+      "description": "Doc-aware design planning: reads your DESIGN.md, CONTEXT.md, and ADRs plus a Linear issue, identifies the UI surfaces that need design, and for each one runs an alignment interview, generates three layout-archetype mockups via OpenAI image generation, lets you pick one, then produces an HTML/CSS implementation using your exact design tokens and attaches the chosen mockup to the Linear issue.",
       "source": "./skills/plan-design"
     },
     {
       "name": "qa",
-      "description": "Software QA: reviews current code changes against a Linear issue, validates acceptance criteria in code and tests, runs the test suite, and uses Playwright to visually verify the UI against design attachments on the ticket.",
+      "description": "Software QA: reviews current code changes against a Linear issue, maps each acceptance criterion to the code and tests that cover it, runs every test layer it finds, and uses Playwright to visually verify the UI against design attachments on the ticket.",
       "source": "./skills/qa"
     }
   ]

@@ -28,16 +28,18 @@ You can also install plugins directly:
 
 ## Available Plugins
 
-| Plugin | Command | Description |
-|--------|---------|-------------|
-| `qa` | `/qa [issue-id]` | Software QA: reviews current changes against a Linear issue, runs tests, screenshots the UI with Playwright, and posts a pass/fail report with screenshots as a Linear comment. |
-| `plan-design` | `/plan-design <issue-id>` | Design planning: reads your DESIGN.md and a Linear issue, interviews you on key decisions, generates three layout mockups via DALL-E, lets you pick one, then produces an HTML/CSS implementation and attaches all assets to Linear. |
-| `grill-with-docs` | `/grill-with-docs` | Stress-tests a plan against your project's domain model. Challenges terminology, resolves design decisions one at a time, and updates CONTEXT.md and ADRs inline as decisions crystallise. |
-| `to-issues` | `/to-issues` | Breaks a plan, spec, or PRD into independently-grabbable Linear issues using tracer-bullet vertical slices. |
-| `to-prd` | `/to-prd` | Turns the current conversation context into a PRD and publishes it to Linear. |
-| `writer` | `/writer:human [prompt]` | Writes prose that sounds authentically human rather than AI-generated. |
-| `storyteller-guidance` | auto-triggers on pitch / talk / memo phrasing | Storytelling coach. Diagnoses your goal, picks tactics from a 54-card system, drafts or coaches. |
-| `track` | `/track:start <client>` | Console-native billable hours tracker. Git-versioned plaintext ledger under `~/.time-tracker/`. |
+| Plugin | Command | What it does | Requires |
+|--------|---------|--------------|----------|
+| `qa` | `/qa [issue-id]` | Reviews your current changes against a Linear issue: maps acceptance criteria to coverage, runs every test layer it finds, and screenshots the UI against design attachments. | Linear MCP, Playwright MCP |
+| `plan-design` | `/plan-design <issue-id>` | Turns a Linear issue into design mockups. Interviews you on each UI surface, generates three layout options with OpenAI image generation, then builds the HTML/CSS for the one you pick and attaches it to the ticket. | Linear MCP, OpenAI API key |
+| `grill-with-docs` | `/grill-with-docs` | Interrogates a plan against your CONTEXT.md and ADRs one question at a time, then writes the resolved decisions back into those docs. | CONTEXT.md / ADRs |
+| `to-issues` | `/to-issues` | Slices a plan, spec, or PRD into Linear issues you can pick up independently. Each one is a thin end-to-end cut with its own acceptance criteria. | Linear MCP |
+| `to-prd` | `/to-prd` | Synthesizes the current conversation into a PRD and publishes it to Linear. | Linear MCP |
+| `writer` | `/writer:human [prompt]` | Rewrites prose so it reads like a person wrote it, stripping the vocabulary and sentence patterns that flag text as AI-generated. | none |
+| `storyteller-guidance` | auto-triggers on pitch / talk / memo phrasing | A storytelling coach. Picks from a 54-card tactic deck to draft or coach you through pitches, talks, and memos. | none |
+| `track` | `/track:start <client>` | Billable-hours timer backed by a git-versioned plaintext ledger under `~/.time-tracker/`. Rounded out by `stop`, `pause`, `resume`, `status`, and `report`. | jq, git |
+
+"Requires" lists what each plugin reaches for beyond Claude Code itself. MCP servers (Linear, Playwright) are configured in your Claude Code settings; `plan-design` reads the OpenAI key from your environment for image generation.
 
 ## Adding a Plugin
 
@@ -112,7 +114,7 @@ claude plugin validate .
 4. Validate with `claude plugin validate .`
 5. Open a pull request
 
-Please keep plugins focused — one clear purpose per plugin.
+Please keep plugins focused: one clear purpose per plugin.
 
 ## License
 
