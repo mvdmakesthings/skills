@@ -6,47 +6,48 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a **Claude Code plugin marketplace** — a public catalog of plugins that users install via `/plugin marketplace add mvdmakesthings/skills`. It contains no application code; the repo is entirely plugin definitions (skills, agents, commands, hooks) and marketplace configuration.
 
-## Current Plugins
+## Plugins
 
-| Name | Skill command | Purpose |
-|------|--------------|---------|
-| `qa` | `/qa [issue-id]` | QA against a Linear issue; runs tests, screenshots UI, posts to Linear; executes the ticket's test plan when one is attached |
-| `plan-qa` | `/plan-qa <issue-id>` | Drafts a layer-aware test plan from a Linear issue's ACs and attaches it as `<issue-id>-test-plan.md`; consumed by `/qa` |
-| `plan-design` | `/plan-design <issue-id>` | Design mockups via DALL-E + HTML implementation, attached to Linear |
-| `grill-with-docs` | `/grill-with-docs` | Stress-test a plan against domain model; updates CONTEXT.md + ADRs |
-| `to-issues` | `/to-issues` | Break a plan into Linear issues as vertical slices |
-| `to-prd` | `/to-prd` | Convert conversation context into a PRD and publish to Linear |
-| `writer` | `/writer:human` | Human-sounding prose |
-| `storyteller-guidance` | auto-triggers | Storytelling coach for pitches and talks |
-| `track` | `/track:start <client>` | Billable hours tracker |
+The marketplace ships **three themed plugins**, each bundling several related skills:
+
+| Plugin | Skills (command) | Purpose |
+|--------|------------------|---------|
+| `delivery` | `to-prd` (`/to-prd`), `to-issues` (`/to-issues`), `grill-with-docs` (`/grill-with-docs`), `plan-design` (`/plan-design`), `plan-qa` (`/plan-qa`), `qa` (`/qa`) | Linear-driven planning→QA flow: PRDs, issue slicing, plan grilling, design mockups, test planning, and QA execution. `plan-qa` attaches `<issue-id>-test-plan.md`; `qa` consumes it. |
+| `writing` | `human-voice-writer` (`/writing:human`), `storyteller-guidance` (auto-triggers) | Humanize AI-sounding prose; storytelling coach for pitches, talks, and memos |
+| `track` | `track` (`/track:start` \| `:stop` \| `:pause` \| `:resume` \| `:status` \| `:report`) | Billable hours tracker backed by a git-versioned ledger |
+
+Skills auto-trigger — and their `/<skill>` short-commands resolve — from each skill's own `name:` frontmatter, independent of which plugin bundles them. A plugin *command*'s namespace (e.g. `/writing:human`, `/track:start`) derives from the plugin name.
 
 ## Architecture
 
 ```
-.claude-plugin/marketplace.json   ← Marketplace catalog (the registry)
-skills/                            ← All plugins live here
+.claude-plugin/marketplace.json   ← Marketplace catalog (lists the 3 plugins)
+plugins/                          ← Installable plugins live here
   <plugin-name>/
     .claude-plugin/plugin.json     ← Plugin manifest (required)
-    skills/                        ← SKILL.md files
-    agents/                        ← Agent definition .md files
-    commands/                      ← Slash command .md files
-    hooks/                         ← Hook configurations
+    skills/                        ← One subdir per skill, each with a SKILL.md
+      <skill-name>/SKILL.md
+    commands/                      ← Slash command .md files (optional)
+    bin/                           ← Executable helpers, e.g. track's dispatcher (optional)
+    agents/ hooks/                 ← Other component types (optional)
+_dev/                             ← Dev-only material; NOT shipped on install
+  <plugin>/...                      docs, tests, eval workspaces, generators
 ```
 
-Plugin source paths in the `plugins` array use relative paths from the repository root (e.g., `"source": "./skills/my-plugin"`).
+A single plugin holds **many** skills under `skills/`. Source paths in the marketplace `plugins` array are repo-relative (e.g., `"source": "./plugins/delivery"`).
 
-**Why the double `skills/` nesting?** The outer `skills/<plugin-name>/` is the plugin package root (contains `plugin.json`). The inner `skills/` holds the actual SKILL.md components. A plugin can also have `agents/`, `commands/`, and `hooks/` siblings at the same level. So `skills/qa/skills/qa/SKILL.md` reads as: plugin `qa` → skill component named `qa`.
+Everything a plugin needs at runtime lives inside its `plugins/<name>/` tree; everything else (tests, docs, eval artifacts) lives under `_dev/<plugin>/` so it stays out of the installed package. Within a skill, reference files sit in `skills/<skill>/references/` and are addressed relative to the SKILL.md; the `track` skill locates its dispatcher via `${CLAUDE_PLUGIN_ROOT}/bin/track.sh`.
 
 ## Key Files
 
-- **`.claude-plugin/marketplace.json`** — The marketplace registry. Every plugin must have an entry here to be discoverable. The `name` field (`mvdmakesthings`) is what users reference during install (`/plugin install <plugin>@mvdmakesthings`).
-- **`skills/<name>/.claude-plugin/plugin.json`** — Each plugin's manifest with name, description, and version.
+- **`.claude-plugin/marketplace.json`** — The marketplace registry. Every plugin must have an entry here to be discoverable. The marketplace `name` (`mvdmakesthings`) is what users reference during install (`/plugin install <plugin>@mvdmakesthings`).
+- **`plugins/<name>/.claude-plugin/plugin.json`** — Each plugin's manifest with name, description, and version.
 
-## Adding a Plugin
+## Adding a Skill or Plugin
 
-1. Create `skills/<name>/.claude-plugin/plugin.json` with the manifest
-2. Add component directories (skills/, agents/, commands/, hooks/) as needed
-3. Add an entry to the `plugins` array in `.claude-plugin/marketplace.json`
+**Add a skill to an existing bundle** (most common): create `plugins/<bundle>/skills/<skill-name>/SKILL.md`. No marketplace change is needed — it ships with the bundle on the next install. Put any dev-only fixtures under `_dev/<bundle>/`.
+
+**Add a new bundle:** create `plugins/<name>/.claude-plugin/plugin.json`, add its components, and register it with an entry in the `plugins` array of `.claude-plugin/marketplace.json` (`"source": "./plugins/<name>"`).
 
 ## Validation
 
