@@ -2,6 +2,7 @@ name: test-time-track
 
 on:
   push:
+    branches: [main]
     paths:
       - 'plugins/track/**'
       - '_dev/track/tests/**'
