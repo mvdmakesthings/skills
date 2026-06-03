@@ -8,7 +8,7 @@ setup() {
   export TRACK_DIR_OVERRIDE="$TMPHOME/.time-tracker"
   git config --global user.email "test@example.com"
   git config --global user.name  "Test User"
-  SCRIPT="${BATS_TEST_DIRNAME}/../../../plugins/track/bin/track.sh"
+  SCRIPT="${TRACK_SH:-${BATS_TEST_DIRNAME}/../../../plugins/track/bin/track.sh}"
 
   # Bootstrap the tracker so we don't trigger first-run on each test.
   bash "$SCRIPT" status > /dev/null

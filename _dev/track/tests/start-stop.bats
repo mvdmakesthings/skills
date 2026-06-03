@@ -8,7 +8,7 @@ setup() {
   export TRACK_DIR_OVERRIDE="$TMPHOME/.time-tracker"
   git config --global user.email "test@example.com"
   git config --global user.name  "Test User"
-  SCRIPT="${BATS_TEST_DIRNAME}/../../../plugins/track/bin/track.sh"
+  SCRIPT="${TRACK_SH:-${BATS_TEST_DIRNAME}/../../../plugins/track/bin/track.sh}"
 
   bash "$SCRIPT" status > /dev/null
   echo '{"acme": {"rate": 150}, "globex": {"rate": 200}}' > "$TRACK_DIR_OVERRIDE/clients.json"

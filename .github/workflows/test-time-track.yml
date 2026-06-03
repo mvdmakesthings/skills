@@ -34,4 +34,6 @@ jobs:
         run: shellcheck plugins/track/bin/track.sh
 
       - name: bats test suite
+        env:
+          TRACK_SH: ${{ github.workspace }}/plugins/track/bin/track.sh
         run: bats _dev/track/tests/

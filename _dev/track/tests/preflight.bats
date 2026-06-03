@@ -6,7 +6,7 @@ setup() {
   TMPHOME=$(mktemp -d)
   export HOME="$TMPHOME"
   export TRACK_DIR_OVERRIDE="$TMPHOME/.time-tracker"
-  SCRIPT="${BATS_TEST_DIRNAME}/../../../plugins/track/bin/track.sh"
+  SCRIPT="${TRACK_SH:-${BATS_TEST_DIRNAME}/../../../plugins/track/bin/track.sh}"
 }
 
 teardown() {

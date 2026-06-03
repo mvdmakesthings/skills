@@ -8,7 +8,7 @@ setup() {
   export TRACK_DIR_OVERRIDE="$TMPHOME/.time-tracker"
   git config --global user.email "test@example.com"
   git config --global user.name  "Test User"
-  SCRIPT="${BATS_TEST_DIRNAME}/../../../plugins/track/bin/track.sh"
+  SCRIPT="${TRACK_SH:-${BATS_TEST_DIRNAME}/../../../plugins/track/bin/track.sh}"
 
   # Pin timezone so "local date of UTC timestamp" is deterministic across machines.
   export TZ="America/Los_Angeles"   # UTC-7 (PDT) during summer
