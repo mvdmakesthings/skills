@@ -10,6 +10,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -22,5 +25,6 @@ jobs:
         with:
           node-version: 24
 
+      # Pinned for a deterministic gate; bump periodically (Dependabot-friendly).
       - name: Validate marketplace and plugin manifests
-        run: npx -y @anthropic-ai/claude-code plugin validate .
+        run: npx -y @anthropic-ai/claude-code@2.1.161 plugin validate .
