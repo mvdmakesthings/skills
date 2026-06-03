@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'skills/**'
+      - 'plugins/**'
   workflow_dispatch:
     inputs:
       version:
@@ -55,7 +55,7 @@ jobs:
       - name: Package skills
         run: |
           mkdir -p dist
-          for skillmd in skills/*/skills/*/SKILL.md; do
+          for skillmd in plugins/*/skills/*/SKILL.md; do
             skill_dir="$(dirname "$skillmd")"
             skill_name="$(basename "$skill_dir")"
             parent_dir="$(dirname "$skill_dir")"
