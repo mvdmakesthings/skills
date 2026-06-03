@@ -1,0 +1,13 @@
+{
+  "name": "writing",
+  "displayName": "Writing",
+  "description": "Writing toolkit: humanize AI-sounding prose (/writing:human) and a storytelling coach for pitches, talks, and memos. Bundles the human-voice-writer and storyteller-guidance skills.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Michael VanDyke",
+    "url": "https://github.com/mvdmakesthings"
+  },
+  "keywords": ["writing", "storytelling", "prose", "humanization", "pitches", "narrative"],
+  "license": "MIT",
+  "homepage": "https://github.com/mvdmakesthings/skills"
+}

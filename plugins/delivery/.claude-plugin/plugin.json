@@ -1,0 +1,13 @@
+{
+  "name": "delivery",
+  "displayName": "Delivery",
+  "description": "Linear-driven planning→QA flow: PRDs, issue breakdown, plan grilling, design mockups, test planning, and QA execution. Bundles the to-prd, to-issues, grill-with-docs, plan-design, plan-qa, and qa skills.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Michael VanDyke",
+    "url": "https://github.com/mvdmakesthings"
+  },
+  "keywords": ["linear", "planning", "qa", "prd", "design", "testing", "acceptance-criteria"],
+  "license": "MIT",
+  "homepage": "https://github.com/mvdmakesthings/skills"
+}
