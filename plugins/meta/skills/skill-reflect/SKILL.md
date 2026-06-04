@@ -22,7 +22,7 @@ ls plugins/*/skills/<skill-name>/ 2>/dev/null
 
 - **One match** — record the plugin name (the `*` segment from the path).
 - **Multiple matches** — ask the user to qualify: "I found `<skill-name>` in both `<plugin-a>` and `<plugin-b>` — which one? (e.g., `<plugin-a>/skill-name`)"
-- **No match** — you're probably in a different project. Ask: "Which plugin does `<skill-name>` belong to? (e.g., `delivery`, `writing`, `track`, `meta`)" and use their answer as the plugin name.
+- **No match** — you're probably in a different project. Ask: "Which plugin does `<skill-name>` belong to? (`delivery`, `writing`, `track`, or `meta`)" and use their answer as the plugin name.
 
 ---
 
