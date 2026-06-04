@@ -1,6 +1,6 @@
 ---
 name: skill-reflect
-description: Capture a friction log immediately after finishing a skill session — what was improvised, what the user corrected, what edge cases the skill missed, and what changes would help. Writes a structured session log to _dev/<plugin>/sessions/<skill-name>/ for the evolver to read later. Use whenever you've just finished running a skill and want to capture what happened while the session is fresh. Triggers on "/skill-reflect", "reflect on this session", "log this session", "write a session log", "capture skill friction", or any phrase asking to record what happened during a skill run.
+description: Capture a friction log immediately after finishing a skill session — what was improvised, what the user corrected, what edge cases the skill missed, and what changes would help. Writes a structured session log to ~/.claude/skill-sessions/<plugin>/sessions/<skill-name>/ so it can be read by the evolver from the skills repo later. Works in any project, not just the skills repo. Use whenever you've just finished running a skill and want to capture what happened while the session is fresh. Triggers on "/skill-reflect", "reflect on this session", "log this session", "write a session log", "capture skill friction", or any phrase asking to record what happened during a skill run.
 version: 0.1.0
 ---
 
@@ -14,15 +14,15 @@ You run immediately after a skill session ends. Your job is to mine the conversa
 
 The user invokes this as `/skill-reflect <skill-name>` (e.g., `/skill-reflect qa`). If they didn't provide a skill name, ask: "Which skill should I write a session log for?"
 
-Once you have the name, find its owning plugin:
+Once you have the name, find its owning plugin. Try scanning the working directory first (works if you're in the skills repo):
 
 ```bash
 ls plugins/*/skills/<skill-name>/ 2>/dev/null
 ```
 
 - **One match** — record the plugin name (the `*` segment from the path).
-- **No match** — tell the user the skill wasn't found and stop. List the skills you can see: `ls plugins/*/skills/`.
 - **Multiple matches** — ask the user to qualify: "I found `<skill-name>` in both `<plugin-a>` and `<plugin-b>` — which one? (e.g., `<plugin-a>/skill-name`)"
+- **No match** — you're probably in a different project. Ask: "Which plugin does `<skill-name>` belong to? (e.g., `delivery`, `writing`, `track`, `meta`)" and use their answer as the plugin name.
 
 ---
 
@@ -61,10 +61,10 @@ date -u +"%Y-%m-%dT%H-%M"
 Create the directory and write the log:
 
 ```bash
-mkdir -p _dev/<plugin>/sessions/<skill-name>
+mkdir -p ~/.claude/skill-sessions/<plugin>/sessions/<skill-name>
 ```
 
-Write to `_dev/<plugin>/sessions/<skill-name>/<timestamp>.md` using this exact structure:
+Write to `~/.claude/skill-sessions/<plugin>/sessions/<skill-name>/<timestamp>.md` using this exact structure:
 
 ```markdown
 ---
@@ -103,7 +103,7 @@ Tell the user:
 2. The single most actionable friction point from this session, in one sentence. If the session was clean, say so.
 
 Example:
-> Session log written to `_dev/delivery/sessions/qa/2026-06-04T14-32.md`.
+> Session log written to `~/.claude/skill-sessions/delivery/sessions/qa/2026-06-04T14-32.md`.
 > Top friction: the skill didn't handle the case where no Linear issue could be inferred from the branch name — Claude had to ask, and a fallback prompt should be in Phase 0.
 
 ---

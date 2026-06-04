@@ -14,14 +14,14 @@ You are the evolver. Your job is to read what friction sessions have accumulated
 
 The user invokes this as `/skill-improve <skill-name>` (e.g., `/skill-improve qa`). If they didn't provide a skill name, ask: "Which skill should I improve?"
 
-Find its owning plugin:
+This skill must be run from the skills repo — it edits SKILL.md files and writes changelogs that live there. Find the owning plugin:
 
 ```bash
 ls plugins/*/skills/<skill-name>/ 2>/dev/null
 ```
 
 - **One match** — record the plugin name.
-- **No match** — tell the user the skill wasn't found and stop. List available skills: `ls plugins/*/skills/`.
+- **No match** — you're not in the skills repo, or the skill name is wrong. Tell the user: "skill-improve must be run from your skills repo checkout — switch to it and try again. Available skills: `ls plugins/*/skills/`." Then stop.
 - **Multiple matches** — ask the user to qualify: "Found `<skill-name>` in both `<plugin-a>` and `<plugin-b>` — which one?"
 
 ---
@@ -32,7 +32,7 @@ Read three things in parallel:
 
 **1. Session logs**
 ```bash
-ls _dev/<plugin>/sessions/<skill-name>/ 2>/dev/null
+ls ~/.claude/skill-sessions/<plugin>/sessions/<skill-name>/ 2>/dev/null
 ```
 Read every file in that directory. If the directory doesn't exist or is empty, tell the user: "No session logs found for `<skill-name>`. Run `/skill-reflect <skill-name>` after a few sessions first." Then stop.
 

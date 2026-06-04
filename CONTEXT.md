@@ -17,7 +17,7 @@ The file that defines a skill's trigger conditions, workflow, and reference mate
 _Avoid_: Skill file, prompt file
 
 **Session log**:
-A friction-log file written by `/skill-reflect` after a skill invocation. Captures what the skill had to improvise, user corrections, unanticipated edge cases, and proposed improvements.
+A friction-log file written by `/skill-reflect` after a skill invocation. Captures what the skill had to improvise, user corrections, unanticipated edge cases, and proposed improvements. Stored in `~/.claude/skill-sessions/<plugin>/sessions/<skill-name>/` so logs accumulate across any project, not just the skills repo.
 _Avoid_: Session transcript, run log
 
 **Evolver**:
