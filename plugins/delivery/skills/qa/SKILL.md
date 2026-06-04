@@ -1,7 +1,7 @@
 ---
 name: qa
 description: Software QA skill — validates that current code changes satisfy the linked Linear issue. Fetches the issue, reads acceptance criteria, executes the ticket's attached test plan when one exists (produced by /plan-qa), runs every test layer it finds, and uses Playwright to visually verify the UI against any design attachments on the ticket. Use whenever the user wants to QA a feature, verify a fix, check that code matches a ticket's acceptance criteria, run a pre-merge review, or confirm the UI looks right against a design. Trigger on — "/qa", "run QA", "QA this", "verify the feature", "does this match the ticket", "check AC", "acceptance criteria check", "visual QA", "playwright verify", "does this pass QA".
-version: 0.3.0
+version: 0.4.0
 ---
 
 # QA
@@ -204,10 +204,11 @@ Be specific. "The form validation in `src/components/Form.tsx:42` addresses AC-2
 
 Don't just skim the diff summary — read the actual changed code to understand what it does.
 
-When a test plan exists, review the code against its **scenarios**, not just the
-ACs: is there an implementation path for scenario 1.3's unauthorized case? A
-scenario with no corresponding code is a gap the plan *predicted* — exactly the
-kind of thing this step should catch.
+**Mark N/A where a column doesn't apply.** In the AC table, a backend-only AC has no Visual column — mark it N/A rather than leaving a blank that reads as untested. A UI-only AC may have no DB layer — same rule.
+
+**Flag "judgment" ACs.** Some criteria can't be automated — e.g. "follows the project's vocabulary", "matches the ADR". Grade those by inspection, label them **(judgment)** in the table, and note that no test backs the grade. Don't mark them ✅ as if a test ran.
+
+When a test plan exists, review the code against its **scenarios**, not just the ACs: is there an implementation path for scenario 1.3's unauthorized case? A scenario with no corresponding code is a gap the plan *predicted* — exactly the kind of thing this step should catch.
 
 ---
 
@@ -281,14 +282,17 @@ Only run this phase if:
 
 ### 4a. Get the design target
 
-Check whether the Linear issue has image attachments. If so, download them:
+Check whether the Linear issue has design attachments. Fetch them via the Linear MCP — **do not use curl**, which will 401 on Linear-hosted URLs:
 
-```bash
-# Images from Linear come as URLs — download each one
-curl -L "<attachment_url>" -o /tmp/qa-design-target.png 2>/dev/null || true
+```
+mcp__plugin_linear_linear__get_attachment({ id: "<attachment_id>" })
 ```
 
-Read each image using the Read tool so you can see what the design looks like. If there's a `mockup.html` attachment, download and read it too.
+Save image content to `/tmp/qa-design-target.png` and read it with the Read tool.
+
+**When multiple design attachments exist** (e.g. Options A/B/C plus a chosen one), select the canonical target: look for title cues like "(chosen)", "implementation target", or "final"; prefer the most recent if no cue exists; or ask the user which to use. Don't compare against a rejected option.
+
+**If the target is an HTML mockup**, save it to `/tmp/qa-design-target.html`, open it in the browser, and screenshot it — render it as the designer intended rather than eyeballing the source. That screenshot becomes your visual reference for Phase 4d.
 
 If there are no attachments, look for local design files:
 
@@ -298,7 +302,15 @@ find . -name "mockup.html" -o -name "*.figma" -o -name "design*.png" 2>/dev/null
 
 If no design reference exists at all, note it in the report. You'll still screenshot the UI but there's nothing to compare against — the user will have to judge visually.
 
-### 4b. Ensure the app is running
+### 4b. Verify preconditions (read-only)
+
+Before attempting to navigate and screenshot, confirm the app's required state exists. Query the live local DB (project service-role client or the Supabase MCP) to verify:
+- Required migrations are applied (target tables and RPCs exist)
+- Required fixture rows exist (e.g. a seeded Brand, a test user)
+
+If a precondition is missing, surface exactly what's needed and ask before running any seed or migration — seeds mutate shared state and require consent first. Don't start Phase 4c and discover the route is broken mid-screenshot.
+
+### 4c. Ensure the app is running
 
 Check if a dev server is already running:
 
@@ -318,10 +330,7 @@ lsof -i :3000 -i :5173 -i :8080 2>/dev/null | grep LISTEN | head -3
 
 If you can't determine the port or the server won't start, ask the user: "What URL is the app running at? (e.g. http://localhost:3000)"
 
-**Authenticate if the route is gated.** Don't assume the app is anonymous — if
-navigating to the target URL just bounces to a sign-in page, you need a session.
-Reuse the project's **existing** auth rather than logging in from scratch, in
-this order:
+**Authenticate if the route is gated.** Don't assume the app is anonymous — if navigating to the target URL just bounces to a sign-in page, you need a session. Reuse the project's **existing** auth rather than logging in from scratch, in this order:
 
 1. **Reuse a saved session.** If the project's e2e suite produces a Playwright
    `storageState` (commonly `tests/e2e/.auth/*.json`, written by a `globalSetup`
@@ -337,7 +346,7 @@ this order:
 5. If none of these is available, **ask** the user how to authenticate rather
    than guessing credentials.
 
-### 4c. Screenshot the relevant UI
+### 4d. Screenshot the relevant UI
 
 Create the screenshot directory first:
 
@@ -353,9 +362,13 @@ Use Playwright to navigate to the page(s) affected by this issue. If you have `m
 
 If Playwright MCP isn't available but `mcp__claude-in-chrome__*` tools are, use those instead.
 
+**Prefer read-only UI states.** Capture what you can observe without triggering writes — default view, expanded disclosures, focus states, empty state. Only trigger state-mutating interactions (e.g. submitting a form, autosave) when an AC genuinely requires demonstrating persistence. When you do write, do it through the normal app path and note the write explicitly in the report.
+
+**Run helper scripts from inside the project.** If you write a Node or Playwright helper script, place it at the repo root (not a temp directory outside the repo) so `node_modules` resolution works. Use `pnpm exec` / `npx` to invoke the project's installed tooling. Clean up any temp script when done.
+
 Save all screenshots to `/tmp/qa-screenshots/`. Keep a list of every file you save — you'll upload them all to Linear in Phase 5.
 
-### 4d. Visual comparison
+### 4e. Visual comparison
 
 Read the screenshots you took and the design target images. Compare them on:
 
@@ -386,18 +399,24 @@ outward-facing and conditional; the terminal report is not:
 
 ### 5a. Upload screenshots to Linear
 
-For each screenshot saved in `/tmp/qa-screenshots/`:
+Process screenshots **one at a time** — do not batch all `prepare_attachment_upload` calls up front, because the signed URL expires in ~60 seconds and batching will cause the first URLs to expire before their PUTs run.
 
-1. Call `mcp__plugin_linear_linear__prepare_attachment_upload` with the filename and MIME type `image/png` to get a signed upload URL
-2. Upload the file to that URL using curl:
+For **each** screenshot saved in `/tmp/qa-screenshots/`:
+
+1. Call `mcp__plugin_linear_linear__prepare_attachment_upload` with the filename and MIME type `image/png` to get a signed upload URL and headers.
+2. Upload **immediately** using the returned `uploadUrl` and `uploadRequest.headers` verbatim:
    ```bash
    curl -s -X PUT "<uploadUrl>" \
      -H "Content-Type: image/png" \
+     -H "<returned-header-1>" \
+     -H "<returned-header-2>" \
      --data-binary @/tmp/qa-screenshots/<filename>.png
    ```
-3. Call `mcp__plugin_linear_linear__create_attachment_from_upload` to attach the uploaded file to the issue
+   The signed headers (commonly `content-type`, `host`, `x-goog-content-length-range`) must match the file's exact byte size — send them exactly as returned.
+3. Call `mcp__plugin_linear_linear__create_attachment_from_upload` to finalize. Capture the returned asset URL.
+4. Move to the next file.
 
-Keep a list of the attachment URLs returned — you'll reference them in the comment.
+Keep a list of the finalized asset URLs — embed them in the comment with `![alt](url)`.
 
 If uploads fail (network error, missing credentials), note it in the report and continue — don't let a failed upload block the report.
 
