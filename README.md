@@ -28,7 +28,7 @@ You can also install plugins directly:
 
 ## Available Plugins
 
-Three themed bundles — each a single install that brings several related skills.
+Four themed bundles — each a single install that brings several related skills.
 
 ### `delivery` — Linear planning→QA flow
 
@@ -59,6 +59,17 @@ Three themed bundles — each a single install that brings several related skill
 | Command | What it does | Requires |
 |---------|--------------|----------|
 | `/track:start <client>` (+ `:stop`, `:pause`, `:resume`, `:status`, `:report`) | Billable-hours timer backed by a git-versioned plaintext ledger under `~/.time-tracker/`. | jq, git |
+
+### `meta` — self-improving skills
+
+`/plugin install meta@mvdmakesthings`
+
+| Skill / command | What it does | Requires |
+|-----------------|--------------|----------|
+| `/skill-reflect <skill>` | Run immediately after any skill session. Mines the conversation for friction — improvised steps, user corrections, missed edge cases — and writes a structured log to `~/.claude/skill-sessions/<plugin>/sessions/<skill-name>/`. Works in any project. | none |
+| `/skill-improve <skill>` | Run from your skills repo when you have enough logs. Reads accumulated session logs, proposes numbered SKILL.md changes with evidence, waits for your approval on each, then applies accepted changes, bumps the patch version, and writes a `CHANGELOG.md` entry next to the SKILL.md. | Must be run from the skills repo checkout |
+
+The two skills form a loop: reflect after sessions anywhere → accumulate logs in `~/.claude/skill-sessions/` → improve from the skills repo when ready.
 
 "Requires" lists what each skill reaches for beyond Claude Code itself. MCP servers (Linear, Playwright) are configured in your Claude Code settings; `plan-design` reads the OpenAI key from your environment for image generation.
 

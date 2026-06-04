@@ -22,6 +22,11 @@
       "name": "track",
       "description": "Console-native billable hours tracker. Slash commands (/track:start, /track:stop, /track:pause, /track:resume, /track:status, /track:report) record billable sessions to a git-versioned plaintext ledger under ~/.time-tracker/.",
       "source": "./plugins/track"
+    },
+    {
+      "name": "meta",
+      "description": "Skills that improve other skills — session reflection (/skill-reflect) and HITL-gated SKILL.md evolution (/skill-improve).",
+      "source": "./plugins/meta"
     }
   ]
 }
