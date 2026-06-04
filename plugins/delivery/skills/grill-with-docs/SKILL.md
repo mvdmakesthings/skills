@@ -1,7 +1,7 @@
 ---
 name: grill-with-docs
 description: Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates documentation (CONTEXT.md, ADRs) inline as decisions crystallise. Use when user wants to stress-test a plan against their project's language and documented decisions.
-version: 0.1.0
+version: 0.2.0
 ---
 
 <what-to-do>
@@ -11,6 +11,8 @@ Interview me relentlessly about every aspect of this plan until we reach a share
 Ask the questions one at a time, waiting for feedback on each question before continuing.
 
 If a question can be answered by exploring the codebase, explore the codebase instead.
+
+Once decisions have crystallised, do a downstream consistency sweep: check whether any resolved decision contradicts existing downstream artifacts — the PRD, open tickets, README, sibling ADRs. Surface each conflict and offer to reconcile. Don't wait for the user to notice.
 
 </what-to-do>
 
@@ -78,7 +80,9 @@ When the user states how something works, check whether the code agrees. If you 
 
 When a term is resolved, update `CONTEXT.md` right there. Don't batch these up — capture them as they happen. Use the format in [CONTEXT-FORMAT.md](./references/CONTEXT-FORMAT.md).
 
-`CONTEXT.md` should be totally devoid of implementation details. Do not treat `CONTEXT.md` as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else.
+**Deferred-write fallback.** If inline writes are blocked (e.g., plan mode is active) or the resolved decision describes behavior that doesn't exist in code yet, record the resolved terms in the active working artifact (plan file, scratch doc) with explicit markers, and defer the CONTEXT.md/ADR writes to implementation time. Do not write a glossary entry that describes future behavior as if it already exists — that creates doc/code drift. When deferring, tell the user: "I'm holding these term updates — remind me to apply them to CONTEXT.md once this is built."
+
+`CONTEXT.md` should be devoid of process and wiring details, but it *should* name the mechanisms the team talks about out loud. One-line test: a noun the team says in conversation belongs here; a code path does not. Do not treat `CONTEXT.md` as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else.
 
 ### Offer ADRs sparingly
 
@@ -89,6 +93,8 @@ Only offer to create an ADR when all three are true:
 3. **The result of a real trade-off** — there were genuine alternatives and you picked one for specific reasons
 
 If any of the three is missing, skip the ADR. Use the format in [ADR-FORMAT.md](./references/ADR-FORMAT.md).
+
+**Amending vs. superseding.** When a resolved decision evolves an *existing* ADR, prefer an in-place dated amendment (append a new section: "## Amendment — YYYY-MM-DD") if the core decision still stands. Create a superseding ADR only if the core decision flips. This keeps the history readable without orphaning the original record.
 
 ### Update linear if needed
 
