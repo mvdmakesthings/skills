@@ -8,13 +8,14 @@ This is a **Claude Code plugin marketplace** — a public catalog of plugins tha
 
 ## Plugins
 
-The marketplace ships **three themed plugins**, each bundling several related skills:
+The marketplace ships **four themed plugins**, each bundling several related skills:
 
 | Plugin | Skills (command) | Purpose |
 |--------|------------------|---------|
 | `delivery` | `to-prd` (`/to-prd`), `to-issues` (`/to-issues`), `grill-with-docs` (`/grill-with-docs`), `plan-design` (`/plan-design`), `plan-qa` (`/plan-qa`), `qa` (`/qa`) | Linear-driven planning→QA flow: PRDs, issue slicing, plan grilling, design mockups, test planning, and QA execution. `plan-qa` attaches `<issue-id>-test-plan.md`; `qa` consumes it. |
 | `writing` | `human-voice-writer` (`/writing:human`), `storyteller-guidance` (auto-triggers) | Humanize AI-sounding prose; storytelling coach for pitches, talks, and memos |
 | `track` | `track` (`/track:start` \| `:stop` \| `:pause` \| `:resume` \| `:status` \| `:report`) | Billable hours tracker backed by a git-versioned ledger |
+| `meta` | `skill-reflect` (`/skill-reflect <skill>`), `skill-improve` (`/skill-improve <skill>`) | Self-improvement loop: capture session friction logs and evolve SKILL.md files with HITL approval. Session logs accumulate in `~/.claude/skill-sessions/`; evolution runs from the skills repo. |
 
 Skills auto-trigger — and their `/<skill>` short-commands resolve — from each skill's own `name:` frontmatter, independent of which plugin bundles them. A plugin *command*'s namespace (e.g. `/writing:human`, `/track:start`) derives from the plugin name.
 
@@ -37,6 +38,8 @@ _dev/                             ← Dev-only material; NOT shipped on install
 A single plugin holds **many** skills under `skills/`. Source paths in the marketplace `plugins` array are repo-relative (e.g., `"source": "./plugins/delivery"`).
 
 Everything a plugin needs at runtime lives inside its `plugins/<name>/` tree; everything else (tests, docs, eval artifacts) lives under `_dev/<plugin>/` so it stays out of the installed package. Within a skill, reference files sit in `skills/<skill>/references/` and are addressed relative to the SKILL.md; the `track` skill locates its dispatcher via `${CLAUDE_PLUGIN_ROOT}/bin/track.sh`.
+
+The `meta` plugin's improvement loop uses `~/.claude/skill-sessions/<plugin>/sessions/<skill-name>/` (outside the repo) to store session logs — this allows `/skill-reflect` to run in any project and accumulate logs that `/skill-improve` reads when run from this repo.
 
 ## Key Files
 
