@@ -1,117 +1,210 @@
-# claude-marketplace
+# Skills Marketplace for Claude Code
 
-A curated collection of plugins, skills, and agents for [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
-
-## Install
+A curated set of Claude Code plugins that add structured workflows to your AI sessions — from Linear planning and QA, to billable hour tracking, to prose rewriting. Each plugin bundles several related skills you install once and use across every project.
 
 > Requires [Claude Code](https://docs.anthropic.com/en/docs/claude-code) v1.0.33 or later.
 
-Add the marketplace:
+## Prerequisites
+
+Some plugins reach outside Claude Code itself. Check what you need before installing:
+
+| Plugin | External dependencies |
+|--------|-----------------------|
+| `delivery` | [Linear MCP](https://linear.app/docs/mcp) (all skills); [Playwright MCP](https://github.com/microsoft/playwright-mcp) (`/qa` visual verification); `OPENAI_API_KEY` env var (`/plan-design` image generation) |
+| `meta` | None — runs entirely inside Claude Code |
+| `track` | `jq`, `git` (both must be on your `PATH`) |
+| `writing` | None |
+
+## Install
+
+### Quick install
+
+If you already know which plugin you want:
+
+```
+/plugin install delivery@mvdmakesthings
+/plugin install writing@mvdmakesthings
+/plugin install track@mvdmakesthings
+/plugin install meta@mvdmakesthings
+```
+
+### Browse and install
+
+Add the marketplace first, then explore from the Discover tab:
 
 ```
 /plugin marketplace add mvdmakesthings/skills
 ```
 
-Browse available plugins:
+Then open the plugin browser:
 
 ```
 /plugin
 ```
 
-Then navigate to the **Discover** tab and install what you need.
+Navigate to the **Discover** tab and install what you need.
 
-You can also install plugins directly:
+## Plugins
 
-```
-/plugin install <plugin-name>@mvdmakesthings
-```
+| Plugin | What it does |
+|--------|--------------|
+| [`delivery`](#delivery) | Linear-driven planning → QA flow: PRDs, issue slicing, plan grilling, design mockups, test planning, and QA execution |
+| [`writing`](#writing) | Humanize AI-sounding prose; storytelling coach for pitches, talks, and memos |
+| [`track`](#track) | Billable hours timer backed by a git-versioned plaintext ledger |
+| [`meta`](#meta) | Improve your own skills: capture session friction, then evolve SKILL.md files with your approval |
 
-## Available Plugins
+---
 
-Four themed bundles — each a single install that brings several related skills.
-
-### `delivery` — Linear planning→QA flow
+### `delivery`
 
 `/plugin install delivery@mvdmakesthings`
 
-| Skill / command | What it does | Requires |
-|-----------------|--------------|----------|
-| `/to-prd` | Synthesizes the current conversation into a PRD and publishes it to Linear. | Linear MCP |
-| `/to-issues` | Slices a plan, spec, or PRD into Linear issues you can pick up independently — each a thin end-to-end cut with its own acceptance criteria. | Linear MCP |
-| `/grill-with-docs` | Interrogates a plan against your CONTEXT.md and ADRs one question at a time, then writes the resolved decisions back into those docs. | CONTEXT.md / ADRs |
-| `/plan-design <issue-id>` | Turns a Linear issue into design mockups: interviews you per UI surface, generates three layout options via OpenAI image generation, builds the HTML/CSS for the one you pick, and attaches it to the ticket. | Linear MCP, OpenAI API key |
-| `/plan-qa <issue-id>` | Drafts a layer-aware test plan from a ticket's acceptance criteria and attaches it as `<issue-id>-test-plan.md` for `/qa` to execute. | Linear MCP |
-| `/qa [issue-id]` | Reviews current changes against a Linear issue: maps acceptance criteria to coverage, runs every test layer, executes the attached test plan, and screenshots the UI against design attachments. | Linear MCP, Playwright MCP |
-
-### `writing` — prose & narrative
-
-`/plugin install writing@mvdmakesthings`
-
-| Skill / command | What it does | Requires |
-|-----------------|--------------|----------|
-| `/writing:human [prompt]` | Rewrites prose so it reads like a person wrote it, stripping the vocabulary and sentence patterns that flag text as AI-generated. | none |
-| storyteller-guidance — auto-triggers on pitch / talk / memo phrasing | A storytelling coach. Picks from a 54-card tactic deck to draft or coach you through pitches, talks, and memos. | none |
-
-### `track` — billable hours
-
-`/plugin install track@mvdmakesthings`
+A full planning-to-QA pipeline built around Linear. Skills chain together — `/to-prd` → `/to-issues` → `/plan-design` + `/plan-qa` → `/qa` — but each one works independently.
 
 | Command | What it does | Requires |
 |---------|--------------|----------|
-| `/track:start <client>` (+ `:stop`, `:pause`, `:resume`, `:status`, `:report`) | Billable-hours timer backed by a git-versioned plaintext ledger under `~/.time-tracker/`. | jq, git |
+| `/to-prd` | Synthesizes the current conversation into a PRD and publishes it to Linear | Linear MCP |
+| `/to-issues` | Slices a plan, spec, or PRD into independently-grabbable Linear issues — each a thin vertical slice with its own acceptance criteria | Linear MCP |
+| `/grill-with-docs` | Challenges a plan against your `CONTEXT.md` and ADRs one question at a time, resolves terminology conflicts, and writes decisions back into those docs inline | `CONTEXT.md` / ADRs |
+| `/plan-design <issue-id>` | Reads a Linear issue, interviews you per UI surface, generates three layout mockups via OpenAI image generation, builds HTML/CSS for the one you pick, and attaches it to the ticket | Linear MCP, `OPENAI_API_KEY` |
+| `/plan-qa <issue-id>` | Drafts a layer-aware test plan from a ticket's acceptance criteria and attaches it as `<issue-id>-test-plan.md` for `/qa` to execute | Linear MCP |
+| `/qa [issue-id]` | Maps acceptance criteria to coverage, runs every test layer, executes the attached test plan, and screenshots the UI against design attachments | Linear MCP, Playwright MCP |
 
-### `meta` — self-improving skills
+---
+
+### `writing`
+
+`/plugin install writing@mvdmakesthings`
+
+| Command | What it does | Requires |
+|---------|--------------|----------|
+| `/writing:human [prompt]` | Rewrites prose so it reads like a person wrote it — strips the vocabulary and sentence patterns that flag text as AI-generated | None |
+| `storyteller-guidance` | A storytelling coach for pitches, talks, and memos. Auto-triggers on pitch / talk / memo phrasing. Draws from a 54-card tactic deck | None |
+
+---
+
+### `track`
+
+`/plugin install track@mvdmakesthings`
+
+| Command | What it does |
+|---------|--------------|
+| `/track:start <client>` | Start a billable timer for a named client |
+| `/track:stop [note]` | Stop the active timer with an optional session note |
+| `/track:pause` | Pause the active timer |
+| `/track:resume` | Resume a paused timer |
+| `/track:status` | Show the active timer and today's totals per client |
+| `/track:report` | Print an invoice-ready rollup with hours and dollar totals |
+
+Sessions are recorded to a git-versioned JSONL ledger under `~/.time-tracker/`. Requires `jq` and `git` on your `PATH`.
+
+---
+
+### `meta`
 
 `/plugin install meta@mvdmakesthings`
 
-| Skill / command | What it does | Requires |
-|-----------------|--------------|----------|
-| `/skill-reflect <skill>` | Run immediately after any skill session. Mines the conversation for friction — improvised steps, user corrections, missed edge cases — and writes a structured log to `~/.claude/skill-sessions/<plugin>/sessions/<skill-name>/`. Works in any project. | none |
-| `/skill-improve <skill>` | Run from your skills repo when you have enough logs. Reads accumulated session logs, proposes numbered SKILL.md changes with evidence, waits for your approval on each, then applies accepted changes, bumps the patch version, and writes a `CHANGELOG.md` entry next to the SKILL.md. | Must be run from the skills repo checkout |
+Two skills that form a continuous improvement loop for any skill in this marketplace:
 
-The two skills form a loop: reflect after sessions anywhere → accumulate logs in `~/.claude/skill-sessions/` → improve from the skills repo when ready.
+```
+Any project                    Skills repo
+───────────                    ───────────
+Run a skill
+     ↓
+/skill-reflect  ──── logs ───→ ~/.claude/skill-sessions/
+                                         ↓
+                               /skill-improve  ──→  SKILL.md updated
+                                         ↓
+                               HITL approval gate
+```
 
-"Requires" lists what each skill reaches for beyond Claude Code itself. MCP servers (Linear, Playwright) are configured in your Claude Code settings; `plan-design` reads the OpenAI key from your environment for image generation.
+| Command | Where to run | What it does |
+|---------|--------------|--------------|
+| `/skill-reflect <skill>` | Any project, immediately after a skill session | Mines the conversation for friction — improvised steps, user corrections, missed edge cases — and writes a structured log to `~/.claude/skill-sessions/<plugin>/sessions/<skill-name>/` |
+| `/skill-improve <skill>` | Skills repo checkout only | Reads accumulated session logs, proposes numbered SKILL.md changes with evidence, waits for your approval on each, then applies accepted changes, bumps the patch version, and writes a `CHANGELOG.md` entry |
 
-## Adding a Skill or Plugin
+Reflect after sessions anywhere → logs accumulate in `~/.claude/skill-sessions/` → improve from this repo when you're ready.
 
-Most additions are a **new skill in an existing bundle** — no marketplace change needed:
+---
+
+## Repository structure
+
+```
+.claude-plugin/
+└── marketplace.json          ← Marketplace catalog (lists all plugins)
+
+plugins/
+├── delivery/
+│   ├── .claude-plugin/
+│   │   └── plugin.json       ← Plugin manifest
+│   └── skills/
+│       ├── to-prd/SKILL.md
+│       ├── to-issues/SKILL.md
+│       ├── grill-with-docs/SKILL.md
+│       ├── plan-design/SKILL.md
+│       ├── plan-qa/SKILL.md
+│       └── qa/SKILL.md
+├── writing/
+│   └── skills/
+│       ├── human-voice-writer/SKILL.md
+│       └── storyteller-guidance/SKILL.md
+├── track/
+│   ├── bin/track.sh          ← Bash dispatcher (all ledger logic lives here)
+│   └── skills/
+│       └── track/SKILL.md
+└── meta/
+    └── skills/
+        ├── skill-reflect/SKILL.md
+        └── skill-improve/SKILL.md
+
+_dev/                         ← Dev-only: tests, evals, scratch docs. Not shipped on install.
+```
+
+---
+
+## Local development
+
+Test a plugin locally without publishing:
+
+```bash
+# Add your local clone as a marketplace source
+/plugin marketplace add ./path/to/skills
+
+# Install the plugin you're working on
+/plugin install delivery@mvdmakesthings
+
+# Validate the full marketplace
+claude plugin validate .
+```
+
+---
+
+## Contributing
+
+### Add a skill to an existing plugin
+
+Create a `SKILL.md` under the relevant plugin — no marketplace change needed:
 
 ```
 plugins/
-└── delivery/                     # an existing bundle
+└── delivery/
     └── skills/
         └── your-skill/
-            └── SKILL.md           # the skill (auto-triggers on its description)
+            └── SKILL.md
 ```
 
-Keep dev-only fixtures (tests, eval data, scratch docs) under `_dev/<bundle>/` so they don't ship on install.
+Put dev-only fixtures (tests, eval data) under `_dev/<plugin>/` so they don't ship on install.
 
-To add a **new bundle**, create a plugin package and register it:
+### Add a new plugin
 
-```
-plugins/
-└── your-plugin/
-    ├── .claude-plugin/
-    │   └── plugin.json        # Plugin manifest (required)
-    ├── skills/                # one subdir per skill
-    │   └── your-skill/SKILL.md
-    ├── commands/              # slash commands (optional)
-    ├── bin/                   # executable helpers (optional)
-    └── agents/  hooks/        # other components (optional)
-```
-
-### 1. Create the plugin directory
+1. Create the plugin directory and manifest:
 
 ```bash
 mkdir -p plugins/your-plugin/.claude-plugin
 ```
 
-### 2. Add a plugin manifest
-
-Create `plugins/your-plugin/.claude-plugin/plugin.json`:
-
 ```json
+// plugins/your-plugin/.claude-plugin/plugin.json
 {
   "name": "your-plugin",
   "description": "What your plugin does",
@@ -119,13 +212,9 @@ Create `plugins/your-plugin/.claude-plugin/plugin.json`:
 }
 ```
 
-### 3. Add your components
+2. Add skills under `plugins/your-plugin/skills/<skill-name>/SKILL.md`.
 
-Add skills, commands, agents, or hooks under the plugin. See the [Claude Code plugin docs](https://docs.anthropic.com/en/docs/claude-code/plugins) for details on each component type.
-
-### 4. Register it in the marketplace
-
-Add an entry to `.claude-plugin/marketplace.json`:
+3. Register it in `.claude-plugin/marketplace.json`:
 
 ```json
 {
@@ -139,23 +228,13 @@ Add an entry to `.claude-plugin/marketplace.json`:
 }
 ```
 
-### 5. Validate and test locally
+4. Validate: `claude plugin validate .`
 
-```
-claude plugin validate .
-/plugin marketplace add ./path/to/skills
-/plugin install your-plugin@mvdmakesthings
-```
+5. Open a pull request. Bundles group related skills under one install — keep each plugin thematically coherent.
 
-## Contributing
+See the [Claude Code plugin docs](https://docs.anthropic.com/en/docs/claude-code/plugins) for details on skill manifests, agents, hooks, and other component types.
 
-1. Fork this repository
-2. Add a skill under an existing `plugins/<bundle>/skills/`, or create a new bundle under `plugins/`
-3. If you added a new bundle, register it in `.claude-plugin/marketplace.json`
-4. Validate with `claude plugin validate .`
-5. Open a pull request
-
-Bundles group related skills under one install — keep each bundle thematically coherent.
+---
 
 ## License
 
