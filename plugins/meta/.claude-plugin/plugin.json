@@ -1,0 +1,13 @@
+{
+  "name": "meta",
+  "displayName": "Skill Meta",
+  "description": "Skills that improve other skills — session reflection, friction logging, and HITL-gated SKILL.md evolution.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Michael VanDyke",
+    "url": "https://github.com/mvdmakesthings"
+  },
+  "keywords": ["skill-improvement", "reflection", "hitl", "meta", "evolver"],
+  "license": "MIT",
+  "homepage": "https://github.com/mvdmakesthings/skills"
+}
