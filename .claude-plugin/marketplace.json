@@ -9,49 +9,19 @@
   },
   "plugins": [
     {
-      "name": "writer",
-      "description": "Write prose that sounds authentically human rather than AI-generated.",
-      "source": "./skills/human-voice-writer"
+      "name": "delivery",
+      "description": "Linear-driven planning→QA flow: turn a conversation into a PRD (/to-prd), slice it into issues (/to-issues), grill plans against your docs (/grill-with-docs), generate design mockups (/plan-design), draft a test plan (/plan-qa), and QA changes against the ticket (/qa).",
+      "source": "./plugins/delivery"
     },
     {
-      "name": "storyteller-guidance",
-      "description": "Craft presentations, pitches, talks, and any communication that needs to persuade, inspire, or move an audience. A working storytelling coach grounded in established narrative-craft principles.",
-      "source": "./skills/storyteller-guidance"
-    },
-    {
-      "name": "grill-with-docs",
-      "description": "Stress-test a plan against your project's domain model. Challenges terminology, resolves design decisions one-by-one, and updates CONTEXT.md and ADRs inline as decisions crystallise.",
-      "source": "./skills/grill-with-docs"
-    },
-    {
-      "name": "to-issues",
-      "description": "Break a plan, spec, or PRD into independently-grabbable issues on the project issue tracker using tracer-bullet vertical slices.",
-      "source": "./skills/to-issues"
-    },
-    {
-      "name": "to-prd",
-      "description": "Turn the current conversation context into a PRD and publish it to the project issue tracker in Linear.",
-      "source": "./skills/to-prd"
+      "name": "writing",
+      "description": "Writing toolkit: humanize AI-sounding prose (/writing:human) and a storytelling coach for pitches, talks, and memos. Bundles the human-voice-writer and storyteller-guidance skills.",
+      "source": "./plugins/writing"
     },
     {
       "name": "track",
       "description": "Console-native billable hours tracker. Slash commands (/track:start, /track:stop, /track:pause, /track:resume, /track:status, /track:report) record billable sessions to a git-versioned plaintext ledger under ~/.time-tracker/.",
-      "source": "./skills/time-track"
-    },
-    {
-      "name": "plan-design",
-      "description": "Doc-aware design planning: reads your DESIGN.md, CONTEXT.md, and ADRs plus a Linear issue, identifies the UI surfaces that need design, and for each one runs an alignment interview, generates three layout-archetype mockups via OpenAI image generation, lets you pick one, then produces an HTML/CSS implementation using your exact design tokens and attaches the chosen mockup to the Linear issue.",
-      "source": "./skills/plan-design"
-    },
-    {
-      "name": "plan-qa",
-      "description": "Refinement-time test planning: reads a Linear issue's acceptance criteria and the repo's test conventions, then drafts a layer-aware test plan — per-AC scenarios tagged with a test layer and an expected result, plus auth roles, fixtures, visual states, and regression watch areas — and after your approval attaches it to the ticket as <issue-id>-test-plan.md for the qa skill to execute against.",
-      "source": "./skills/plan-qa"
-    },
-    {
-      "name": "qa",
-      "description": "Software QA: reviews current code changes against a Linear issue, maps each acceptance criterion to the code and tests that cover it (executing the ticket's plan-qa test plan when one is attached), runs every test layer it finds, and uses Playwright to visually verify the UI against design attachments on the ticket.",
-      "source": "./skills/qa"
+      "source": "./plugins/track"
     }
   ]
 }

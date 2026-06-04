@@ -1,0 +1,30 @@
+name: validate-marketplace
+
+# Runs on every PR (and main) so a malformed marketplace.json or plugin.json
+# can never merge unnoticed. Unconditional (no path filter) so the check always
+# reports a status and is safe to mark as a required check.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      # Pinned for a deterministic gate; bump periodically (Dependabot-friendly).
+      - name: Validate marketplace and plugin manifests
+        run: npx -y @anthropic-ai/claude-code@2.1.161 plugin validate .

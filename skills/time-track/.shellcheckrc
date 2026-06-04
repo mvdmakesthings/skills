@@ -1,2 +1,0 @@
-# shellcheck config for plugins/time-track/bin/*.sh
-# No exclusions today — add `disable=SCxxxx` only after confirming a finding is a genuine false positive.
