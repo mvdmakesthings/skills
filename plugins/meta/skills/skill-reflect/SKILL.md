@@ -1,7 +1,7 @@
 ---
 name: skill-reflect
 description: Capture a friction log immediately after finishing a skill session — what was improvised, what the user corrected, what edge cases the skill missed, and what changes would help. Writes a structured session log to ~/.claude/skill-sessions/<plugin>/sessions/<skill-name>/ so it can be read by the evolver from the skills repo later. Works in any project, not just the skills repo. Use whenever you've just finished running a skill and want to capture what happened while the session is fresh. Triggers on "/skill-reflect", "reflect on this session", "log this session", "write a session log", "capture skill friction", or any phrase asking to record what happened during a skill run.
-version: 0.1.0
+version: 0.1.1
 ---
 
 # Skill Reflect
@@ -17,12 +17,12 @@ The user invokes this as `/skill-reflect <skill-name>` (e.g., `/skill-reflect qa
 Once you have the name, find its owning plugin. Try scanning the working directory first (works if you're in the skills repo):
 
 ```bash
-ls plugins/*/skills/<skill-name>/ 2>/dev/null
+ls -d plugins/*/skills/<skill-name>/ 2>/dev/null
 ```
 
-- **One match** — record the plugin name (the `*` segment from the path).
+- **One match** — record the plugin name (the second path segment, e.g. `plugins/<plugin>/skills/...`).
 - **Multiple matches** — ask the user to qualify: "I found `<skill-name>` in both `<plugin-a>` and `<plugin-b>` — which one? (e.g., `<plugin-a>/skill-name`)"
-- **No match** — you're probably in a different project. Ask: "Which plugin does `<skill-name>` belong to? (`delivery`, `writing`, `track`, or `meta`)" and use their answer as the plugin name.
+- **No match** — before asking the user, check whether you're in the skills repo on the wrong branch: run `git branch --show-current`. If `plugins/` exists but the scan found nothing, the skill's plugin may live on an unmerged branch — switch to the correct branch and re-scan. Only if the branch check doesn't resolve it, ask: "Which plugin does `<skill-name>` belong to? (`delivery`, `writing`, `track`, or `meta`)" and use their answer as the plugin name.
 
 ---
 
@@ -99,7 +99,7 @@ If all four sections are empty (a clean run with no friction), still write the l
 
 Tell the user:
 
-1. The path of the file written (relative to repo root).
+1. The full path of the file written.
 2. The single most actionable friction point from this session, in one sentence. If the session was clean, say so.
 
 Example:
