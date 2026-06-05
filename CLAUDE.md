@@ -12,7 +12,7 @@ The marketplace ships **four themed plugins**, each bundling several related ski
 
 | Plugin | Skills (command) | Purpose |
 |--------|------------------|---------|
-| `delivery` | `to-prd` (`/to-prd`), `to-issues` (`/to-issues`), `grill-with-docs` (`/grill-with-docs`), `plan-design` (`/plan-design`), `plan-qa` (`/plan-qa`), `qa` (`/qa`) | Linear-driven planning→QA flow: PRDs, issue slicing, plan grilling, design mockups, test planning, and QA execution. `plan-qa` attaches `<issue-id>-test-plan.md`; `qa` consumes it. |
+| `delivery` | `to-prd` (`/to-prd`), `to-issues` (`/to-issues`), `grill-with-docs` (`/grill-with-docs`), `plan-design` (`/plan-design`), `plan-qa` (`/plan-qa`), `qa` (`/qa`), `pir` (`/pir`) | Linear-driven planning→QA flow: PRDs, issue slicing, plan grilling, design mockups, test planning, QA execution, and post-incident reports. `plan-qa` attaches `<issue-id>-test-plan.md`; `qa` consumes it. |
 | `writing` | `human-voice-writer` (`/writing:human`), `storyteller-guidance` (auto-triggers) | Humanize AI-sounding prose; storytelling coach for pitches, talks, and memos |
 | `track` | `track` (`/track:start` \| `:stop` \| `:pause` \| `:resume` \| `:status` \| `:report`) | Billable hours tracker backed by a git-versioned ledger |
 | `meta` | `skill-reflect` (`/skill-reflect <skill>`), `skill-improve` (`/skill-improve <skill>`) | Self-improvement loop: capture session friction logs and evolve SKILL.md files with HITL approval. Session logs accumulate in `~/.claude/skill-sessions/`; evolution runs from the skills repo. |
