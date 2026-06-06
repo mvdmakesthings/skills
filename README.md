@@ -12,6 +12,7 @@ Some plugins reach outside Claude Code itself. Check what you need before instal
 |--------|-----------------------|
 | `delivery` | [Linear MCP](https://linear.app/docs/mcp) (all skills); [Playwright MCP](https://github.com/microsoft/playwright-mcp) (`/qa` visual verification); `OPENAI_API_KEY` env var (`/plan-design` image generation) |
 | `meta` | None — runs entirely inside Claude Code |
+| `specialist` | None — connects to your project's database at runtime |
 | `track` | `jq`, `git` (both must be on your `PATH`) |
 | `writing` | None |
 
@@ -26,6 +27,7 @@ If you already know which plugin you want:
 /plugin install writing@mvdmakesthings
 /plugin install track@mvdmakesthings
 /plugin install meta@mvdmakesthings
+/plugin install specialist@mvdmakesthings
 ```
 
 ### Browse and install
@@ -48,10 +50,11 @@ Navigate to the **Discover** tab and install what you need.
 
 | Plugin | What it does |
 |--------|--------------|
-| [`delivery`](#delivery) | Linear-driven planning → QA flow: PRDs, issue slicing, plan grilling, design mockups, test planning, and QA execution |
+| [`delivery`](#delivery) | Linear-driven planning → QA flow: PRDs, issue slicing, plan grilling, design mockups, test planning, QA execution, and post-incident reports |
 | [`writing`](#writing) | Humanize AI-sounding prose; storytelling coach for pitches, talks, and memos |
 | [`track`](#track) | Billable hours timer backed by a git-versioned plaintext ledger |
 | [`meta`](#meta) | Improve your own skills: capture session friction, then evolve SKILL.md files with your approval |
+| [`specialist`](#specialist) | Domain-expert personas: a Postgres-first DBA for audits, schema design, index/bloat cleanup, slow-query diagnosis, and live incident investigation |
 
 ---
 
@@ -69,6 +72,7 @@ A full planning-to-QA pipeline built around Linear. Skills chain together — `/
 | `/plan-design <issue-id>` | Reads a Linear issue, interviews you per UI surface, generates three layout mockups via OpenAI image generation, builds HTML/CSS for the one you pick, and attaches it to the ticket | Linear MCP, `OPENAI_API_KEY` |
 | `/plan-qa <issue-id>` | Drafts a layer-aware test plan from a ticket's acceptance criteria and attaches it as `<issue-id>-test-plan.md` for `/qa` to execute | Linear MCP |
 | `/qa [issue-id]` | Maps acceptance criteria to coverage, runs every test layer, executes the attached test plan, and screenshots the UI against design attachments | Linear MCP, Playwright MCP |
+| `/pir` | Guides a post-incident retrospective: surfaces what broke, why, and what changes prevent recurrence — produces a structured PIR document | None |
 
 ---
 
@@ -127,6 +131,20 @@ Reflect after sessions anywhere → logs accumulate in `~/.claude/skill-sessions
 
 ---
 
+### `specialist`
+
+`/plugin install specialist@mvdmakesthings`
+
+Domain-expert personas that drop into any project and discover its conventions at runtime. Currently ships one expert: a Postgres-first DBA.
+
+| Command | What it does | Requires |
+|---------|--------------|----------|
+| `/dba` | Runs a playbook chosen from: full health audit, schema design + implementation with tests, index/bloat cleanup, slow-query diagnosis and fixes, or live incident investigation | Postgres access |
+
+The DBA skill auto-triggers on database-shaped prompts. It discovers your project's migration tool, test runner, and deploy conventions before acting, and defers rule-level Postgres detail to the `supabase-postgres-best-practices` skill when it's installed alongside this plugin.
+
+---
+
 ## Repository structure
 
 ```
@@ -143,7 +161,8 @@ plugins/
 │       ├── grill-with-docs/SKILL.md
 │       ├── plan-design/SKILL.md
 │       ├── plan-qa/SKILL.md
-│       └── qa/SKILL.md
+│       ├── qa/SKILL.md
+│       └── pir/SKILL.md
 ├── writing/
 │   └── skills/
 │       ├── human-voice-writer/SKILL.md
@@ -152,10 +171,13 @@ plugins/
 │   ├── bin/track.sh          ← Bash dispatcher (all ledger logic lives here)
 │   └── skills/
 │       └── track/SKILL.md
-└── meta/
+├── meta/
+│   └── skills/
+│       ├── skill-reflect/SKILL.md
+│       └── skill-improve/SKILL.md
+└── specialist/
     └── skills/
-        ├── skill-reflect/SKILL.md
-        └── skill-improve/SKILL.md
+        └── dba/SKILL.md
 
 _dev/                         ← Dev-only: tests, evals, scratch docs. Not shipped on install.
 ```
