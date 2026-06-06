@@ -1,0 +1,13 @@
+{
+  "name": "specialist",
+  "displayName": "Specialist",
+  "description": "Domain-expert personas that drop into any project and work with its conventions: a Postgres-first DBA (/dba) for health audits, schema design, index/bloat cleanup, slow-query diagnosis, and live incident investigation.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Michael VanDyke",
+    "url": "https://github.com/mvdmakesthings"
+  },
+  "keywords": ["postgres", "postgresql", "dba", "database", "supabase", "audit", "migration", "rls", "performance", "slow-query", "explain", "index", "bloat", "incident", "investigation", "schema-design", "pgtap"],
+  "license": "MIT",
+  "homepage": "https://github.com/mvdmakesthings/skills"
+}

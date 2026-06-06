@@ -16,7 +16,7 @@ The marketplace ships **five themed plugins**, each bundling one or more related
 | `writing` | `human-voice-writer` (`/writing:human`), `storyteller-guidance` (auto-triggers) | Humanize AI-sounding prose; storytelling coach for pitches, talks, and memos |
 | `track` | `track` (`/track:start` \| `:stop` \| `:pause` \| `:resume` \| `:status` \| `:report`) | Billable hours tracker backed by a git-versioned ledger |
 | `meta` | `skill-reflect` (`/skill-reflect <skill>`), `skill-improve` (`/skill-improve <skill>`) | Self-improvement loop: capture session friction logs and evolve SKILL.md files with HITL approval. Session logs accumulate in `~/.claude/skill-sessions/`; evolution runs from the skills repo. |
-| `dba` | `dba` (`/dba`, auto-triggers) | Postgres-first DBA playbooks: health audits, schema design + implementation with tests, index/bloat cleanup, slow-query fixes, live incident investigation. Discovers each project's conventions at runtime; defers rule detail to `supabase-postgres-best-practices` when installed. |
+| `specialist` | `dba` (`/dba`, auto-triggers) | Domain-expert personas: Postgres-first DBA playbooks for health audits, schema design + implementation with tests, index/bloat cleanup, slow-query fixes, and live incident investigation. Discovers each project's conventions at runtime; defers rule detail to `supabase-postgres-best-practices` when installed. |
 
 Skills auto-trigger — and their `/<skill>` short-commands resolve — from each skill's own `name:` frontmatter, independent of which plugin bundles them. A plugin *command*'s namespace (e.g. `/writing:human`, `/track:start`) derives from the plugin name.
 
