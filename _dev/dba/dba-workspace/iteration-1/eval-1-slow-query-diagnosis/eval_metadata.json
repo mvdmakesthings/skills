@@ -1,0 +1,12 @@
+{
+  "eval_id": 1,
+  "eval_name": "slow-query-diagnosis",
+  "prompt": "This query is slow in our app: SELECT * FROM brand_responses WHERE brand_id = $1 AND question_key = $2; — figure out why and propose a fix.",
+  "assertions": [
+    "EXPLAIN before EXPLAIN ANALYZE: a plain EXPLAIN is captured before any EXPLAIN ANALYZE execution",
+    "Inspects what exists before proposing: examines brand_responses' existing indexes/constraints (the table is keyed on (brand_id, question_key)) before proposing any new index — and the diagnosis accounts for the existing unique key rather than blindly recommending a redundant index",
+    "Any proposed fix is shown as concrete SQL, and if offered as a migration it follows the project's discovered convention (timestamped filename matching supabase/migrations style)",
+    "Lock impact stated: any index proposal names its lock cost and prefers CREATE INDEX CONCURRENTLY (with its no-transaction caveat) for production application",
+    "Diagnosis considers cheaper causes before new indexes: statistics freshness (ANALYZE), plan row-estimates vs actuals, or SELECT * cost are considered — not just 'add an index'"
+  ]
+}

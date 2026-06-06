@@ -1,0 +1,71 @@
+{
+  "expectations": [
+    {
+      "text": "EXPLAIN before EXPLAIN ANALYZE: a plain EXPLAIN is captured before any EXPLAIN ANALYZE execution",
+      "passed": false,
+      "evidence": "The only plan section is titled 'Plans captured (local stack, `EXPLAIN (ANALYZE, BUFFERS)`)' (line 45) and every captured plan (A, B, C) shows actual execution time / BUFFERS (e.g. 'actual time=0.185..0.186 rows=1', 'Execution Time: 0.290 ms'). No cost-only plain EXPLAIN is shown or referenced as preceding the ANALYZE runs. Per the grading rule, when the document only ever shows EXPLAIN ANALYZE with no indication a plain EXPLAIN came first, this fails."
+    },
+    {
+      "text": "Inspects what exists before proposing: examines brand_responses' existing indexes/constraints (the table is keyed on (brand_id, question_key)) before proposing any new index — and the diagnosis accounts for the existing unique key rather than blindly recommending a redundant index",
+      "passed": true,
+      "evidence": "Section 'Schema facts (live local catalog)' (lines 32-43) enumerates all four indexes, leading with 'brand_responses_brand_question_unique | UNIQUE (brand_id, question_key) | serves the query verbatim'. The verdict (line 9) and 'Proposed fix' (line 91) explicitly account for the existing unique key: 'Adding another (brand_id, question_key) index would be pure write tax ... for zero read benefit.'"
+    },
+    {
+      "text": "Any proposed fix is shown as concrete SQL, and if offered as a migration it follows the project's discovered convention (timestamped filename matching supabase/migrations style)",
+      "passed": true,
+      "evidence": "Concrete SQL is provided in proposed_analyze.sql ('ANALYZE public.brand_responses;') and a deferred 'DROP INDEX CONCURRENTLY IF EXISTS public.idx_brand_responses_brand_id;'. The run satisfies condition (b): it explicitly states no index migration is needed with reasoning (line 99: 'No index migration is proposed, because the correct conclusion is that no index is missing') and frames ANALYZE as a one-off maintenance op intentionally not added to supabase/migrations (sql lines 18-20). No fix is offered in a form that ignores the convention."
+    },
+    {
+      "text": "Lock impact stated: any index proposal names its lock cost and prefers CREATE INDEX CONCURRENTLY (with its no-transaction caveat) for production application",
+      "passed": true,
+      "evidence": "Conditional: the run correctly concludes no index is needed, so no CREATE INDEX is proposed. The DDL it does propose has lock cost addressed: ANALYZE — 'plain ANALYZE takes a brief ShareUpdateExclusiveLock; it does NOT block reads or writes and does not rewrite the table' (sql lines 15-16); and the deferred drop names the lock and no-transaction caveat: 'DROP INDEX CONCURRENTLY (ShareUpdateExclusiveLock, no write blocking)' / '(DROP INDEX CONCURRENTLY cannot run inside a transaction block.)' (diagnosis line 96, sql line 37)."
+    },
+    {
+      "text": "Diagnosis considers cheaper causes before new indexes: statistics freshness (ANALYZE), plan row-estimates vs actuals, or SELECT * cost are considered — not just 'add an index'",
+      "passed": true,
+      "evidence": "Root-cause ladder (lines 74-87) walks: '1. Stale statistics? ... never ANALYZEd (reltuples = -1)'; estimates vs actuals shown in plans A/B (cost=0.15..8.17 rows=1 vs actual rows=1); '3. Query asks for too much? SELECT * here returns one row by a unique key, so width is irrelevant'; and identifies application round-trip amplification (N+1) as the most likely real cause — all before/instead of recommending a new index."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  },
+  "timing": {
+    "total_duration_seconds": 248.3,
+    "total_tokens": 60465
+  },
+  "claims": [
+    {
+      "claim": "brand_responses already has a composite unique index brand_responses_brand_question_unique on (brand_id, question_key) that serves the query as a single-row Index Scan",
+      "type": "factual",
+      "verified": true,
+      "evidence": "Confirmed against the without_skill run's independent inspection ('\\d brand_responses' shows the same UNIQUE CONSTRAINT btree (brand_id, question_key)) and both plans show 'Index Scan using brand_responses_brand_question_unique'. Consistent across both runs."
+    },
+    {
+      "claim": "The query is not slow at the database level (~0.15 ms warm); perceived app slowness is application round-trip amplification, cold-plan overhead, or network latency",
+      "type": "quality",
+      "verified": true,
+      "evidence": "Plan C shows planning dominates and only when cold (8.934 ms cold planning -> 0.298 ms warm); execution stays ~0.1-0.3 ms. The N+1 reasoning is grounded in cited app code (_actions.ts:132 computeBrandCompletion re-read, page.tsx:68). A defensible, evidence-backed conclusion — though it does not pursue the per-row VOLATILE is_admin() RLS mechanism that the without_skill run identified as scaling with rows."
+    },
+    {
+      "claim": "Investigation was read-only against the local stack only; nothing run against production and no repo files modified",
+      "type": "process",
+      "verified": true,
+      "evidence": "Stated repeatedly (lines 11, 105-109) and consistent with the run constraints; no DDL artifacts beyond propose-only .sql in the outputs directory."
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "EXPLAIN before EXPLAIN ANALYZE: a plain EXPLAIN is captured before any EXPLAIN ANALYZE execution",
+        "reason": "This assertion is essentially unverifiable from the output artifacts alone, since a diagnosis write-up naturally only quotes the richer ANALYZE plan even if a plain EXPLAIN was run first. Without a transcript, both runs fail it for absence-of-evidence rather than for doing the wrong thing. Consider either (a) requiring the diagnosis to explicitly note 'plain EXPLAIN first, then ANALYZE' as a documented step, or (b) grading this against the transcript rather than the artifact."
+      },
+      {
+        "reason": "No assertion distinguishes between the two materially different root causes the runs reached (this run: app-layer N+1 / cold-plan; the other run: per-row VOLATILE is_admin() in the RLS filter that scales with rows). Both are defensible, but an assertion rewarding identification of the per-row RLS-function evaluation cost would better discriminate a deep DB diagnosis from a surface 'the index already exists, look at the app' answer."
+      }
+    ],
+    "overall": "Assertions are mostly discriminating, but the 'EXPLAIN before ANALYZE' check can only be graded from the artifact as a fail-by-absence, and no assertion captures the strongest possible DB-level finding (per-row RLS function cost)."
+  }
+}
