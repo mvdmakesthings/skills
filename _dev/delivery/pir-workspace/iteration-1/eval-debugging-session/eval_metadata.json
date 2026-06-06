@@ -1,0 +1,18 @@
+{
+  "eval_id": 2,
+  "eval_name": "debugging-session",
+  "prompt": "can you write up what happened? We just finished debugging a Rails migration failure in staging. The migration added a NOT NULL constraint to the users.confirmed_at column but existing rows had null values, so it failed with 'PG::NotNullViolation'. We tried rolling back but the rollback also failed because of a dependent index. Eventually we wrote a backfill script to set confirmed_at = created_at for all null rows, then re-ran the migration — it succeeded. This was in staging only, no users affected. Took about 45 minutes.",
+  "assertions": [
+    "Output file is a .md file in the outputs directory",
+    "Document contains a ## Summary section",
+    "Document contains a ## Timeline section",
+    "Document contains a ## Root Cause section",
+    "Document contains an ## Impact section (or equivalent coverage of impact)",
+    "Document contains a ## Resolution section with the specific SQL commands used",
+    "Document contains an ## Action Items section with at least one checklist item",
+    "Document contains a ## Lessons Learned section",
+    "Severity field uses the defined scale (Critical, High, Medium, or Low) and is Medium or Low (staging only, no users affected)",
+    "Status field is 'Resolved'",
+    "Root cause explains why the migration failed — the null assumption and why it wasn't caught"
+  ]
+}

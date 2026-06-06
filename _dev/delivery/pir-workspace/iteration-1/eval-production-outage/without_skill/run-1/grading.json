@@ -1,0 +1,69 @@
+{
+  "run_id": "eval-production-outage-without_skill",
+  "expectations": [
+    {
+      "text": "Output file is a .md file in the outputs directory",
+      "passed": true,
+      "evidence": "File 2026-06-05-checkout-database-url-missing.md exists at 4.7KB"
+    },
+    {
+      "text": "Document contains a ## Summary section",
+      "passed": true,
+      "evidence": "## Summary present with one-paragraph overview"
+    },
+    {
+      "text": "Document contains a ## Timeline section",
+      "passed": true,
+      "evidence": "## Timeline present as a table (T+offset format)"
+    },
+    {
+      "text": "Document contains a ## Root Cause section",
+      "passed": true,
+      "evidence": "## Root Cause present with mechanism explanation"
+    },
+    {
+      "text": "Document contains an ## Impact section",
+      "passed": false,
+      "evidence": "No dedicated ## Impact section. Impact is mentioned in Summary but not as a structured section with Systems/Users/Duration/Data breakdown"
+    },
+    {
+      "text": "Document contains a ## Resolution section with at least one checklist item",
+      "passed": true,
+      "evidence": "## Resolution present with narrative description"
+    },
+    {
+      "text": "Document contains an ## Action Items section with at least one checklist item",
+      "passed": false,
+      "evidence": "Has ## Action Items as a table with owners/priority, but uses table rows instead of checkbox format (- [ ] items). Different format from the skill's template."
+    },
+    {
+      "text": "Document contains a ## Lessons Learned section",
+      "passed": true,
+      "evidence": "## Lessons Learned present with 3 entries"
+    },
+    {
+      "text": "Severity field uses the defined scale (Critical, High, Medium, or Low) \u2014 not P0/P1 or other formats",
+      "passed": false,
+      "evidence": "**Severity**: P1 \u2014 Customer-facing, revenue-impacting. Uses P-level notation instead of the Critical/High/Medium/Low scale"
+    },
+    {
+      "text": "Status field is 'Resolved'",
+      "passed": true,
+      "evidence": "**Status**: Resolved"
+    },
+    {
+      "text": "Root cause explains the mechanism (not just names the missing var \u2014 should mention vault_secrets removal and why .env masked it)",
+      "passed": true,
+      "evidence": "Root cause explains the vault_secrets() removal, why .env masked it, and the trigger condition"
+    }
+  ],
+  "pass_count": 8,
+  "total_count": 11,
+  "pass_rate": 0.727,
+  "summary": {
+    "passed": 8,
+    "failed": 3,
+    "total": 11,
+    "pass_rate": 0.7273
+  }
+}

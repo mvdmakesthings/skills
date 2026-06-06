@@ -1,0 +1,34 @@
+{
+  "run_id": "eval-no-incident-with_skill",
+  "expectations": [
+    {
+      "text": "Response does NOT write a full PIR document with Summary/Timeline/Root Cause sections",
+      "passed": true,
+      "evidence": "Response is 6 lines, contains no PIR sections (no ## Summary, ## Timeline, etc.)"
+    },
+    {
+      "text": "Response recognizes no incident occurred in the session",
+      "passed": true,
+      "evidence": "Explicitly says: 'This session looks like a successful feature build... There's no breakage, outage, or problem-resolution arc here.'"
+    },
+    {
+      "text": "Response asks for clarification about what the user wants to document",
+      "passed": true,
+      "evidence": "Asks: 'describe it in a sentence or two and I'll write up the PIR from there'"
+    },
+    {
+      "text": "Response explains why no PIR was generated (the session contained feature work, not incident resolution)",
+      "passed": true,
+      "evidence": "Names the specific feature work: 'user settings page (profile photo upload, notification preferences, timezone selection), tests passed, deployed cleanly to staging'"
+    }
+  ],
+  "pass_count": 4,
+  "total_count": 4,
+  "pass_rate": 1.0,
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "pass_rate": 1.0
+  }
+}

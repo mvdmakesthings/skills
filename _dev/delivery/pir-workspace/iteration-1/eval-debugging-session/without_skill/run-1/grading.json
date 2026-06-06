@@ -1,0 +1,69 @@
+{
+  "run_id": "eval-debugging-session-without_skill",
+  "expectations": [
+    {
+      "text": "Output file is a .md file in the outputs directory",
+      "passed": true,
+      "evidence": "File 2026-06-05-rails-migration-not-null-violation.md exists"
+    },
+    {
+      "text": "Document contains a ## Summary section",
+      "passed": true,
+      "evidence": "## Summary present"
+    },
+    {
+      "text": "Document contains a ## Timeline section",
+      "passed": true,
+      "evidence": "## Timeline present as a table with T+offset format"
+    },
+    {
+      "text": "Document contains a ## Root Cause section",
+      "passed": true,
+      "evidence": "## Root Cause present with explanation"
+    },
+    {
+      "text": "Document contains an ## Impact section (or equivalent coverage of impact)",
+      "passed": false,
+      "evidence": "No ## Impact section. 'User Impact: None' appears in frontmatter only. No structured impact breakdown."
+    },
+    {
+      "text": "Document contains a ## Resolution section with the specific SQL commands used",
+      "passed": true,
+      "evidence": "## Resolution present with specific SQL commands"
+    },
+    {
+      "text": "Document contains an ## Action Items section with at least one checklist item",
+      "passed": false,
+      "evidence": "## Action Items uses table format with # / Action / Priority columns, not - [ ] checkbox format from the skill template"
+    },
+    {
+      "text": "Document contains a ## Lessons Learned section",
+      "passed": false,
+      "evidence": "No ## Lessons Learned section. Has ## What Went Well and ## Notes instead. The lessons-learned content is embedded in Contributing Factors."
+    },
+    {
+      "text": "Severity field uses the defined scale (Critical, High, Medium, or Low) and is Medium or Low (staging only, no users affected)",
+      "passed": false,
+      "evidence": "No Severity field at all in the frontmatter. Has 'User Impact: None' and 'Environment: Staging' but no severity classification."
+    },
+    {
+      "text": "Status field is 'Resolved'",
+      "passed": false,
+      "evidence": "No Status field in the frontmatter."
+    },
+    {
+      "text": "Root cause explains why the migration failed \u2014 the null assumption and why it wasn't caught",
+      "passed": true,
+      "evidence": "Root cause explains the null assumption and PostgreSQL enforcement; Contributing Factors adds pre-migration audit gap"
+    }
+  ],
+  "pass_count": 6,
+  "total_count": 11,
+  "pass_rate": 0.545,
+  "summary": {
+    "passed": 6,
+    "failed": 5,
+    "total": 11,
+    "pass_rate": 0.5455
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "skill_name": "pir",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We had a production outage on our checkout service today starting around 14:32. The service was returning 500 errors on POST /api/checkout. I checked the logs and saw 'Error: could not connect to database'. We investigated and found that DATABASE_URL was missing from the production environment — the deploy script's vault_secrets function had been removed in a refactor last week. We added it back and redeployed at 15:04. Checkout came back up immediately. /pir",
+      "expected_output": "A structured PIR markdown file written to the output directory with all required sections: Summary, Timeline, Root Cause, Impact, Resolution, Action Items, Lessons Learned. Severity should be Critical or High. Status should be Resolved.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "can you write up what happened? We just finished debugging a Rails migration failure in staging. The migration added a NOT NULL constraint to the users.confirmed_at column but existing rows had null values, so it failed with 'PG::NotNullViolation'. We tried rolling back but the rollback also failed because of a dependent index. Eventually we wrote a backfill script to set confirmed_at = created_at for all null rows, then re-ran the migration — it succeeded. This was in staging only, no users affected. Took about 45 minutes.",
+      "expected_output": "A structured PIR markdown file capturing the migration failure, root cause (null constraint on existing data), timeline of debugging steps, resolution (backfill + re-run). Severity should be Medium or Low since staging only.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I just finished implementing the new user settings page. Added profile photo upload, notification preferences, and timezone selection. Everything's working great and tests pass. /pir",
+      "expected_output": "The skill should recognize there is no incident in this session and ask the user what they want to document, rather than fabricating an incident from feature work.",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "eval_id": 3,
+  "eval_name": "no-incident-edge-case",
+  "prompt": "I just finished implementing the new user settings page. Added profile photo upload, notification preferences, and timezone selection. Everything's working great and tests pass. /pir",
+  "assertions": [
+    "Response does NOT write a full PIR document with Summary/Timeline/Root Cause sections",
+    "Response recognizes no incident occurred in the session",
+    "Response asks for clarification about what the user wants to document",
+    "Response explains why no PIR was generated (the session contained feature work, not incident resolution)"
+  ]
+}

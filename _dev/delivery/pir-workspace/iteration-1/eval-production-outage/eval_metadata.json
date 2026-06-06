@@ -1,0 +1,18 @@
+{
+  "eval_id": 1,
+  "eval_name": "production-outage",
+  "prompt": "We had a production outage on our checkout service today starting around 14:32. The service was returning 500 errors on POST /api/checkout. I checked the logs and saw 'Error: could not connect to database'. We investigated and found that DATABASE_URL was missing from the production environment — the deploy script's vault_secrets function had been removed in a refactor last week. We added it back and redeployed at 15:04. Checkout came back up immediately. /pir",
+  "assertions": [
+    "Output file is a .md file in the outputs directory",
+    "Document contains a ## Summary section",
+    "Document contains a ## Timeline section",
+    "Document contains a ## Root Cause section",
+    "Document contains an ## Impact section",
+    "Document contains a ## Resolution section",
+    "Document contains an ## Action Items section with at least one checklist item",
+    "Document contains a ## Lessons Learned section",
+    "Severity field uses the defined scale (Critical, High, Medium, or Low) — not P0/P1 or other formats",
+    "Status field is 'Resolved'",
+    "Root cause explains the mechanism (not just names the missing var — should mention vault_secrets removal and why .env masked it)"
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "run_id": "eval-debugging-session-with_skill",
+  "expectations": [
+    {
+      "text": "Output file is a .md file in the outputs directory",
+      "passed": true,
+      "evidence": "File 2026-06-05-migration-not-null-confirmed-at.md exists at 4.6KB"
+    },
+    {
+      "text": "Document contains a ## Summary section",
+      "passed": true,
+      "evidence": "## Summary present with one-paragraph overview including all key facts"
+    },
+    {
+      "text": "Document contains a ## Timeline section",
+      "passed": true,
+      "evidence": "## Timeline with 7 entries using relative +00:XX format (appropriate since no wall-clock times given)"
+    },
+    {
+      "text": "Document contains a ## Root Cause section",
+      "passed": true,
+      "evidence": "## Root Cause present explaining the null assumption and dependent index complication"
+    },
+    {
+      "text": "Document contains an ## Impact section (or equivalent coverage of impact)",
+      "passed": true,
+      "evidence": "## Impact with Systems/Users/Duration/Data breakdown \u2014 correctly identifies 'internal only' for users"
+    },
+    {
+      "text": "Document contains a ## Resolution section with the specific SQL commands used",
+      "passed": true,
+      "evidence": "## Resolution includes exact SQL: DROP INDEX CONCURRENTLY, UPDATE...WHERE confirmed_at IS NULL, rake commands"
+    },
+    {
+      "text": "Document contains an ## Action Items section with at least one checklist item",
+      "passed": true,
+      "evidence": "4 checkbox action items including production backfill prerequisite, audit, and documentation"
+    },
+    {
+      "text": "Document contains a ## Lessons Learned section",
+      "passed": true,
+      "evidence": "Lessons Learned with 3 specific, non-generic lessons including the backfill value judgment call nuance"
+    },
+    {
+      "text": "Severity field uses the defined scale (Critical, High, Medium, or Low) and is Medium or Low (staging only, no users affected)",
+      "passed": true,
+      "evidence": "**Severity**: Medium \u2014 correct classification, uses defined scale"
+    },
+    {
+      "text": "Status field is 'Resolved'",
+      "passed": true,
+      "evidence": "**Status**: Resolved"
+    },
+    {
+      "text": "Root cause explains why the migration failed \u2014 the null assumption and why it wasn't caught",
+      "passed": true,
+      "evidence": "Root cause explains the null assumption, 4312 legacy rows from 2021, and the PostgreSQL enforcement mechanism"
+    }
+  ],
+  "pass_count": 11,
+  "total_count": 11,
+  "pass_rate": 1.0,
+  "summary": {
+    "passed": 11,
+    "failed": 0,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

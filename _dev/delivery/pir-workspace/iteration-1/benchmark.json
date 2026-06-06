@@ -1,0 +1,433 @@
+{
+  "metadata": {
+    "skill_name": "pir",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-06-05T21:55:14Z",
+    "evals_run": [
+      1,
+      2,
+      3
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 11,
+        "failed": 0,
+        "total": 11,
+        "time_seconds": 45.7,
+        "tokens": 17745,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Output file is a .md file in the outputs directory",
+          "passed": true,
+          "evidence": "File 2026-06-05-migration-not-null-confirmed-at.md exists at 4.6KB"
+        },
+        {
+          "text": "Document contains a ## Summary section",
+          "passed": true,
+          "evidence": "## Summary present with one-paragraph overview including all key facts"
+        },
+        {
+          "text": "Document contains a ## Timeline section",
+          "passed": true,
+          "evidence": "## Timeline with 7 entries using relative +00:XX format (appropriate since no wall-clock times given)"
+        },
+        {
+          "text": "Document contains a ## Root Cause section",
+          "passed": true,
+          "evidence": "## Root Cause present explaining the null assumption and dependent index complication"
+        },
+        {
+          "text": "Document contains an ## Impact section (or equivalent coverage of impact)",
+          "passed": true,
+          "evidence": "## Impact with Systems/Users/Duration/Data breakdown \u2014 correctly identifies 'internal only' for users"
+        },
+        {
+          "text": "Document contains a ## Resolution section with the specific SQL commands used",
+          "passed": true,
+          "evidence": "## Resolution includes exact SQL: DROP INDEX CONCURRENTLY, UPDATE...WHERE confirmed_at IS NULL, rake commands"
+        },
+        {
+          "text": "Document contains an ## Action Items section with at least one checklist item",
+          "passed": true,
+          "evidence": "4 checkbox action items including production backfill prerequisite, audit, and documentation"
+        },
+        {
+          "text": "Document contains a ## Lessons Learned section",
+          "passed": true,
+          "evidence": "Lessons Learned with 3 specific, non-generic lessons including the backfill value judgment call nuance"
+        },
+        {
+          "text": "Severity field uses the defined scale (Critical, High, Medium, or Low) and is Medium or Low (staging only, no users affected)",
+          "passed": true,
+          "evidence": "**Severity**: Medium \u2014 correct classification, uses defined scale"
+        },
+        {
+          "text": "Status field is 'Resolved'",
+          "passed": true,
+          "evidence": "**Status**: Resolved"
+        },
+        {
+          "text": "Root cause explains why the migration failed \u2014 the null assumption and why it wasn't caught",
+          "passed": true,
+          "evidence": "Root cause explains the null assumption, 4312 legacy rows from 2021, and the PostgreSQL enforcement mechanism"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 21.8,
+        "tokens": 16339,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Response does NOT write a full PIR document with Summary/Timeline/Root Cause sections",
+          "passed": true,
+          "evidence": "Response is 6 lines, contains no PIR sections (no ## Summary, ## Timeline, etc.)"
+        },
+        {
+          "text": "Response recognizes no incident occurred in the session",
+          "passed": true,
+          "evidence": "Explicitly says: 'This session looks like a successful feature build... There's no breakage, outage, or problem-resolution arc here.'"
+        },
+        {
+          "text": "Response asks for clarification about what the user wants to document",
+          "passed": true,
+          "evidence": "Asks: 'describe it in a sentence or two and I'll write up the PIR from there'"
+        },
+        {
+          "text": "Response explains why no PIR was generated (the session contained feature work, not incident resolution)",
+          "passed": true,
+          "evidence": "Names the specific feature work: 'user settings page (profile photo upload, notification preferences, timezone selection), tests passed, deployed cleanly to staging'"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 11,
+        "failed": 0,
+        "total": 11,
+        "time_seconds": 50.4,
+        "tokens": 18071,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Output file is a .md file in the outputs directory",
+          "passed": true,
+          "evidence": "File 2026-06-05-checkout-database-url-missing.md exists at 4.8KB"
+        },
+        {
+          "text": "Document contains a ## Summary section",
+          "passed": true,
+          "evidence": "## Summary present at line 8 with one-paragraph overview"
+        },
+        {
+          "text": "Document contains a ## Timeline section",
+          "passed": true,
+          "evidence": "## Timeline present with 9 bullet entries using HH:MM format"
+        },
+        {
+          "text": "Document contains a ## Root Cause section",
+          "passed": true,
+          "evidence": "## Root Cause present at line 24"
+        },
+        {
+          "text": "Document contains an ## Impact section",
+          "passed": true,
+          "evidence": "## Impact present with Systems/Users/Duration/Data subsections"
+        },
+        {
+          "text": "Document contains a ## Resolution section with at least one checklist item",
+          "passed": true,
+          "evidence": "## Resolution with 4 numbered steps"
+        },
+        {
+          "text": "Document contains an ## Action Items section with at least one checklist item",
+          "passed": true,
+          "evidence": "## Action Items with 5 checkboxes covering smoke test, CI lint, documentation, audit, and runbook"
+        },
+        {
+          "text": "Document contains a ## Lessons Learned section",
+          "passed": true,
+          "evidence": "## Lessons Learned with 3 specific lessons about local env masking, cleanup risk, and startup assertions"
+        },
+        {
+          "text": "Severity field uses the defined scale (Critical, High, Medium, or Low) \u2014 not P0/P1 or other formats",
+          "passed": true,
+          "evidence": "**Severity**: Critical \u2014 matches the defined scale exactly"
+        },
+        {
+          "text": "Status field is 'Resolved'",
+          "passed": true,
+          "evidence": "**Status**: Resolved"
+        },
+        {
+          "text": "Root cause explains the mechanism (not just names the missing var \u2014 should mention vault_secrets removal and why .env masked it)",
+          "passed": true,
+          "evidence": "Root cause explains: vault_secrets() removal in a3f8b2c, why local .env masked the regression, and the trigger condition (next prod deploy)"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5455,
+        "passed": 6,
+        "failed": 5,
+        "total": 11,
+        "time_seconds": 33.6,
+        "tokens": 15094,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Output file is a .md file in the outputs directory",
+          "passed": true,
+          "evidence": "File 2026-06-05-rails-migration-not-null-violation.md exists"
+        },
+        {
+          "text": "Document contains a ## Summary section",
+          "passed": true,
+          "evidence": "## Summary present"
+        },
+        {
+          "text": "Document contains a ## Timeline section",
+          "passed": true,
+          "evidence": "## Timeline present as a table with T+offset format"
+        },
+        {
+          "text": "Document contains a ## Root Cause section",
+          "passed": true,
+          "evidence": "## Root Cause present with explanation"
+        },
+        {
+          "text": "Document contains an ## Impact section (or equivalent coverage of impact)",
+          "passed": false,
+          "evidence": "No ## Impact section. 'User Impact: None' appears in frontmatter only. No structured impact breakdown."
+        },
+        {
+          "text": "Document contains a ## Resolution section with the specific SQL commands used",
+          "passed": true,
+          "evidence": "## Resolution present with specific SQL commands"
+        },
+        {
+          "text": "Document contains an ## Action Items section with at least one checklist item",
+          "passed": false,
+          "evidence": "## Action Items uses table format with # / Action / Priority columns, not - [ ] checkbox format from the skill template"
+        },
+        {
+          "text": "Document contains a ## Lessons Learned section",
+          "passed": false,
+          "evidence": "No ## Lessons Learned section. Has ## What Went Well and ## Notes instead. The lessons-learned content is embedded in Contributing Factors."
+        },
+        {
+          "text": "Severity field uses the defined scale (Critical, High, Medium, or Low) and is Medium or Low (staging only, no users affected)",
+          "passed": false,
+          "evidence": "No Severity field at all in the frontmatter. Has 'User Impact: None' and 'Environment: Staging' but no severity classification."
+        },
+        {
+          "text": "Status field is 'Resolved'",
+          "passed": false,
+          "evidence": "No Status field in the frontmatter."
+        },
+        {
+          "text": "Root cause explains why the migration failed \u2014 the null assumption and why it wasn't caught",
+          "passed": true,
+          "evidence": "Root cause explains the null assumption and PostgreSQL enforcement; Contributing Factors adds pre-migration audit gap"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 4,
+        "total": 4,
+        "time_seconds": 15.5,
+        "tokens": 14184,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Response does NOT write a full PIR document with Summary/Timeline/Root Cause sections",
+          "passed": false,
+          "evidence": "Without the skill, Claude generated a 'Post-Implementation Review' document with # heading, ## What was built, ## What went well, ## Action items sections \u2014 a full document, not a clarifying question"
+        },
+        {
+          "text": "Response recognizes no incident occurred in the session",
+          "passed": false,
+          "evidence": "Claude reinterpreted /pir as 'Post-Implementation Review' rather than recognizing the user may have made an error or needs guidance. Did not explicitly flag the absence of an incident."
+        },
+        {
+          "text": "Response asks for clarification about what the user wants to document",
+          "passed": false,
+          "evidence": "No clarifying question was asked. Claude proceeded to generate a document."
+        },
+        {
+          "text": "Response explains why no PIR was generated (the session contained feature work, not incident resolution)",
+          "passed": false,
+          "evidence": "Claude generated a document instead of explaining the issue. The generated doc notes 'No incidents occurred' only in a closing note."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.7273,
+        "passed": 8,
+        "failed": 3,
+        "total": 11,
+        "time_seconds": 36.4,
+        "tokens": 15258,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Output file is a .md file in the outputs directory",
+          "passed": true,
+          "evidence": "File 2026-06-05-checkout-database-url-missing.md exists at 4.7KB"
+        },
+        {
+          "text": "Document contains a ## Summary section",
+          "passed": true,
+          "evidence": "## Summary present with one-paragraph overview"
+        },
+        {
+          "text": "Document contains a ## Timeline section",
+          "passed": true,
+          "evidence": "## Timeline present as a table (T+offset format)"
+        },
+        {
+          "text": "Document contains a ## Root Cause section",
+          "passed": true,
+          "evidence": "## Root Cause present with mechanism explanation"
+        },
+        {
+          "text": "Document contains an ## Impact section",
+          "passed": false,
+          "evidence": "No dedicated ## Impact section. Impact is mentioned in Summary but not as a structured section with Systems/Users/Duration/Data breakdown"
+        },
+        {
+          "text": "Document contains a ## Resolution section with at least one checklist item",
+          "passed": true,
+          "evidence": "## Resolution present with narrative description"
+        },
+        {
+          "text": "Document contains an ## Action Items section with at least one checklist item",
+          "passed": false,
+          "evidence": "Has ## Action Items as a table with owners/priority, but uses table rows instead of checkbox format (- [ ] items). Different format from the skill's template."
+        },
+        {
+          "text": "Document contains a ## Lessons Learned section",
+          "passed": true,
+          "evidence": "## Lessons Learned present with 3 entries"
+        },
+        {
+          "text": "Severity field uses the defined scale (Critical, High, Medium, or Low) \u2014 not P0/P1 or other formats",
+          "passed": false,
+          "evidence": "**Severity**: P1 \u2014 Customer-facing, revenue-impacting. Uses P-level notation instead of the Critical/High/Medium/Low scale"
+        },
+        {
+          "text": "Status field is 'Resolved'",
+          "passed": true,
+          "evidence": "**Status**: Resolved"
+        },
+        {
+          "text": "Root cause explains the mechanism (not just names the missing var \u2014 should mention vault_secrets removal and why .env masked it)",
+          "passed": true,
+          "evidence": "Root cause explains the vault_secrets() removal, why .env masked it, and the trigger condition"
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 39.3,
+        "stddev": 15.3366,
+        "min": 21.8,
+        "max": 50.4
+      },
+      "tokens": {
+        "mean": 17385.0,
+        "stddev": 920.4108,
+        "min": 16339,
+        "max": 18071
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.4243,
+        "stddev": 0.3785,
+        "min": 0.0,
+        "max": 0.7273
+      },
+      "time_seconds": {
+        "mean": 28.5,
+        "stddev": 11.345,
+        "min": 15.5,
+        "max": 36.4
+      },
+      "tokens": {
+        "mean": 14845.3333,
+        "stddev": 578.5718,
+        "min": 14184,
+        "max": 15258
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.58",
+      "time_seconds": "+10.8",
+      "tokens": "+2540"
+    }
+  },
+  "notes": []
+}

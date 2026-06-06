@@ -1,0 +1,69 @@
+{
+  "run_id": "eval-production-outage-with_skill",
+  "expectations": [
+    {
+      "text": "Output file is a .md file in the outputs directory",
+      "passed": true,
+      "evidence": "File 2026-06-05-checkout-database-url-missing.md exists at 4.8KB"
+    },
+    {
+      "text": "Document contains a ## Summary section",
+      "passed": true,
+      "evidence": "## Summary present at line 8 with one-paragraph overview"
+    },
+    {
+      "text": "Document contains a ## Timeline section",
+      "passed": true,
+      "evidence": "## Timeline present with 9 bullet entries using HH:MM format"
+    },
+    {
+      "text": "Document contains a ## Root Cause section",
+      "passed": true,
+      "evidence": "## Root Cause present at line 24"
+    },
+    {
+      "text": "Document contains an ## Impact section",
+      "passed": true,
+      "evidence": "## Impact present with Systems/Users/Duration/Data subsections"
+    },
+    {
+      "text": "Document contains a ## Resolution section with at least one checklist item",
+      "passed": true,
+      "evidence": "## Resolution with 4 numbered steps"
+    },
+    {
+      "text": "Document contains an ## Action Items section with at least one checklist item",
+      "passed": true,
+      "evidence": "## Action Items with 5 checkboxes covering smoke test, CI lint, documentation, audit, and runbook"
+    },
+    {
+      "text": "Document contains a ## Lessons Learned section",
+      "passed": true,
+      "evidence": "## Lessons Learned with 3 specific lessons about local env masking, cleanup risk, and startup assertions"
+    },
+    {
+      "text": "Severity field uses the defined scale (Critical, High, Medium, or Low) \u2014 not P0/P1 or other formats",
+      "passed": true,
+      "evidence": "**Severity**: Critical \u2014 matches the defined scale exactly"
+    },
+    {
+      "text": "Status field is 'Resolved'",
+      "passed": true,
+      "evidence": "**Status**: Resolved"
+    },
+    {
+      "text": "Root cause explains the mechanism (not just names the missing var \u2014 should mention vault_secrets removal and why .env masked it)",
+      "passed": true,
+      "evidence": "Root cause explains: vault_secrets() removal in a3f8b2c, why local .env masked the regression, and the trigger condition (next prod deploy)"
+    }
+  ],
+  "pass_count": 11,
+  "total_count": 11,
+  "pass_rate": 1.0,
+  "summary": {
+    "passed": 11,
+    "failed": 0,
+    "total": 11,
+    "pass_rate": 1.0
+  }
+}

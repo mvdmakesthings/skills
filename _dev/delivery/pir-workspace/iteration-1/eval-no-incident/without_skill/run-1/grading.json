@@ -1,0 +1,34 @@
+{
+  "run_id": "eval-no-incident-without_skill",
+  "expectations": [
+    {
+      "text": "Response does NOT write a full PIR document with Summary/Timeline/Root Cause sections",
+      "passed": false,
+      "evidence": "Without the skill, Claude generated a 'Post-Implementation Review' document with # heading, ## What was built, ## What went well, ## Action items sections \u2014 a full document, not a clarifying question"
+    },
+    {
+      "text": "Response recognizes no incident occurred in the session",
+      "passed": false,
+      "evidence": "Claude reinterpreted /pir as 'Post-Implementation Review' rather than recognizing the user may have made an error or needs guidance. Did not explicitly flag the absence of an incident."
+    },
+    {
+      "text": "Response asks for clarification about what the user wants to document",
+      "passed": false,
+      "evidence": "No clarifying question was asked. Claude proceeded to generate a document."
+    },
+    {
+      "text": "Response explains why no PIR was generated (the session contained feature work, not incident resolution)",
+      "passed": false,
+      "evidence": "Claude generated a document instead of explaining the issue. The generated doc notes 'No incidents occurred' only in a closing note."
+    }
+  ],
+  "pass_count": 0,
+  "total_count": 4,
+  "pass_rate": 0.0,
+  "summary": {
+    "passed": 0,
+    "failed": 4,
+    "total": 4,
+    "pass_rate": 0.0
+  }
+}
