@@ -1,0 +1,12 @@
+{
+  "eval_id": 0,
+  "eval_name": "audit-health-check",
+  "prompt": "Audit the database health of this project — I want to know about unused indexes, tables missing RLS, bloat, and any schema drift. Write up your findings as a report.",
+  "assertions": [
+    "Discovery before action: identifies supabase/migrations as the schema source of truth and names the timestamped YYYYMMDDHHMMSS_slug.sql naming convention (learned from actual filenames, not assumed)",
+    "Target awareness: explicitly distinguishes the local stack from the linked/production project and states which one queries ran against, before running them",
+    "Evidence-backed findings table: report contains a findings table with Area/Severity/Evidence/Recommendation-style columns where each finding cites actual catalog-query results (numbers or object names), covering at least 3 distinct categories (index health, RLS/schema integrity, bloat/maintenance)",
+    "Deploy-drift surfaced from project docs: report flags that migrations are not auto-applied on deploy (manual supabase db push --linked) as a drift risk, sourced from the project's own documentation (CLAUDE.md / PR-CHECKLIST.md)",
+    "Read-only honored: run-notes and transcript show no INSERT/UPDATE/DELETE/DDL executed against any database — fixes appear only as proposed SQL"
+  ]
+}

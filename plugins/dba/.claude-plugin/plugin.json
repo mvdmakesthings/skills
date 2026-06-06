@@ -1,0 +1,13 @@
+{
+  "name": "dba",
+  "displayName": "DBA",
+  "description": "Postgres-first DBA playbooks: database health audits, schema design + implementation with tests, index/bloat cleanup, slow-query diagnosis and fixes, and live incident investigation. Discovers each project's migration, test, and deploy conventions at runtime; defers rule-level Postgres detail to supabase-postgres-best-practices when installed.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Michael VanDyke",
+    "url": "https://github.com/mvdmakesthings"
+  },
+  "keywords": ["postgres", "postgresql", "dba", "database", "supabase", "audit", "migration", "rls", "performance", "slow-query", "explain", "index", "bloat", "incident", "investigation", "schema-design", "pgtap"],
+  "license": "MIT",
+  "homepage": "https://github.com/mvdmakesthings/skills"
+}

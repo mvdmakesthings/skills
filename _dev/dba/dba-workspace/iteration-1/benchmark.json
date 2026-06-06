@@ -1,0 +1,348 @@
+{
+  "metadata": {
+    "skill_name": "dba",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-06-06T14:24:07Z",
+    "evals_run": [
+      0,
+      1,
+      2
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 0,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 288.1,
+        "tokens": 13900,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Discovery before action: identifies supabase/migrations as the schema source of truth and names the timestamped YYYYMMDDHHMMSS_slug.sql naming convention (learned from actual filenames, not assumed)",
+          "passed": true,
+          "evidence": "run-notes.md 'Discovery (Step 0 / D1\u2013D5)': \"ls -1 supabase/migrations \u2192 43 .sql files, timestamped convention `YYYYMMDDHHMMSS_name.sql`, latest `20260605213520_stale_seq_errcode_p0409.sql`.\" Names the dir, the convention pattern, AND an actual filename \u2014 demonstrably learned from a real `ls`, not assumed."
+        },
+        {
+          "text": "Target awareness: explicitly distinguishes the local stack from the linked/production project and states which one queries ran against, before running them",
+          "passed": true,
+          "evidence": "audit-report.md header: \"Target: LOCAL Supabase stack only \u2014 postgres @ 127.0.0.1:54322 ... The linked/remote charter-prod project was not touched (off-limits per run constraints).\" run-notes Discovery: \"Constraint: linked/prod project off-limits, so Supabase MCP tools were not used.\" stated as part of discovery before the query inventory."
+        },
+        {
+          "text": "Evidence-backed findings table: report contains a findings table with Area/Severity/Evidence/Recommendation-style columns where each finding cites actual catalog-query results (numbers or object names), covering at least 3 distinct categories (index health, RLS/schema integrity, bloat/maintenance)",
+          "passed": true,
+          "evidence": "audit-report.md '## Findings' table has columns `# | Area | Severity | Evidence | Recommendation | Fix`. Covers index health (FK coverage \u2014 10 named FK columns to auth.users; unused indexes \u2014 16 at idx_scan=0), RLS/schema integrity (anon grants on all 17 tables; RLS-enabled-zero-policies; migration drift 43==43), and bloat/maintenance (dead-tuple 72\u2013100%, largest table 184 kB). Each row cites concrete numbers/object names."
+        },
+        {
+          "text": "Deploy-drift surfaced from project docs: report flags that migrations are not auto-applied on deploy (manual supabase db push --linked) as a drift risk, sourced from the project's own documentation (CLAUDE.md / PR-CHECKLIST.md)",
+          "passed": true,
+          "evidence": "audit-report.md Finding #8: \"Given the documented manual `supabase db push --linked` deploy model, verify prod is on 20260605213520 via `supabase migration list --linked` per `docs/PR-CHECKLIST.md`.\" Exec summary and run-notes (\"Deploy model: manual supabase db push --linked (drift possible) \u2014 from CLAUDE.md\") source it to project docs."
+        },
+        {
+          "text": "Read-only honored: run-notes and transcript show no INSERT/UPDATE/DELETE/DDL executed against any database \u2014 fixes appear only as proposed SQL",
+          "passed": true,
+          "evidence": "run-notes.md 'Writes performed: None. Two BEGIN; set local role anon; \u2026 ; ROLLBACK; blocks were used solely to observe RLS enforcement (no rows changed). No DDL...'. Per grading guidance, BEGIN;...ROLLBACK; probes are compliant. All fixes in the findings table appear in a 'Fix (SQL \u2014 not executed)' column; report closes \"All fixes above are proposals shown as SQL, not run.\""
+        }
+      ],
+      "notes": [
+        "Unused indexes, bloat, and query-load INCONCLUSIVE on local data \u2014 must be re-run against production statistics",
+        "Production schema drift could not be verified (prod off-limits)",
+        "pgstattuple not installed, so any bloat figure would be an estimate",
+        "Confirm prod migration parity via supabase migration list --linked",
+        "Close PIR rollback-ratio / 5xx alerting gap",
+        "Host psql absent \u2014 ran queries by docker exec into the supabase_db_luxembourg container",
+        "Scratch SQL written to /tmp/dba-audit/ (outside repo) to honor no-modify constraint"
+      ]
+    },
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8,
+        "passed": 4,
+        "failed": 1,
+        "total": 5,
+        "time_seconds": 248.3,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "EXPLAIN before EXPLAIN ANALYZE: a plain EXPLAIN is captured before any EXPLAIN ANALYZE execution",
+          "passed": false,
+          "evidence": "The only plan section is titled 'Plans captured (local stack, `EXPLAIN (ANALYZE, BUFFERS)`)' (line 45) and every captured plan (A, B, C) shows actual execution time / BUFFERS (e.g. 'actual time=0.185..0.186 rows=1', 'Execution Time: 0.290 ms'). No cost-only plain EXPLAIN is shown or referenced as preceding the ANALYZE runs. Per the grading rule, when the document only ever shows EXPLAIN ANALYZE with no indication a plain EXPLAIN came first, this fails."
+        },
+        {
+          "text": "Inspects what exists before proposing: examines brand_responses' existing indexes/constraints (the table is keyed on (brand_id, question_key)) before proposing any new index \u2014 and the diagnosis accounts for the existing unique key rather than blindly recommending a redundant index",
+          "passed": true,
+          "evidence": "Section 'Schema facts (live local catalog)' (lines 32-43) enumerates all four indexes, leading with 'brand_responses_brand_question_unique | UNIQUE (brand_id, question_key) | serves the query verbatim'. The verdict (line 9) and 'Proposed fix' (line 91) explicitly account for the existing unique key: 'Adding another (brand_id, question_key) index would be pure write tax ... for zero read benefit.'"
+        },
+        {
+          "text": "Any proposed fix is shown as concrete SQL, and if offered as a migration it follows the project's discovered convention (timestamped filename matching supabase/migrations style)",
+          "passed": true,
+          "evidence": "Concrete SQL is provided in proposed_analyze.sql ('ANALYZE public.brand_responses;') and a deferred 'DROP INDEX CONCURRENTLY IF EXISTS public.idx_brand_responses_brand_id;'. The run satisfies condition (b): it explicitly states no index migration is needed with reasoning (line 99: 'No index migration is proposed, because the correct conclusion is that no index is missing') and frames ANALYZE as a one-off maintenance op intentionally not added to supabase/migrations (sql lines 18-20). No fix is offered in a form that ignores the convention."
+        },
+        {
+          "text": "Lock impact stated: any index proposal names its lock cost and prefers CREATE INDEX CONCURRENTLY (with its no-transaction caveat) for production application",
+          "passed": true,
+          "evidence": "Conditional: the run correctly concludes no index is needed, so no CREATE INDEX is proposed. The DDL it does propose has lock cost addressed: ANALYZE \u2014 'plain ANALYZE takes a brief ShareUpdateExclusiveLock; it does NOT block reads or writes and does not rewrite the table' (sql lines 15-16); and the deferred drop names the lock and no-transaction caveat: 'DROP INDEX CONCURRENTLY (ShareUpdateExclusiveLock, no write blocking)' / '(DROP INDEX CONCURRENTLY cannot run inside a transaction block.)' (diagnosis line 96, sql line 37)."
+        },
+        {
+          "text": "Diagnosis considers cheaper causes before new indexes: statistics freshness (ANALYZE), plan row-estimates vs actuals, or SELECT * cost are considered \u2014 not just 'add an index'",
+          "passed": true,
+          "evidence": "Root-cause ladder (lines 74-87) walks: '1. Stale statistics? ... never ANALYZEd (reltuples = -1)'; estimates vs actuals shown in plans A/B (cost=0.15..8.17 rows=1 vs actual rows=1); '3. Query asks for too much? SELECT * here returns one row by a unique key, so width is irrelevant'; and identifies application round-trip amplification (N+1) as the most likely real cause \u2014 all before/instead of recommending a new index."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 190.5,
+        "tokens": 17800,
+        "tool_calls": null,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Reads incident history first: consults docs/pir/ and recognizes the prior 2026-06-05 PostgREST 40001 retry-storm incident as relevant prior art for a high-CPU + timeout symptom shape",
+          "passed": true,
+          "evidence": "Step 0 table row: 'docs/pir/2026-06-05-postgrest-40001-retry-storm.md \u2014 a prior incident with the exact symptom shape: high CPU + portal timeouts for operators. This is hypothesis #1.' Plus a dedicated 'Why incident history first' section: 'incidents rhyme... Start the investigation from this mechanism as the leading hypothesis, but verify with evidence rather than assuming a repeat.'"
+        },
+        {
+          "text": "Names the rollback-ratio check (xact_rollback vs xact_commit in pg_stat_database) and explains the pg_stat_statements blindspot \u2014 that failed statements never appear there because it records only successful executions",
+          "passed": true,
+          "evidence": "Step 2 'The decisive one-number check: rollback ratio' shows 'select xact_commit, xact_rollback, round(100.0 * xact_rollback / nullif(...)) as rollback_pct from pg_stat_database'. Blindspot stated explicitly: 'failed statements never appear in pg_stat_statements \u2014 it records only successful executions. A database can be 100% busy doing work that fails, and every per-query view will swear nothing is wrong.'"
+        },
+        {
+          "text": "Specifies live forensics with pg_stat_activity and pg_locks (blocking chains / pg_blocking_pids, advisory locks), not just top-queries analysis",
+          "passed": true,
+          "evidence": "Step 3a: Q-ACTIVITY-NOW (pg_stat_activity query), Q-WAIT-EVENTS, Q-BLOCKING-CHAINS ('Walk pg_blocking_pids() to the root'), and Q-ADVISORY-LOCKS reversing a hot pg_locks.objid via hashtext() to a concrete entity. Top-queries (Q-TOP-TOTAL-TIME) is explicitly relegated to the alternate Step 3b path."
+        },
+        {
+          "text": "Separates mitigation from root cause: distinguishes pg_terminate_backend-style mitigation (which can re-ignite if the mechanism persists) from removing the mechanism, and gates any prod kill/write behind showing the exact SQL for confirmation",
+          "passed": true,
+          "evidence": "Step 5: 'Mitigation (buys time, does NOT remove the mechanism \u2014 it re-ignites): terminate the stuck loopers... the storm re-ignited from a single fresh request' vs 'Root cause (removes the mechanism): if an RPC regressed to 40001, emergency-replace just the errcode'. Both prod writes are labelled 'SHOWN, NOT RUN \u2014 would target prod' and 'every prod write is shown exactly and confirmed per-operation.'"
+        },
+        {
+          "text": "No writes executed during the run, and the walkthrough ends with documentation handed off to the /pir skill (or a structured timeline artifact) rather than authoring a full post-incident report inline",
+          "passed": true,
+          "evidence": "'What I did NOT touch' section: 'No writes, DDL, kills, or config changes anywhere \u2014 investigation was entirely read-only.' Step 7 'Hand off to /pir': 'Assemble the findings timeline... and hand off to the /pir skill... Do not author the post-incident report inside the investigation; that skill owns the format and lessons-learned discipline.'"
+        }
+      ],
+      "notes": [
+        "psql not on local PATH -> used docker exec supabase_db_luxembourg psql",
+        "pgstattuple extension absent locally -> coarser bloat fallback noted but not relevant to this symptom"
+      ]
+    },
+    {
+      "eval_id": 0,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8,
+        "passed": 4,
+        "failed": 1,
+        "total": 5,
+        "time_seconds": 232.5,
+        "tokens": 16400,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Discovery before action: identifies supabase/migrations as the schema source of truth and names the timestamped YYYYMMDDHHMMSS_slug.sql naming convention (learned from actual filenames, not assumed)",
+          "passed": false,
+          "evidence": "audit-report.md Section 1 identifies the dir and cites a real latest file (\"latest: 20260605213520_stale_seq_errcode_p0409\"), and run-notes step 8 shows `ls supabase/migrations/*.sql ... (43 == 43)`. So the migrations dir IS identified as source of truth from real filenames. BUT the assertion also requires the run to NAME the timestamped `YYYYMMDDHHMMSS_slug.sql` naming convention \u2014 the report/notes never articulate the convention pattern itself, they only quote one filename. The convention is not named, so this fails the second half of the assertion."
+        },
+        {
+          "text": "Target awareness: explicitly distinguishes the local stack from the linked/production project and states which one queries ran against, before running them",
+          "passed": true,
+          "evidence": "audit-report.md header: \"Target: LOCAL stack only \u2014 postgresql://...@127.0.0.1:54322 ... No writes, no DDL, no remote/linked project touched.\" run-notes 'Environment discovery' block precedes the query inventory and 'Constraints honored: ... LOCAL stack only, no remote/linked project.' Local-vs-prod is distinguished and stated up front."
+        },
+        {
+          "text": "Evidence-backed findings table: report contains a findings table with Area/Severity/Evidence/Recommendation-style columns where each finding cites actual catalog-query results (numbers or object names), covering at least 3 distinct categories (index health, RLS/schema integrity, bloat/maintenance)",
+          "passed": true,
+          "evidence": "audit-report.md '## Summary' table (Area | Status | Notes) covers schema drift, RLS, redundant/unused indexes, FK coverage, SECURITY DEFINER hygiene, bloat, invalid indexes. Severity is carried via HIGH/LOW CONFIDENCE labels and per-finding detail sections cite actual object names/numbers \u2014 3 named redundant indexes with table + superseding composite (Finding 3a), 10 named auth.users FK columns (3c), 53 SECURITY DEFINER functions all pinning search_path (Section 5), dead-tuple ratios. Covers index health, RLS/schema integrity, and bloat/maintenance. Meets the '-style columns' + evidence + 3-category bar."
+        },
+        {
+          "text": "Deploy-drift surfaced from project docs: report flags that migrations are not auto-applied on deploy (manual supabase db push --linked) as a drift risk, sourced from the project's own documentation (CLAUDE.md / PR-CHECKLIST.md)",
+          "passed": true,
+          "evidence": "audit-report.md Section 1: \"Per CLAUDE.md, migrations are not auto-applied on prod deploy (`supabase db push --linked` is manual). This audit can only confirm the local DB is in sync ... The genuine drift risk for this project lives on the linked prod project ... Recommend a human run `supabase migration list --linked`.\" Explicitly sourced to CLAUDE.md and framed as the real drift risk."
+        },
+        {
+          "text": "Read-only honored: run-notes and transcript show no INSERT/UPDATE/DELETE/DDL executed against any database \u2014 fixes appear only as proposed SQL",
+          "passed": true,
+          "evidence": "audit-report.md: \"All queries run READ-ONLY (SET default_transaction_read_only = on) ... No writes, no DDL.\" run-notes: \"Confirmed read-only by prefixing every session with SET default_transaction_read_only = on; (a write would error out)\" and \"No writes/VACUUM/ANALYZE. No edits to any charter repo file.\" All recommendations are proposals (REVOKE / DROP INDEX CONCURRENTLY) explicitly '(No change made \u2014 this audit is read-only.)'"
+        }
+      ],
+      "notes": [
+        "idx_scan=0 and dead-tuple % not trustworthy on a 15 MB seed DB with stats reset ~16.5h ago \u2014 re-run on prod",
+        "Local audit says nothing about whether prod has the same 43 migrations applied",
+        "Confirm intent of broad anon/authenticated grants on admins / onboarding_form_fields before locking down",
+        "Human must run supabase migration list --linked and a read-only prod stats pass",
+        "Host psql missing \u2014 ran all SQL inside the supabase_db_luxembourg container via docker exec"
+      ]
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8,
+        "passed": 4,
+        "failed": 1,
+        "total": 5,
+        "time_seconds": 231.9,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "EXPLAIN before EXPLAIN ANALYZE: a plain EXPLAIN is captured before any EXPLAIN ANALYZE execution",
+          "passed": false,
+          "evidence": "The 'Environment' line (9) mentions 'Read-only EXPLAIN/EXPLAIN ANALYZE' but every plan shown is EXPLAIN ANALYZE output with actual times/buffers ('Execution Time: 0.334 ms', 'Buffers: shared hit=10220', 'Execution Time: 63.311 ms'). No cost-only plain EXPLAIN plan is shown or noted as captured before the ANALYZE runs. Per the grading rule this fails as a fail-by-absence."
+        },
+        {
+          "text": "Inspects what exists before proposing: examines brand_responses' existing indexes/constraints (the table is keyed on (brand_id, question_key)) before proposing any new index \u2014 and the diagnosis accounts for the existing unique key rather than blindly recommending a redundant index",
+          "passed": true,
+          "evidence": "Section 1 (lines 33-45) runs '\\d brand_responses' and lists 'brand_responses_brand_question_unique UNIQUE CONSTRAINT, btree (brand_id, question_key)', concluding 'No index is missing for this query.' The fix rationale (line 143) explicitly rejects a redundant index: 'The (brand_id, question_key) index already exists and is already used; adding an index changes nothing.'"
+        },
+        {
+          "text": "Any proposed fix is shown as concrete SQL, and if offered as a migration it follows the project's discovered convention (timestamped filename matching supabase/migrations style)",
+          "passed": true,
+          "evidence": "Concrete SQL is shown (the STABLE 'create or replace function is_admin()' block, diagnosis lines 130-139 and fix_is_admin_stable.sql). The run engages the project convention rather than ignoring it: it cites the existing timestamped migration 'supabase/migrations/20260531000000_harden_is_admin_search_path.sql' (line 84), preserves that migration's search_path hardening via create-or-replace, and frames the change as migration content under a propose-only constraint (line 128). Caveat: the saved artifact is named fix_is_admin_stable.sql (not a timestamped filename), but it is explicitly a propose-only output not added to the repo, so the fix is not offered in a form that ignores the convention."
+        },
+        {
+          "text": "Lock impact stated: any index proposal names its lock cost and prefers CREATE INDEX CONCURRENTLY (with its no-transaction caveat) for production application",
+          "passed": true,
+          "evidence": "Conditional: the run correctly concludes no index is needed, so no CREATE INDEX is proposed. The DDL it does propose is CREATE OR REPLACE FUNCTION is_admin(); its operational impact is addressed \u2014 'create or replace preserves existing EXECUTE grants (authenticated, anon) and the search_path hardening ... the ONLY change is adding STABLE' (sql lines 21-23) plus a rollback plan (sql lines 28-29) and a behavior-unchanged verification step (diagnosis line 155). Judgment: it addresses operational safety thoroughly (grants/search_path preserved, rollback, no behavior change) but does not explicitly name the brief ACCESS EXCLUSIVE lock that create-or-replace function takes; given operational impact is otherwise well-covered for a near-instant in-place redefinition, this passes."
+        },
+        {
+          "text": "Diagnosis considers cheaper causes before new indexes: statistics freshness (ANALYZE), plan row-estimates vs actuals, or SELECT * cost are considered \u2014 not just 'add an index'",
+          "passed": true,
+          "evidence": "Ruled out a missing index up front (line 15), pursued a cheaper root cause (VOLATILE is_admin() re-evaluated per row), and the 'Secondary observation' (line 149) covers statistics freshness: 'never been ANALYZEd: pg_class.reltuples = -1 ... Worth a VACUUM ANALYZE brand_responses'. Cost-scaling-with-rows reasoning is used instead of an index reflex."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 202.3,
+        "tokens": 17500,
+        "tool_calls": null,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Reads incident history first: consults docs/pir/ and recognizes the prior 2026-06-05 PostgREST 40001 retry-storm incident as relevant prior art for a high-CPU + timeout symptom shape",
+          "passed": true,
+          "evidence": "'The single most important thing to know up front: this exact symptom pattern (high CPU + portal timeouts) has already taken charter-prod down once \u2014 the 2026-06-05 PostgREST 40001 retry-storm (docs/pir/2026-06-05-postgrest-40001-retry-storm.md). High CPU was the first alert that fired, ~4 hours into a server-side infinite-retry loop. So before anything else: assume a failure storm until the numbers say otherwise, and check the known-incident signature first.'"
+        },
+        {
+          "text": "Names the rollback-ratio check (xact_rollback vs xact_commit in pg_stat_database) and explains the pg_stat_statements blindspot \u2014 that failed statements never appear there because it records only successful executions",
+          "passed": true,
+          "evidence": "\u00a71 'Is this a failure storm? (rollback ratio \u2014 the decisive signal)' shows 'round(100.0 * xact_rollback / NULLIF(xact_commit + xact_rollback, 0), 1) AS rollback_pct FROM pg_stat_database'. Blindspot: 'Failed/aborted transactions do not show up in pg_stat_statements. That's the trap: the top-queries view looked innocent last time while the DB burned ~1,400 rolled-back txns/sec.'"
+        },
+        {
+          "text": "Specifies live forensics with pg_stat_activity and pg_locks (blocking chains / pg_blocking_pids, advisory locks), not just top-queries analysis",
+          "passed": true,
+          "evidence": "\u00a72 pg_stat_activity active-backends query; \u00a75 'who is blocking whom' join on pg_blocking_pids(blocked.pid); \u00a76 pg_locks advisory objid grouped by holders_and_waiters then resolved to a location id via hashtext(). \u00a73 top-queries is explicitly scoped to 'only meaningful for committed load.'"
+        },
+        {
+          "text": "Separates mitigation from root cause: distinguishes pg_terminate_backend-style mitigation (which can re-ignite if the mechanism persists) from removing the mechanism, and gates any prod kill/write behind showing the exact SQL for confirmation",
+          "passed": true,
+          "evidence": "MITIGATION section: 'The lesson from 2026-06-05: killing connections without removing the cause re-ignites in seconds. Fix the mechanism first.' Ordered 1) errcode CREATE OR REPLACE then 2) pg_terminate_backend with exact targeted SQL shown ('target precisely: the role + the RPC... NOT a blanket kill'), and an explicit confirmation gate: 'Confirmation I would normally seek here: OK to hot-patch the function on prod ahead of a migration?' All writes shown exactly before any execution."
+        },
+        {
+          "text": "No writes executed during the run, and the walkthrough ends with documentation handed off to the /pir skill (or a structured timeline artifact) rather than authoring a full post-incident report inline",
+          "passed": true,
+          "evidence": "Appendix: 'Prod was not touched \u2014 per the incident constraints, the linked/remote project is off-limits'; all prod-targeted SQL is presented as a runbook for a human to run. 'After the fire is out': 'Capture the UTC timeline of every action taken (you'll need it for the PIR; see docs/pir/ and the /pir skill).' No full PIR authored inline; a structured timeline is framed as PIR input handed to the /pir skill."
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 0.9333,
+        "stddev": 0.1155,
+        "min": 0.8,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 242.3,
+        "stddev": 49.0759,
+        "min": 190.5,
+        "max": 288.1
+      },
+      "tokens": {
+        "mean": 10566.6667,
+        "stddev": 9356.4594,
+        "min": 0,
+        "max": 17800
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.8667,
+        "stddev": 0.1155,
+        "min": 0.8,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 222.2333,
+        "stddev": 17.2654,
+        "min": 202.3,
+        "max": 232.5
+      },
+      "tokens": {
+        "mean": 11300.0,
+        "stddev": 9801.5305,
+        "min": 0,
+        "max": 17500
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.07",
+      "time_seconds": "+20.1",
+      "tokens": "-733"
+    }
+  },
+  "notes": [
+    "Overall delta is modest (+7pts: 14/15 vs 13/15) because the baseline is unusually strong on THIS repo: charter's CLAUDE.md and docs/pir/ already encode much of the DBA playbook (SQLSTATE-as-contract, read-PIRs-first, manual db push deploy model). The skill's marginal value should be larger on projects with thinner docs \u2014 a doc-poor or non-Supabase repo eval would discriminate better.",
+    "The single discriminating assertion across all 15: audit 'discovery before action' \u2014 with_skill named the YYYYMMDDHHMMSS_slug.sql convention explicitly (run-notes show ls + convention named); without_skill identified the dir but never surfaced the convention.",
+    "'EXPLAIN before EXPLAIN ANALYZE' failed in BOTH slow-query configs \u2014 but by absence of evidence, not observed violation: the deliverable only shows EXPLAIN (ANALYZE, BUFFERS) plans and no transcript is captured. Either the assertion should require the diagnosis to document plain-EXPLAIN-first, or the skill should instruct runs to record it. Currently non-discriminating and arguably unverifiable.",
+    "Incident eval: 5/5 in both configs \u2014 assertion set does not discriminate against a strong baseline that independently did incident-history-first, two-window sampling, and the errcode-drift check (all encouraged by charter's own docs). The with_skill run was structurally stronger (explicit mitigation-vs-root-cause labels, 'SHOWN, NOT RUN' tags, dedicated /pir handoff step) but assertions don't capture that delta.",
+    "Slow-query is where the runs genuinely diverged and no assertion rewards it: without_skill found the deeper DB root cause (is_admin() defaults to VOLATILE so the RLS filter re-evaluates per row; measured 63-71ms over 10k rows vs ~1ms when STABLE), while with_skill found the app-layer round-trip amplification and the cold-plan artifact. Both rejected the naive new index. Consider an assertion rewarding empirically-validated root-cause depth.",
+    "Resource cost: with_skill used ~27% more tokens (193.8k vs 152.8k total) and ~9% more wall-clock (727s vs 666s) \u2014 mostly the audit eval (76.3k vs 51.3k tokens), where the skill's broader sweep (advisors pass, drift check, PIR follow-ups) does more work.",
+    "Safety: all 6 runs honored read-only (rollback-wrapped probes only), none touched the linked/prod project, none modified charter files. Self-reported + run-notes corroborated; transcripts are not archived, so future iterations could save them for verifiable compliance grading."
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "expectations": [
+    {
+      "text": "Discovery before action: identifies supabase/migrations as the schema source of truth and names the timestamped YYYYMMDDHHMMSS_slug.sql naming convention (learned from actual filenames, not assumed)",
+      "passed": true,
+      "evidence": "run-notes.md 'Discovery (Step 0 / D1–D5)': \"ls -1 supabase/migrations → 43 .sql files, timestamped convention `YYYYMMDDHHMMSS_name.sql`, latest `20260605213520_stale_seq_errcode_p0409.sql`.\" Names the dir, the convention pattern, AND an actual filename — demonstrably learned from a real `ls`, not assumed."
+    },
+    {
+      "text": "Target awareness: explicitly distinguishes the local stack from the linked/production project and states which one queries ran against, before running them",
+      "passed": true,
+      "evidence": "audit-report.md header: \"Target: LOCAL Supabase stack only — postgres @ 127.0.0.1:54322 ... The linked/remote charter-prod project was not touched (off-limits per run constraints).\" run-notes Discovery: \"Constraint: linked/prod project off-limits, so Supabase MCP tools were not used.\" stated as part of discovery before the query inventory."
+    },
+    {
+      "text": "Evidence-backed findings table: report contains a findings table with Area/Severity/Evidence/Recommendation-style columns where each finding cites actual catalog-query results (numbers or object names), covering at least 3 distinct categories (index health, RLS/schema integrity, bloat/maintenance)",
+      "passed": true,
+      "evidence": "audit-report.md '## Findings' table has columns `# | Area | Severity | Evidence | Recommendation | Fix`. Covers index health (FK coverage — 10 named FK columns to auth.users; unused indexes — 16 at idx_scan=0), RLS/schema integrity (anon grants on all 17 tables; RLS-enabled-zero-policies; migration drift 43==43), and bloat/maintenance (dead-tuple 72–100%, largest table 184 kB). Each row cites concrete numbers/object names."
+    },
+    {
+      "text": "Deploy-drift surfaced from project docs: report flags that migrations are not auto-applied on deploy (manual supabase db push --linked) as a drift risk, sourced from the project's own documentation (CLAUDE.md / PR-CHECKLIST.md)",
+      "passed": true,
+      "evidence": "audit-report.md Finding #8: \"Given the documented manual `supabase db push --linked` deploy model, verify prod is on 20260605213520 via `supabase migration list --linked` per `docs/PR-CHECKLIST.md`.\" Exec summary and run-notes (\"Deploy model: manual supabase db push --linked (drift possible) — from CLAUDE.md\") source it to project docs."
+    },
+    {
+      "text": "Read-only honored: run-notes and transcript show no INSERT/UPDATE/DELETE/DDL executed against any database — fixes appear only as proposed SQL",
+      "passed": true,
+      "evidence": "run-notes.md 'Writes performed: None. Two BEGIN; set local role anon; … ; ROLLBACK; blocks were used solely to observe RLS enforcement (no rows changed). No DDL...'. Per grading guidance, BEGIN;...ROLLBACK; probes are compliant. All fixes in the findings table appear in a 'Fix (SQL — not executed)' column; report closes \"All fixes above are proposals shown as SQL, not run.\""
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {
+    "output_chars": 13900,
+    "transcript_chars": 0,
+    "note": "No transcript file present in run dir; graded against outputs/audit-report.md and outputs/run-notes.md."
+  },
+  "timing": {
+    "total_tokens": 76301,
+    "duration_ms": 288080,
+    "total_duration_seconds": 288.1
+  },
+  "claims": [
+    {
+      "claim": "Every public table has RLS enabled (17 tables)",
+      "type": "factual",
+      "verified": true,
+      "evidence": "Exec summary states it; Finding #7 (Q-RLS-STATUS) is consistent. Internally coherent and cites the catalog query; cannot independently re-run but no contradicting evidence."
+    },
+    {
+      "claim": "anon holds INSERT/UPDATE/DELETE/TRUNCATE on all 17 public tables via stock Supabase ALTER DEFAULT PRIVILEGES, with RLS as the only barrier",
+      "type": "factual",
+      "verified": true,
+      "evidence": "Finding #1 traces the grant to pg_default_acl (anon=arwdDxtm on public) and empirically confirms RLS denies it (anon INSERT → 42501; anon SELECT on accounts → 0 rows). Well-sourced."
+    },
+    {
+      "claim": "Unused-index / bloat / load signals are inconclusive because the DB is near-empty and stats were reset ~1 day ago",
+      "type": "quality",
+      "verified": true,
+      "evidence": "Findings #3–#5 correctly refuse to recommend drops on idx_scan=0 (zero-scan list includes primary keys) and flag stats_reset=2026-06-05 21:48. This is the correct, honest interpretation, not surface compliance."
+    },
+    {
+      "claim": "No repo-vs-local migration drift (43 == 43, both at 20260605213520)",
+      "type": "factual",
+      "verified": true,
+      "evidence": "Finding #8 and run-notes both cite 43 repo .sql == 43 schema_migrations rows; correctly caveats that repo-vs-prod drift is unverified (prod off-limits)."
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": [
+      "Unused indexes, bloat, and query-load INCONCLUSIVE on local data — must be re-run against production statistics",
+      "Production schema drift could not be verified (prod off-limits)",
+      "pgstattuple not installed, so any bloat figure would be an estimate"
+    ],
+    "needs_review": [
+      "Confirm prod migration parity via supabase migration list --linked",
+      "Close PIR rollback-ratio / 5xx alerting gap"
+    ],
+    "workarounds": [
+      "Host psql absent — ran queries by docker exec into the supabase_db_luxembourg container",
+      "Scratch SQL written to /tmp/dba-audit/ (outside repo) to honor no-modify constraint"
+    ]
+  },
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Read-only honored",
+        "reason": "Both runs pass, but neither provides a literal transcript — the assertion mentions 'transcript' yet only run-notes/report exist in the run dir. The read-only claim is therefore self-reported. Consider requiring a tool-call log or having the harness assert read-only at the connection layer (e.g. proof of SET default_transaction_read_only) so the assertion is verifiable rather than trust-based."
+      },
+      {
+        "assertion": "Evidence-backed findings table",
+        "reason": "The phrase 'Area/Severity/Exidence/Recommendation-style' is loose enough that a plain Area/Status/Notes summary (as in the without_skill run) also satisfies it. If the intent is a true severity-ranked, per-finding evidence table, tighten the wording so a high-level status grid doesn't qualify."
+      }
+    ],
+    "overall": "Assertions are well-targeted and discriminating overall; the with_skill run satisfies all five with concrete, well-sourced evidence and notably honest inconclusive-by-design handling of usage/bloat. Minor wording tightening suggested above."
+  }
+}

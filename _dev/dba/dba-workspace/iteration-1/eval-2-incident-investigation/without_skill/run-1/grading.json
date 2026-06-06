@@ -1,0 +1,86 @@
+{
+  "expectations": [
+    {
+      "text": "Reads incident history first: consults docs/pir/ and recognizes the prior 2026-06-05 PostgREST 40001 retry-storm incident as relevant prior art for a high-CPU + timeout symptom shape",
+      "passed": true,
+      "evidence": "'The single most important thing to know up front: this exact symptom pattern (high CPU + portal timeouts) has already taken charter-prod down once — the 2026-06-05 PostgREST 40001 retry-storm (docs/pir/2026-06-05-postgrest-40001-retry-storm.md). High CPU was the first alert that fired, ~4 hours into a server-side infinite-retry loop. So before anything else: assume a failure storm until the numbers say otherwise, and check the known-incident signature first.'"
+    },
+    {
+      "text": "Names the rollback-ratio check (xact_rollback vs xact_commit in pg_stat_database) and explains the pg_stat_statements blindspot — that failed statements never appear there because it records only successful executions",
+      "passed": true,
+      "evidence": "§1 'Is this a failure storm? (rollback ratio — the decisive signal)' shows 'round(100.0 * xact_rollback / NULLIF(xact_commit + xact_rollback, 0), 1) AS rollback_pct FROM pg_stat_database'. Blindspot: 'Failed/aborted transactions do not show up in pg_stat_statements. That's the trap: the top-queries view looked innocent last time while the DB burned ~1,400 rolled-back txns/sec.'"
+    },
+    {
+      "text": "Specifies live forensics with pg_stat_activity and pg_locks (blocking chains / pg_blocking_pids, advisory locks), not just top-queries analysis",
+      "passed": true,
+      "evidence": "§2 pg_stat_activity active-backends query; §5 'who is blocking whom' join on pg_blocking_pids(blocked.pid); §6 pg_locks advisory objid grouped by holders_and_waiters then resolved to a location id via hashtext(). §3 top-queries is explicitly scoped to 'only meaningful for committed load.'"
+    },
+    {
+      "text": "Separates mitigation from root cause: distinguishes pg_terminate_backend-style mitigation (which can re-ignite if the mechanism persists) from removing the mechanism, and gates any prod kill/write behind showing the exact SQL for confirmation",
+      "passed": true,
+      "evidence": "MITIGATION section: 'The lesson from 2026-06-05: killing connections without removing the cause re-ignites in seconds. Fix the mechanism first.' Ordered 1) errcode CREATE OR REPLACE then 2) pg_terminate_backend with exact targeted SQL shown ('target precisely: the role + the RPC... NOT a blanket kill'), and an explicit confirmation gate: 'Confirmation I would normally seek here: OK to hot-patch the function on prod ahead of a migration?' All writes shown exactly before any execution."
+    },
+    {
+      "text": "No writes executed during the run, and the walkthrough ends with documentation handed off to the /pir skill (or a structured timeline artifact) rather than authoring a full post-incident report inline",
+      "passed": true,
+      "evidence": "Appendix: 'Prod was not touched — per the incident constraints, the linked/remote project is off-limits'; all prod-targeted SQL is presented as a runbook for a human to run. 'After the fire is out': 'Capture the UTC timeline of every action taken (you'll need it for the PIR; see docs/pir/ and the /pir skill).' No full PIR authored inline; a structured timeline is framed as PIR input handed to the /pir skill."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {
+    "tool_calls": {},
+    "total_tool_calls": null,
+    "total_steps": null,
+    "errors_encountered": 0,
+    "output_chars": 17500,
+    "transcript_chars": null,
+    "note": "No metrics.json or transcript provided for this run; only outputs/investigation.md and timing.json were available."
+  },
+  "timing": {
+    "total_tokens": 42900,
+    "duration_ms": 202347,
+    "total_duration_seconds": 202.3
+  },
+  "claims": [
+    {
+      "claim": "All diagnostic queries were executed read-only against the local Supabase stack; prod was not touched",
+      "type": "process",
+      "verified": true,
+      "evidence": "Appendix states queries were run against the local stack (Postgres 17.6, PostgREST v14.10, pg_stat_statements 1.11) to confirm syntax and capture a healthy baseline; 'Prod was not touched.' Internally consistent and the document emits no prod-mutating SQL outside the clearly-labelled human-run MITIGATION section."
+    },
+    {
+      "claim": "Query A returns 0 rows (no public RPC raises a class-40 code) and all five conflict RPCs return raises_p0409 = t",
+      "type": "factual",
+      "verified": true,
+      "evidence": "§7 'Verified on the local stack (matches the post-fix expectation): query A returns 0 rows, and all five RPCs in query B return raises_p0409 = t.' Consistent with CLAUDE.md's documented errcode fix."
+    },
+    {
+      "claim": "upsert_response serializes per location via pg_advisory_xact_lock(hashtext('location:' || p_location_id::text))",
+      "type": "factual",
+      "verified": true,
+      "evidence": "§6 quotes the advisory-lock formula 'confirmed live on the schema' and uses it to resolve a hot objid back to a location id. Matches the repo's locations RPC design; load-bearing for the row-fingerprint step."
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "No writes executed during the run, and the walkthrough ends with documentation handed off to the /pir skill...",
+        "reason": "The /pir handoff in this run is a single line under 'After the fire is out' ('see docs/pir/ and the /pir skill'), much weaker than a dedicated handoff step. The assertion's 'or a structured timeline artifact' escape hatch lets a brief mention pass. If the eval wants to reward an explicit, structured handoff, the assertion should require the run to end on a discrete documentation-handoff step rather than a passing reference."
+      },
+      {
+        "reason": "Both runs passed every assertion identically, so this assertion set does not discriminate between the with-skill and without-skill runs. Consider adding an assertion that captures a behavior the skill is expected to add over a strong baseline (e.g. a strict shown-not-run confirmation protocol, or sampling the decisive metric across >=2 time windows for rate vs cumulative) — the without-skill run did include rate sampling, so the skill's marginal value is currently invisible to the rubric."
+      }
+    ],
+    "overall": "Assertions are sound and well-targeted, but they fail to differentiate the two runs (5/5 vs 5/5). For a skill eval, at least one assertion should isolate behavior the skill is meant to add beyond a capable baseline."
+  }
+}

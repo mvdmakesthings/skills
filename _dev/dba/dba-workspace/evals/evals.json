@@ -1,0 +1,47 @@
+{
+  "skill_name": "dba",
+  "evals": [
+    {
+      "id": 0,
+      "name": "audit-health-check",
+      "prompt": "Audit the database health of this project — I want to know about unused indexes, tables missing RLS, bloat, and any schema drift. Write up your findings as a report.",
+      "expected_output": "A severity-ranked findings report grounded in discovery of the project's conventions (supabase/migrations, pgTAP, manual db push deploy model) and real catalog-query evidence from the local stack; no writes executed.",
+      "files": [],
+      "assertions": [
+        "Discovery before action: identifies supabase/migrations as the schema source of truth and names the timestamped YYYYMMDDHHMMSS_slug.sql naming convention (learned from actual filenames, not assumed)",
+        "Target awareness: explicitly distinguishes the local stack from the linked/production project and states which one queries ran against, before running them",
+        "Evidence-backed findings table: report contains a findings table with Area/Severity/Evidence/Recommendation-style columns where each finding cites actual catalog-query results (numbers or object names), covering at least 3 distinct categories (index health, RLS/schema integrity, bloat/maintenance)",
+        "Deploy-drift surfaced from project docs: report flags that migrations are not auto-applied on deploy (manual supabase db push --linked) as a drift risk, sourced from the project's own documentation (CLAUDE.md / PR-CHECKLIST.md)",
+        "Read-only honored: run-notes and transcript show no INSERT/UPDATE/DELETE/DDL executed against any database — fixes appear only as proposed SQL"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "slow-query-diagnosis",
+      "prompt": "This query is slow in our app: SELECT * FROM brand_responses WHERE brand_id = $1 AND question_key = $2; — figure out why and propose a fix.",
+      "expected_output": "A diagnosis that inspects existing indexes/keys on brand_responses before proposing anything, captures plans (EXPLAIN before ANALYZE), and delivers any fix as SQL in the project's migration convention with lock impact stated.",
+      "files": [],
+      "assertions": [
+        "EXPLAIN before EXPLAIN ANALYZE: a plain EXPLAIN is captured before any EXPLAIN ANALYZE execution",
+        "Inspects what exists before proposing: examines brand_responses' existing indexes/constraints (the table is keyed on (brand_id, question_key)) before proposing any new index — and the diagnosis accounts for the existing unique key rather than blindly recommending a redundant index",
+        "Any proposed fix is shown as concrete SQL, and if offered as a migration it follows the project's discovered convention (timestamped filename matching supabase/migrations style)",
+        "Lock impact stated: any index proposal names its lock cost and prefers CREATE INDEX CONCURRENTLY (with its no-transaction caveat) for production application",
+        "Diagnosis considers cheaper causes before new indexes: statistics freshness (ANALYZE), plan row-estimates vs actuals, or SELECT * cost are considered — not just 'add an index'"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "incident-investigation",
+      "prompt": "Our prod Supabase project just fired high-CPU alerts and the portal is timing out for operators. Walk me through investigating what's happening at the database level — what do we check, in what order, and what do we do about what we find?",
+      "expected_output": "An investigation runbook that reads the project's PIR history first, leads with error-rate/rollback-ratio over CPU, includes pg_stat_activity/pg_locks forensics, separates mitigation from root cause with gated interventions, and hands off documentation to /pir.",
+      "files": [],
+      "assertions": [
+        "Reads incident history first: consults docs/pir/ and recognizes the prior 2026-06-05 PostgREST 40001 retry-storm incident as relevant prior art for a high-CPU + timeout symptom shape",
+        "Names the rollback-ratio check (xact_rollback vs xact_commit in pg_stat_database) and explains the pg_stat_statements blindspot — that failed statements never appear there because it records only successful executions",
+        "Specifies live forensics with pg_stat_activity and pg_locks (blocking chains / pg_blocking_pids, advisory locks), not just top-queries analysis",
+        "Separates mitigation from root cause: distinguishes pg_terminate_backend-style mitigation (which can re-ignite if the mechanism persists) from removing the mechanism, and gates any prod kill/write behind showing the exact SQL for confirmation",
+        "No writes executed during the run, and the walkthrough ends with documentation handed off to the /pir skill (or a structured timeline artifact) rather than authoring a full post-incident report inline"
+      ]
+    }
+  ]
+}

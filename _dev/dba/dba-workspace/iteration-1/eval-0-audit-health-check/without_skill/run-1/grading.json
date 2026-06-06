@@ -1,0 +1,97 @@
+{
+  "expectations": [
+    {
+      "text": "Discovery before action: identifies supabase/migrations as the schema source of truth and names the timestamped YYYYMMDDHHMMSS_slug.sql naming convention (learned from actual filenames, not assumed)",
+      "passed": false,
+      "evidence": "audit-report.md Section 1 identifies the dir and cites a real latest file (\"latest: 20260605213520_stale_seq_errcode_p0409\"), and run-notes step 8 shows `ls supabase/migrations/*.sql ... (43 == 43)`. So the migrations dir IS identified as source of truth from real filenames. BUT the assertion also requires the run to NAME the timestamped `YYYYMMDDHHMMSS_slug.sql` naming convention — the report/notes never articulate the convention pattern itself, they only quote one filename. The convention is not named, so this fails the second half of the assertion."
+    },
+    {
+      "text": "Target awareness: explicitly distinguishes the local stack from the linked/production project and states which one queries ran against, before running them",
+      "passed": true,
+      "evidence": "audit-report.md header: \"Target: LOCAL stack only — postgresql://...@127.0.0.1:54322 ... No writes, no DDL, no remote/linked project touched.\" run-notes 'Environment discovery' block precedes the query inventory and 'Constraints honored: ... LOCAL stack only, no remote/linked project.' Local-vs-prod is distinguished and stated up front."
+    },
+    {
+      "text": "Evidence-backed findings table: report contains a findings table with Area/Severity/Evidence/Recommendation-style columns where each finding cites actual catalog-query results (numbers or object names), covering at least 3 distinct categories (index health, RLS/schema integrity, bloat/maintenance)",
+      "passed": true,
+      "evidence": "audit-report.md '## Summary' table (Area | Status | Notes) covers schema drift, RLS, redundant/unused indexes, FK coverage, SECURITY DEFINER hygiene, bloat, invalid indexes. Severity is carried via HIGH/LOW CONFIDENCE labels and per-finding detail sections cite actual object names/numbers — 3 named redundant indexes with table + superseding composite (Finding 3a), 10 named auth.users FK columns (3c), 53 SECURITY DEFINER functions all pinning search_path (Section 5), dead-tuple ratios. Covers index health, RLS/schema integrity, and bloat/maintenance. Meets the '-style columns' + evidence + 3-category bar."
+    },
+    {
+      "text": "Deploy-drift surfaced from project docs: report flags that migrations are not auto-applied on deploy (manual supabase db push --linked) as a drift risk, sourced from the project's own documentation (CLAUDE.md / PR-CHECKLIST.md)",
+      "passed": true,
+      "evidence": "audit-report.md Section 1: \"Per CLAUDE.md, migrations are not auto-applied on prod deploy (`supabase db push --linked` is manual). This audit can only confirm the local DB is in sync ... The genuine drift risk for this project lives on the linked prod project ... Recommend a human run `supabase migration list --linked`.\" Explicitly sourced to CLAUDE.md and framed as the real drift risk."
+    },
+    {
+      "text": "Read-only honored: run-notes and transcript show no INSERT/UPDATE/DELETE/DDL executed against any database — fixes appear only as proposed SQL",
+      "passed": true,
+      "evidence": "audit-report.md: \"All queries run READ-ONLY (SET default_transaction_read_only = on) ... No writes, no DDL.\" run-notes: \"Confirmed read-only by prefixing every session with SET default_transaction_read_only = on; (a write would error out)\" and \"No writes/VACUUM/ANALYZE. No edits to any charter repo file.\" All recommendations are proposals (REVOKE / DROP INDEX CONCURRENTLY) explicitly '(No change made — this audit is read-only.)'"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  },
+  "execution_metrics": {
+    "output_chars": 16400,
+    "transcript_chars": 0,
+    "note": "No transcript file present in run dir; graded against outputs/audit-report.md and outputs/run-notes.md."
+  },
+  "timing": {
+    "total_tokens": 51313,
+    "duration_ms": 232508,
+    "total_duration_seconds": 232.5
+  },
+  "claims": [
+    {
+      "claim": "Three single-column (account_id) indexes are strict prefixes of existing composites and droppable (HIGH CONFIDENCE)",
+      "type": "factual",
+      "verified": true,
+      "evidence": "Finding 3a names idx_locations_account_id, idx_brand_responses_account_id, idx_brand_strategy_runs_account_id with the superseding composite for each, confirmed via pg_get_indexdef (run-notes q13/q15). This is a genuinely structural finding the with_skill run did not surface — a real value-add."
+    },
+    {
+      "claim": "All 53 SECURITY DEFINER functions pin an explicit search_path",
+      "type": "factual",
+      "verified": true,
+      "evidence": "Section 5 cites the count and the hardening migration 20260531000000_harden_is_admin_search_path; run-notes q11 lists prosecdef functions with proconfig. Coherent and well-sourced."
+    },
+    {
+      "claim": "Many idx_scan=0 readings are a dev-traffic artifact, not unused indexes — do not act on local data",
+      "type": "quality",
+      "verified": true,
+      "evidence": "Finding 3b correctly refuses to recommend drops on usage stats (stats_reset ~16.5h ago, 15 MB seed DB, planner prefers seq scans on tiny tables). Honest, not surface compliance."
+    },
+    {
+      "claim": "Total DB size is 15 MB (vs the with_skill run's <1 MB / 184 kB largest-table framing)",
+      "type": "factual",
+      "verified": false,
+      "evidence": "without_skill reports pg_database_size('postgres') = 15 MB; with_skill reports total app data <1 MB and largest table 184 kB. Both can be true (15 MB includes catalog/system overhead, <1 MB is app-table data), but the discrepancy is unreconciled and neither figure is independently verifiable from the outputs. Flagged, not penalized."
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": [
+      "idx_scan=0 and dead-tuple % not trustworthy on a 15 MB seed DB with stats reset ~16.5h ago — re-run on prod",
+      "Local audit says nothing about whether prod has the same 43 migrations applied"
+    ],
+    "needs_review": [
+      "Confirm intent of broad anon/authenticated grants on admins / onboarding_form_fields before locking down",
+      "Human must run supabase migration list --linked and a read-only prod stats pass"
+    ],
+    "workarounds": [
+      "Host psql missing — ran all SQL inside the supabase_db_luxembourg container via docker exec"
+    ]
+  },
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Discovery before action",
+        "reason": "This is the assertion that discriminated between the two runs. The without_skill run cited a real timestamped filename and the migrations dir but never NAMED the YYYYMMDDHHMMSS_slug convention, while the with_skill run did. The assertion is well-designed precisely because reciting one filename is not the same as recognizing the convention — keep this strict. Consider making the grading rubric for it explicit (must state the pattern, not just quote a file) so it scores consistently."
+      },
+      {
+        "assertion": "Evidence-backed findings table",
+        "reason": "An Area/Status/Notes summary grid (this run) satisfies the loose '-style columns' wording even though it is not a severity-ranked per-finding evidence table. If a structured severity/evidence table is the intended artifact, tighten the wording; otherwise note that this assertion does not discriminate skill quality here (both runs pass)."
+      }
+    ],
+    "overall": "Assertions are solid; the Discovery assertion is the discriminating one and correctly separates the runs. The without_skill run is high quality (it uniquely surfaced 3 structurally-redundant indexes and SECURITY DEFINER search_path hygiene) but misses naming the migration-file convention, which is exactly the project-convention learning the skill is meant to enforce."
+  }
+}

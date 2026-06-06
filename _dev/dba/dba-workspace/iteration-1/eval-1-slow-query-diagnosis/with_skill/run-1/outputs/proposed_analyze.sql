@@ -1,0 +1,38 @@
+-- Optional schema hygiene for brand_responses — NOT an index migration.
+--
+-- Diagnosis conclusion: the query
+--     SELECT * FROM brand_responses WHERE brand_id = $1 AND question_key = $2;
+-- is already served by the existing UNIQUE index
+--     brand_responses_brand_question_unique (brand_id, question_key)
+-- as a single-row Index Scan (~0.15 ms warm). NO new index is needed or
+-- proposed. Adding another (brand_id, question_key) index would be pure
+-- write tax for zero read benefit.
+--
+-- The ONLY safe, optional DB-side action is to refresh planner statistics:
+-- the table had never been ANALYZEd (pg_class.reltuples = -1), so the planner
+-- is flying blind. This matters once the table grows beyond a handful of rows.
+--
+-- Lock impact: plain ANALYZE takes a brief ShareUpdateExclusiveLock; it does
+-- NOT block reads or writes and does not rewrite the table. Safe to run online.
+--
+-- This is shown, NOT executed. It was not run against any database during the
+-- investigation, and it is intentionally not added to the charter repo as a
+-- migration (it is a one-off maintenance op, not a schema change).
+
+ANALYZE public.brand_responses;
+
+-- ----------------------------------------------------------------------------
+-- DEFERRED (do NOT apply now — flag for a future cleanup/audit pass):
+--
+-- idx_brand_responses_brand_id (account_id, brand_id) is largely redundant for
+-- READS — the unique index already covers brand_id-only and (brand_id,
+-- question_key) lookups, and idx_brand_responses_account_id covers the RLS
+-- account filter. Its one defensible role is backing the composite FK
+-- (account_id, brand_id) -> brands(account_id, id). Recommendation: KEEP it for
+-- now (FK support; negligible cost on a small table). If a later index-cleanup
+-- audit confirms the FK does not rely on it, drop it WITHOUT blocking writes:
+--
+--   DROP INDEX CONCURRENTLY IF EXISTS public.idx_brand_responses_brand_id;
+--
+-- (DROP INDEX CONCURRENTLY cannot run inside a transaction block.)
+-- ----------------------------------------------------------------------------

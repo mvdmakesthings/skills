@@ -27,6 +27,11 @@
       "name": "meta",
       "description": "Skills that improve other skills — session reflection (/skill-reflect) and HITL-gated SKILL.md evolution (/skill-improve).",
       "source": "./plugins/meta"
+    },
+    {
+      "name": "dba",
+      "description": "Postgres-first DBA playbooks: run a full health audit, design + implement schema with tests, clean up unused indexes and bloat, fix slow queries, and investigate live DB incidents (/dba) — discovering each project's migration/test/deploy conventions at runtime. Defers rule-level detail to supabase-postgres-best-practices when present.",
+      "source": "./plugins/dba"
     }
   ]
 }

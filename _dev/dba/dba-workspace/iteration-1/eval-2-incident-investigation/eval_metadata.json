@@ -1,0 +1,12 @@
+{
+  "eval_id": 2,
+  "eval_name": "incident-investigation",
+  "prompt": "Our prod Supabase project just fired high-CPU alerts and the portal is timing out for operators. Walk me through investigating what's happening at the database level — what do we check, in what order, and what do we do about what we find?",
+  "assertions": [
+    "Reads incident history first: consults docs/pir/ and recognizes the prior 2026-06-05 PostgREST 40001 retry-storm incident as relevant prior art for a high-CPU + timeout symptom shape",
+    "Names the rollback-ratio check (xact_rollback vs xact_commit in pg_stat_database) and explains the pg_stat_statements blindspot — that failed statements never appear there because it records only successful executions",
+    "Specifies live forensics with pg_stat_activity and pg_locks (blocking chains / pg_blocking_pids, advisory locks), not just top-queries analysis",
+    "Separates mitigation from root cause: distinguishes pg_terminate_backend-style mitigation (which can re-ignite if the mechanism persists) from removing the mechanism, and gates any prod kill/write behind showing the exact SQL for confirmation",
+    "No writes executed during the run, and the walkthrough ends with documentation handed off to the /pir skill (or a structured timeline artifact) rather than authoring a full post-incident report inline"
+  ]
+}

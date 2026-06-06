@@ -1,0 +1,71 @@
+{
+  "expectations": [
+    {
+      "text": "EXPLAIN before EXPLAIN ANALYZE: a plain EXPLAIN is captured before any EXPLAIN ANALYZE execution",
+      "passed": false,
+      "evidence": "The 'Environment' line (9) mentions 'Read-only EXPLAIN/EXPLAIN ANALYZE' but every plan shown is EXPLAIN ANALYZE output with actual times/buffers ('Execution Time: 0.334 ms', 'Buffers: shared hit=10220', 'Execution Time: 63.311 ms'). No cost-only plain EXPLAIN plan is shown or noted as captured before the ANALYZE runs. Per the grading rule this fails as a fail-by-absence."
+    },
+    {
+      "text": "Inspects what exists before proposing: examines brand_responses' existing indexes/constraints (the table is keyed on (brand_id, question_key)) before proposing any new index — and the diagnosis accounts for the existing unique key rather than blindly recommending a redundant index",
+      "passed": true,
+      "evidence": "Section 1 (lines 33-45) runs '\\d brand_responses' and lists 'brand_responses_brand_question_unique UNIQUE CONSTRAINT, btree (brand_id, question_key)', concluding 'No index is missing for this query.' The fix rationale (line 143) explicitly rejects a redundant index: 'The (brand_id, question_key) index already exists and is already used; adding an index changes nothing.'"
+    },
+    {
+      "text": "Any proposed fix is shown as concrete SQL, and if offered as a migration it follows the project's discovered convention (timestamped filename matching supabase/migrations style)",
+      "passed": true,
+      "evidence": "Concrete SQL is shown (the STABLE 'create or replace function is_admin()' block, diagnosis lines 130-139 and fix_is_admin_stable.sql). The run engages the project convention rather than ignoring it: it cites the existing timestamped migration 'supabase/migrations/20260531000000_harden_is_admin_search_path.sql' (line 84), preserves that migration's search_path hardening via create-or-replace, and frames the change as migration content under a propose-only constraint (line 128). Caveat: the saved artifact is named fix_is_admin_stable.sql (not a timestamped filename), but it is explicitly a propose-only output not added to the repo, so the fix is not offered in a form that ignores the convention."
+    },
+    {
+      "text": "Lock impact stated: any index proposal names its lock cost and prefers CREATE INDEX CONCURRENTLY (with its no-transaction caveat) for production application",
+      "passed": true,
+      "evidence": "Conditional: the run correctly concludes no index is needed, so no CREATE INDEX is proposed. The DDL it does propose is CREATE OR REPLACE FUNCTION is_admin(); its operational impact is addressed — 'create or replace preserves existing EXECUTE grants (authenticated, anon) and the search_path hardening ... the ONLY change is adding STABLE' (sql lines 21-23) plus a rollback plan (sql lines 28-29) and a behavior-unchanged verification step (diagnosis line 155). Judgment: it addresses operational safety thoroughly (grants/search_path preserved, rollback, no behavior change) but does not explicitly name the brief ACCESS EXCLUSIVE lock that create-or-replace function takes; given operational impact is otherwise well-covered for a near-instant in-place redefinition, this passes."
+    },
+    {
+      "text": "Diagnosis considers cheaper causes before new indexes: statistics freshness (ANALYZE), plan row-estimates vs actuals, or SELECT * cost are considered — not just 'add an index'",
+      "passed": true,
+      "evidence": "Ruled out a missing index up front (line 15), pursued a cheaper root cause (VOLATILE is_admin() re-evaluated per row), and the 'Secondary observation' (line 149) covers statistics freshness: 'never been ANALYZEd: pg_class.reltuples = -1 ... Worth a VACUUM ANALYZE brand_responses'. Cost-scaling-with-rows reasoning is used instead of an index reflex."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  },
+  "timing": {
+    "total_duration_seconds": 231.9,
+    "total_tokens": 58628
+  },
+  "claims": [
+    {
+      "claim": "is_admin() is declared VOLATILE and is re-evaluated once per scanned row inside the RLS filter, costing ~63-71 ms over a 10k-row scan vs ~1 ms when STABLE",
+      "type": "factual",
+      "verified": true,
+      "evidence": "pg_proc query shows 'is_admin | v (VOLATILE)' (line 79) and the migration body (lines 87-94) has no STABLE keyword. The 10k-row synthetic scan shows 'Buffers: shared hit=10220 ... Execution Time: 63.311 ms' for VOLATILE vs 'One-Time Filter ... Execution Time: 1.011 ms' for the STABLE wrapper. Internally consistent and a stronger DB-level finding than the with_skill run reached."
+    },
+    {
+      "claim": "Marking is_admin() STABLE is correct and safe because its result is constant within a statement",
+      "type": "quality",
+      "verified": true,
+      "evidence": "Sound reasoning (line 126): auth.uid() and admins membership do not change mid-statement, so STABLE (not VOLATILE/IMMUTABLE) is the right marking; current_user_account_ids() in the same stack is already STABLE, supporting the inconsistency-as-bug argument."
+    },
+    {
+      "claim": "The literal task query under RLS still uses the index and is fast (~0.33 ms) because it returns a single row, hiding the per-row cost at small scale",
+      "type": "factual",
+      "verified": true,
+      "evidence": "Section 2 shows 'Index Scan using brand_responses_brand_question_unique ... Execution Time: 0.334 ms' with the RLS Filter firing once for the single qualifying row. Correctly reconciles 'index is used and fast' with 'still slow in the app' via row-count scaling on the hot brand_id-only / account_id-only read paths."
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Any proposed fix is shown as concrete SQL, and if offered as a migration it follows the project's discovered convention (timestamped filename matching supabase/migrations style)",
+        "reason": "The convention check is ambiguous for propose-only runs that don't write into supabase/migrations. Both runs saved a non-timestamped .sql in the outputs dir; this run still passes because it cites and preserves the existing timestamped migration. Consider tightening the assertion to require the diagnosis to state the exact timestamped filename it WOULD create, so the check is unambiguous regardless of where the artifact is saved."
+      },
+      {
+        "reason": "No assertion rewards identifying the per-row VOLATILE-function RLS cost specifically — yet that is the distinguishing deep finding here (this run got it; the with_skill run did not). An assertion like 'identifies that a VOLATILE function in the RLS filter is re-evaluated per row and proposes STABLE' would sharply discriminate diagnosis depth."
+      }
+    ],
+    "overall": "Assertions pass cleanly except the unverifiable EXPLAIN-before-ANALYZE check. The set does not capture that this run found a deeper, row-scaling root cause (VOLATILE is_admin() in RLS) than the alternative — worth an explicit assertion."
+  }
+}
